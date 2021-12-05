@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { size } from "../styles/Theme";
 
 const Footer = (props) => {
-  console.log(props);
-  console.log(props.theme.colors.gray__2);
   return (
     <FooterDiv theme={props.theme}>
       <p>
@@ -27,12 +25,12 @@ const Footer = (props) => {
 export default Footer;
 
 const FooterDiv = styled.div`
-  width: 100%;
-  height: 12rem;
-  border: none;
   background-color: ${(props) => props.theme.colors.gray__2};
+  border: none;
   color: ${(props) => props.theme.colors.gray__1};
+  height: 12rem;
   padding: 1.5rem;
+  width: 100%;
 
   p {
     font-size: ${size.font_small};
@@ -41,13 +39,13 @@ const FooterDiv = styled.div`
   }
   .footer-btn {
     button {
-      font-size: ${size.font_small};
-      color: ${(props) => props.theme.colors.gray__1};
       background-color: transparent;
       border: none;
+      color: ${(props) => props.theme.colors.gray__1};
       cursor: pointer;
-      padding: 0;
+      font-size: ${size.font_small};
       margin: 1rem 1rem 0 0;
+      padding: 0;
     }
   }
 `;
