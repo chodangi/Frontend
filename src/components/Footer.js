@@ -28,15 +28,15 @@ export default Footer;
 
 const FooterDiv = styled.div`
   width: 100%;
-  height: 20rem;
+  height: 12rem;
   border: none;
   background-color: ${(props) => props.theme.colors.gray__2};
   color: ${(props) => props.theme.colors.gray__1};
-  padding: 2rem;
+  padding: 1.5rem;
 
   p {
     font-size: ${size.font_small};
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     margin-top: 0;
   }
   .footer-btn {
@@ -47,7 +47,7 @@ const FooterDiv = styled.div`
       border: none;
       cursor: pointer;
       padding: 0;
-      margin: 2rem 1rem 0 0;
+      margin: 1rem 1rem 0 0;
     }
   }
 `;
