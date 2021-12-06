@@ -62,7 +62,7 @@ const History = () => {
             return (
               <tr>
                 <th scope="row">
-                  {coinIdx == 1 ? "비트" : coinIdx == 2 ? "이더" : "리플"}
+                  {coinIdx === 1 ? "비트" : coinIdx === 2 ? "이더" : "리플"}
                 </th>
                 {value.map((results) => {
                   return (
