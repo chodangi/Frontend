@@ -14,7 +14,10 @@ const AppRouter = () => {
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
-          <Route path="myPage" element={<MyPage theme={theme} />} />
+          <Route
+            path="myPage"
+            element={<MyPage theme={theme} darkModeHandler={setThemeMode} />}
+          />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

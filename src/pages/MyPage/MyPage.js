@@ -5,6 +5,7 @@ import History from "./components/History";
 import Profile from "./components/Profile";
 import MyCommunity from "./components/MyCommunity";
 import DeleteAccountModal from "./components/DeleteAccountModal";
+import Settings from "./components/Settings";
 import { size } from "../../styles/Theme";
 
 const MyPage = (props) => {
@@ -28,6 +29,7 @@ const MyPage = (props) => {
         <History />
       </ProfileMainDiv>
       <MyCommunity theme={props.theme} />
+      <Settings theme={props.theme} darkModeHandler={props.darkModeHandler} />
       <button
         className="btn__below logout"
         // onClick={}
@@ -59,7 +61,6 @@ const MyPageDiv = styled.div`
   .btn__below {
     background-color: transparent;
     border: 2px solid ${(props) => props.theme.colors.text};
-    border-radius: 10px;
     color: ${(props) => props.theme.colors.text};
     cursor: pointer;
     font-size: ${size.font_mid};

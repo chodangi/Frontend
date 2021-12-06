@@ -16,7 +16,7 @@ export default MyCommunity;
 
 const MyCommunityBtns = styled.div`
   border: 2px solid ${(props) => props.theme.colors.text};
-  border-radius: 10px;
+  border-radius: 7px;
   display: flex;
   height: 3rem;
   justify-content: space-evenly;
