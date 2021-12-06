@@ -2,9 +2,11 @@ import styled from "styled-components";
 
 import History from "./components/History";
 import Profile from "./components/Profile";
+import MyCommunity from "./components/MyCommunity";
 import { size } from "../../styles/Theme";
 
-const MyPage = () => {
+const MyPage = (props) => {
+  console.log("??????", props);
   return (
     <MyPageDiv>
       <div className="mypage__header">내 정보</div>
@@ -12,6 +14,7 @@ const MyPage = () => {
         <Profile />
         <History />
       </ProfileMainDiv>
+      <MyCommunity theme={props.theme} />
     </MyPageDiv>
   );
 };
