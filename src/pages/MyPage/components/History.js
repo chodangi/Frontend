@@ -49,37 +49,39 @@ const History = () => {
   const createTable = (history) => {
     let coinIdx = 0;
     return !history ? null : (
-      <tbody>
-        <tr>
-          <td></td>
-          {Object.keys(history).map((key) => {
-            return <th scope="col">{key}</th>;
+      <table>
+        <tbody>
+          <tr>
+            <td></td>
+            {Object.keys(history).map((key) => {
+              return <th scope="col">{key}</th>;
+            })}
+          </tr>
+          {Object.values(history).map((value) => {
+            coinIdx++;
+            return (
+              <tr>
+                <th scope="row">
+                  {coinIdx === 1 ? "비트" : coinIdx === 2 ? "이더" : "리플"}
+                </th>
+                {value.map((results) => {
+                  return (
+                    <td>
+                      {results[0] && results[1]
+                        ? "RL"
+                        : results[0] && !results[1]
+                        ? "RD"
+                        : !results[0] && results[1]
+                        ? "BL"
+                        : "BD"}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
           })}
-        </tr>
-        {Object.values(history).map((value) => {
-          coinIdx++;
-          return (
-            <tr>
-              <th scope="row">
-                {coinIdx == 1 ? "비트" : coinIdx == 2 ? "이더" : "리플"}
-              </th>
-              {value.map((results) => {
-                return (
-                  <td>
-                    {results[0] && results[1]
-                      ? "RL"
-                      : results[0] && !results[1]
-                      ? "RD"
-                      : !results[0] && results[1]
-                      ? "BL"
-                      : "BD"}
-                  </td>
-                );
-              })}
-            </tr>
-          );
-        })}
-      </tbody>
+        </tbody>
+      </table>
     );
   };
   return (
@@ -102,12 +104,16 @@ const HistoryDiv = styled.div`
   .tableHeader {
     font-size: ${size.font_mid};
     margin: 0.5rem 0;
+    text-align: center;
   }
 
-  tbody {
-    font-size: ${size.font_small};
+  table {
     width: 100%;
     height: 7rem;
+  }
+
+  table tbody {
+    font-size: ${size.font_small};
   }
   tbody td {
     text-align: center;

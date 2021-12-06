@@ -42,6 +42,7 @@ const ProfileDiv = styled.div`
   height: 12rem;
   padding: 0.5rem 1rem;
   width: 30%;
+  text-align: center;
 
   img {
     width: 5rem;

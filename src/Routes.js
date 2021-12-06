@@ -9,13 +9,15 @@ import MyPage from "./pages/MyPage/MyPage";
 const AppRouter = () => {
   const [themeMode, setThemeMode] = useState("dark");
   const theme = themeMode === "dark" ? dark : light;
-  console.log(theme);
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
-          <Route path="myPage" element={<MyPage />} />
+          <Route
+            path="myPage"
+            element={<MyPage theme={theme} darkModeHandler={setThemeMode} />}
+          />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
