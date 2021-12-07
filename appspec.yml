@@ -1,0 +1,16 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/build
+hooks:
+  BeforeInstall:
+    - location: /initialize.sh
+      runas: root
+
+  ApplicationStart:
+    - location: /start.sh
+      runas: root
+  ValidateService:
+    - location: /healthCheck.sh
+      runas: ubuntu
