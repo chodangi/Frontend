@@ -7,6 +7,7 @@ const Toggle = (props) => {
     switch (props.content) {
       case "야간모드":
         const newTheme = props.theme === dark ? "light" : "dark";
+        localStorage.setItem("theme", newTheme);
         props.darkModeHandler(newTheme);
     }
   };

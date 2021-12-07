@@ -7,7 +7,10 @@ import { dark, light } from "./styles/Theme";
 import MyPage from "./pages/MyPage/MyPage";
 
 const AppRouter = () => {
-  const [themeMode, setThemeMode] = useState("dark");
+  const currentTheme = localStorage.getItem("theme")
+    ? localStorage.getItem("theme")
+    : "dark";
+  const [themeMode, setThemeMode] = useState(currentTheme);
   const theme = themeMode === "dark" ? dark : light;
   return (
     <ThemeProvider theme={theme}>
