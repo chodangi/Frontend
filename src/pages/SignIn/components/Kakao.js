@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import dotenv from "dotenv";
 import qs from "qs";
 
 const Kakao = () => {
