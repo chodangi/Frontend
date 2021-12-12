@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . /app
 
+TOUCH app/.env
+
 EXPOSE 3000
 
 CMD ["npm", "start"]

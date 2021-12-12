@@ -5,6 +5,7 @@ import { ThemeProvider } from "styled-components";
 import { GlobalStyles } from "./styles/Global";
 import { dark, light } from "./styles/Theme";
 import MyPage from "./pages/MyPage/MyPage";
+import SignIn from "./pages/SignIn/SignIn";
 
 const AppRouter = () => {
   const currentTheme = localStorage.getItem("theme")
@@ -20,6 +21,10 @@ const AppRouter = () => {
           <Route
             path="myPage"
             element={<MyPage theme={theme} darkModeHandler={setThemeMode} />}
+          />
+          <Route
+            path="signIn"
+            element={<SignIn theme={theme} darkModeHandler={setThemeMode} />}
           />
         </Routes>
       </BrowserRouter>

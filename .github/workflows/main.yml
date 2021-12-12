@@ -50,7 +50,19 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.NINA_TOKEN }}
+      - name: create .env
+        env:
+          REACT_APP_KAKAO_JS_KEY: ${{ secrets.REACT_APP_KAKAO_JS_KEY }}
+          REACT_APP_KAKAO_REST_KEY: ${{ secrets.REACT_APP_KAKAO_REST_KEY }}
+          REACT_APP_NAVER_CLIENT_ID: ${{ secrets.REACT_APP_NAVER_CLIENT_ID }}
+          REACT_APP_KAKAO_CLIENT_SECRET: ${{ secrets.REACT_APP_KAKAO_CLIENT_SECRET }}
+        run: |
+          touch .env
+          echo REACT_APP_KAKAO_JS_KEY="$REACT_APP_KAKAO_JS_KEY" >> .env
+          echo REACT_APP_KAKAO_REST_KEY="$REACT_APP_KAKAO_REST_KEY" >> .env
+          echo REACT_APP_NAVER_CLIENT_ID="$REACT_APP_NAVER_CLIENT_ID" >> .env
+          echo REACT_APP_KAKAO_CLIENT_SECRET="$REACT_APP_KAKAO_CLIENT_SECRET" >> .env
       - name: Docker run
         run: |
           docker ps -q --filter "name=chodangi-front" | grep -q . && docker stop chodangi-front && docker rm -fv chodangi-front
-          docker run -p 3000:3000 -d --restart always --name chodangi-front ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
+          docker run -p 3000:3000 -d -v "$(pwd)/.env:app/.env" --restart always --name chodangi-front ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
