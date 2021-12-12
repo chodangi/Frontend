@@ -65,4 +65,4 @@ jobs:
       - name: Docker run
         run: |
           docker ps -q --filter "name=chodangi-front" | grep -q . && docker stop chodangi-front && docker rm -fv chodangi-front
-          docker run -p 3000:3000 -d -v "$(pwd)/.env:app/.env" --restart always --name chodangi-front ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
+          docker run -p 3000:3000 -d -v "$(pwd)/.env:/app/.env" --restart always --name chodangi-front ${{ env.DOCKER_IMAGE }}:${{ env.VERSION }}
