@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . /app
 
-TOUCH app/.env
+RUN touch app/.env
 
 EXPOSE 3000
 
