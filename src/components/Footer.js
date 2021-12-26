@@ -43,7 +43,8 @@ const FooterDiv = styled.div`
       border: none;
       color: ${(props) => props.theme.colors.gray__1};
       cursor: pointer;
-      font-size: ${size.font_small};
+      //font-size: ${size.font_small};
+      font-size: 12px;
       margin: 1rem 1rem 0 0;
       padding: 0;
     }

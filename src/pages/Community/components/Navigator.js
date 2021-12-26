@@ -8,6 +8,7 @@ const Navigator = () =>{
         <NavDiv>
             <ul className="nav__boards">
                 <li className="popular board">
+                    <div className="highlight"/>
                     <Link to="#" className="boardLink">인기게시판</Link>
                 </li>
                 <li className="free board">
@@ -41,8 +42,19 @@ const NavDiv = styled.div`
         padding:0;
     }
 
+    .highlight{
+        width: 100%;
+        height: 3px;
+        background-color: #EA622F;
+    }
+
+    .popular .boardLink{
+        color: #EA622F;
+    }
+
     .board{
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         list-style:none;
@@ -56,7 +68,7 @@ const NavDiv = styled.div`
         font-weight: bold;
         border-right: 1px solid #888888;
         text-align: center;
-        text-align-vertical: center;
+        padding-top: 3px;
     }
     
     .boardLink.lastItem{
