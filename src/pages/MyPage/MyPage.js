@@ -26,10 +26,12 @@ const MyPage = (props) => {
       <h1 className="mypage__header">내 정보</h1>
       <ProfileMainDiv>
         <Profile />
+        <hr />
         <History />
       </ProfileMainDiv>
       <MyCommunity theme={props.theme} />
       <Settings theme={props.theme} darkModeHandler={props.darkModeHandler} />
+      {/* 
       <button
         className="btn__below logout"
         // onClick={}
@@ -49,6 +51,7 @@ const MyPage = (props) => {
           visiblityHandler={modalVisibilityHandler}
         />
       )}
+      */}
     </MyPageDiv>
   );
 };
@@ -56,6 +59,7 @@ const MyPage = (props) => {
 export default MyPage;
 
 const MyPageDiv = styled.div`
+  margin: auto;
   text-align: center;
 
   .btn__below {
@@ -71,8 +75,11 @@ const MyPageDiv = styled.div`
 `;
 
 const ProfileMainDiv = styled.div`
-  display: flex;
-  justify-content: center;
   max-width: 600px;
   width: 100vw;
+
+  hr {
+    border: none;
+    border-top: ${(props) => `2px solid ${props.theme.colors.gray__2}`};
+  }
 `;
