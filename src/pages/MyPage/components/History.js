@@ -27,53 +27,54 @@ const History = () => {
   //   });
 
   const history = {
-    11.26: [
-      [true, false],
-      [false, false],
-      [false, false],
-    ],
-    11.27: [
-      [false, false],
-      [false, true],
-      [true, true],
-    ],
-    11.28: [
-      [true, true],
-      [true, false],
-      [true, false],
-    ],
+    dates: ["11.28", "11.27", "11.26"],
+    data: {
+      비트: [
+        [true, false],
+        [false, false],
+        [false, false],
+      ],
+      이더: [
+        [false, false],
+        [false, true],
+        [true, true],
+      ],
+      리플: [
+        [true, true],
+        [true, false],
+        [true, false],
+      ],
+    },
   };
 
   const hitRatio = 63.7;
 
   const createTable = (history) => {
-    let coinIdx = 0;
     return !history ? null : (
       <table>
         <tbody>
           <tr>
             <td></td>
-            {Object.keys(history).map((key) => {
-              return <th scope="col">{key}</th>;
+            {history["dates"].map((date) => {
+              return <th scope="col">{date}</th>;
             })}
           </tr>
-          {Object.values(history).map((value) => {
-            coinIdx++;
+          {Object.keys(history["data"]).map((key) => {
             return (
               <tr>
-                <th scope="row">
-                  {coinIdx === 1 ? "비트" : coinIdx === 2 ? "이더" : "리플"}
-                </th>
-                {value.map((results) => {
+                <th scope="row">{key}</th>
+                {history["data"][key].map((results) => {
                   return (
                     <td>
-                      {results[0] && results[1]
-                        ? "RL"
-                        : results[0] && !results[1]
-                        ? "RD"
-                        : !results[0] && results[1]
-                        ? "BL"
-                        : "BD"}
+                      {results[1] ? (
+                        <ResultIconDiv is_increased={results[0]}>
+                          △
+                        </ResultIconDiv>
+                      ) : (
+                        <ResultIconDiv is_increased={results[0]}>
+                          ▽
+                        </ResultIconDiv>
+                      )}
                     </td>
                   );
                 })}
@@ -84,12 +85,7 @@ const History = () => {
       </table>
     );
   };
-  return (
-    <HistoryDiv>
-      <div className="tableHeader">평균 적중률: {hitRatio}%</div>
-      {createTable(history)}
-    </HistoryDiv>
-  );
+  return <HistoryDiv>{createTable(history)}</HistoryDiv>;
 };
 
 export default History;
@@ -98,8 +94,9 @@ const HistoryDiv = styled.div`
   border: none;
   float: right;
   height: 12rem;
+  margin: 2rem 0;
   padding: 0.5rem 1rem;
-  width: 70%;
+  width: 100%;
 
   .tableHeader {
     font-size: ${size.font_mid};
@@ -113,9 +110,21 @@ const HistoryDiv = styled.div`
   }
 
   table tbody {
-    font-size: ${size.font_small};
+    font-size: ${size.font_mid};
   }
   tbody td {
+    martin: 0 auto;
     text-align: center;
   }
+`;
+
+const ResultIconDiv = styled.div`
+  border-radius: 100%;
+  background-color: ${(props) =>
+    props.is_increased ? props.theme.colors.red : props.theme.colors.blue};
+  height: 2rem;
+  margin: 0.5rem auto;
+  font-size: ${size.font_large};
+  color: ${(props) => props.theme.colors.transparent};
+  width: 2rem;
 `;

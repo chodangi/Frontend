@@ -5,21 +5,39 @@ import { dark, size } from "../../../styles/Theme";
 const Toggle = (props) => {
   const toggleHandler = (e) => {
     switch (props.content) {
-      case "야간모드":
-        const newTheme = props.theme === dark ? "light" : "dark";
+      case "darkmode":
+        console.log("lslsls", props.is_checked);
+        const newTheme = props.is_checked ? "light" : "dark";
         localStorage.setItem("theme", newTheme);
         props.darkModeHandler(newTheme);
+        break;
+      default:
+        const content = props.content;
+        const subcontent = props.subcontent;
+        const val = props.is_checked;
+        props.notifiacationHandler({
+          [`${content[subcontent]}`]: !val,
+        });
     }
+  };
+  console.log(props);
+
+  const mapping = {
+    like: "좋아요",
+    comment: "댓글",
+    beforeEnd: "참여 마감 10분 전",
+    resultAnnounce: "결과 안내",
+    darkmode: "야간모드",
   };
 
   return (
     <ToggleDiv>
-      <div>{props.content}</div>
+      <div>{mapping[props.subcontent]}</div>
       <label class="switch">
         <input
           type="checkbox"
           class="onoffswitch-checkbox"
-          checked={props.theme === dark ? true : false}
+          checked={props.is_checked ? true : false}
           onClick={toggleHandler}
         />
         <span class="slider round"></span>
@@ -32,14 +50,12 @@ export default Toggle;
 
 const ToggleDiv = styled.div`
   display: flex;
+  font-size: ${size.font_small};
   justify-content: space-between;
-  margin: 0 auto;
-  width: 70%;
-  position: relative;
+  margin: 1rem auto;
 
   div {
-    font-size: ${size.font_mid};
-    margin: auto 0;
+    padding: 0.5rem;
   }
 
   .switch {
