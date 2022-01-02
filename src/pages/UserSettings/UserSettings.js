@@ -7,23 +7,39 @@ import DeleteAccountModal from "./components/DeleteAccountModal";
 import { size } from "../../styles/Theme";
 
 const MyPage = (props) => {
-  const [notifications, setNotifications] = useReducer(
-    (state, updates) => ({ ...state, ...updates }),
-    {
-      community: {
-        like: true,
-        comment: false,
-      },
-      guessing: {
-        beforeEnd: true,
-        resultAnnounce: false,
-      },
-      temperature: {
-        like: true,
-        comment: false,
-      },
-    }
-  );
+  // const [notifications, setNotifications] = useReducer(
+  //   (state, updates) => ({ ...state, ...updates }),
+  //   {
+  //     community: {
+  //       like: true,
+  //       comment: false,
+  //     },
+  //     guessing: {
+  //       beforeEnd: true,
+  //       resultAnnounce: false,
+  //     },
+  //     temperature: {
+  //       like: true,
+  //       comment: false,
+  //     },
+  //   }
+  // );
+  const [notifications, setNotifications] = useState({
+    community: {
+      like: true,
+      comment: false,
+    },
+    guessing: {
+      beforeEnd: true,
+      resultAnnounce: false,
+    },
+    temperature: {
+      like: true,
+      comment: false,
+    },
+  });
+
+  console.group(notifications);
   useEffect(() => {
     if (!notifications.length) {
       fetch(`url`)
@@ -63,18 +79,21 @@ const MyPage = (props) => {
         setting={notifications["community"]}
         content="community"
         notifiacationHandler={setNotifications}
+        state={notifications}
       />
       <hr className="thin" />
       <NotificationSettings
         setting={notifications["guessing"]}
         content="guessing"
         notifiacationHandler={setNotifications}
+        state={notifications}
       />
       <hr className="thin" />
       <NotificationSettings
         setting={notifications["temperature"]}
         content="temperature"
         notifiacationHandler={setNotifications}
+        state={notifications}
       />
       <hr className="thin" />
       <NotificationSettings

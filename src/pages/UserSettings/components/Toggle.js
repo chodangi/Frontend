@@ -6,7 +6,6 @@ const Toggle = (props) => {
   const toggleHandler = (e) => {
     switch (props.content) {
       case "darkmode":
-        console.log("lslsls", props.is_checked);
         const newTheme = props.is_checked ? "light" : "dark";
         localStorage.setItem("theme", newTheme);
         props.darkModeHandler(newTheme);
@@ -16,7 +15,11 @@ const Toggle = (props) => {
         const subcontent = props.subcontent;
         const val = props.is_checked;
         props.notifiacationHandler({
-          [`${content[subcontent]}`]: !val,
+          ...props.state,
+          [`${content}`]: {
+            ...props.state[content],
+            [`${subcontent}`]: !val,
+          },
         });
     }
   };
