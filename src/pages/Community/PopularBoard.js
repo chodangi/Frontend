@@ -11,6 +11,7 @@ import {IoIosArrowDown} from 'react-icons/io';
 import { size } from "../../styles/Theme";
 import Pagination from "./components/Pagination";
 import SearchBar from "./components/SearchBar";
+import { Link } from "react-router-dom";
 
 //const width = screen.availHeight;
 //const height = screen.availHeight;
@@ -22,6 +23,8 @@ const PopularBoard = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const paginate = pageNum => setCurrentPage(pageNum);
 
+  const [category, setCategory] = useState('인기게시판');
+
   return (
     <MyPageDiv id="myPageDiv">
       <div className="content">
@@ -32,9 +35,9 @@ const PopularBoard = (props) => {
           <button className="btn sortPopularPost">
             실시간 인기글
           </button>
-          <button className="btn writePost">
-            글쓰기
-          </button>
+          <Link to={"writePost"} state={{ category: category, }}>
+            <button className="btn writePost">글쓰기</button>
+          </Link>
         </div>
         <Post/>
         <Post/>
@@ -71,9 +74,6 @@ const MyPageDiv = styled.div`
   height: 100%;
 
   *{
-    //box-sizing: border-box;
-    //-webkit-box-sizing: border-box;
-    //-moz-box-sizing: border-box;
     margin:0;
     padding:0;
   }
@@ -82,7 +82,7 @@ const MyPageDiv = styled.div`
     position:realtive;
     width: 100%;
     height: auto;
-    min-height: 100%;
+    min-height: 100%; //정하기
   }
 
   .community__top{
