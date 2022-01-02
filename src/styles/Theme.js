@@ -1,12 +1,13 @@
 export const dark = {
   colors: {
     background: "rgb(21, 21, 23)",
-    text: "rgb(255, 255, 255)",
+    text: "#FFFFFF",
     gray__1: "rgb(156, 156, 156)",
-    gray__2: "rgb(81, 85, 90)",
+    gray__2: "#27272A",
     red: "rgb(231, 76, 60)",
     blue: "rgb(52, 152, 219)",
     yellow: "rgb(241, 196, 15)",
+    transparent: "rgb(21, 21, 23)",
   },
 };
 
@@ -19,6 +20,7 @@ export const light = {
     red: "rgb(231, 76, 60)",
     blue: "rgb(52, 152, 219)",
     yellow: "rgb(241, 196, 15)",
+    transparent: "rgb(255, 255, 255)",
   },
 };
 

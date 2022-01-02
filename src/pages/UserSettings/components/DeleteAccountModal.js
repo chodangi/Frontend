@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { size } from "../../../styles/Theme";
 
 const DeleteAccountModal = (props) => {
-  console.log(props.visiblityHandler);
   return (
     <DeleteAccountModalDiv>
       <p>

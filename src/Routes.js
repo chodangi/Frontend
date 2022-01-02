@@ -6,6 +6,7 @@ import { GlobalStyles } from "./styles/Global";
 import { dark, light } from "./styles/Theme";
 import MyPage from "./pages/MyPage/MyPage";
 import SignIn from "./pages/SignIn/SignIn";
+import UserSettings from "./pages/UserSettings/UserSettings";
 
 const AppRouter = () => {
   const currentTheme = localStorage.getItem("theme")
@@ -25,6 +26,12 @@ const AppRouter = () => {
           <Route
             path="signIn"
             element={<SignIn theme={theme} darkModeHandler={setThemeMode} />}
+          />
+          <Route
+            path="settings"
+            element={
+              <UserSettings theme={theme} darkModeHandler={setThemeMode} />
+            }
           />
         </Routes>
       </BrowserRouter>

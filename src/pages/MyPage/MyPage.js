@@ -15,7 +15,9 @@ const MyPage = (props) => {
         <History />
       </ProfileMainDiv>
       <MyCommunity theme={props.theme} />
-      <SettingBtn>설정</SettingBtn>
+      <SettingBtn onClick={() => (window.location.href = "/settings")}>
+        설정
+      </SettingBtn>
     </MyPageDiv>
   );
 };

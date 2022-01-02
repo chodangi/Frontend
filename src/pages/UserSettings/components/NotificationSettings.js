@@ -11,7 +11,6 @@ const NotificationSettings = (props) => {
     temperature: "코인체감온도",
     darkmode: "야간모드 설정",
   };
-  console.log(props.setNotifications);
   return (
     <ToggleLindDiv>
       <h3>{mapping[props.content]}</h3>
@@ -26,13 +25,13 @@ const NotificationSettings = (props) => {
         </Toggle>
       ) : (
         Object.keys(props.setting).map((key) => {
-          console.log(key);
           return (
             <Toggle
               content={props.content}
               subcontent={key}
               is_checked={props.setting[key]}
               notifiacationHandler={props.notifiacationHandler}
+              state={props.state}
             >
               {props.setting[key]}
             </Toggle>
