@@ -23,12 +23,12 @@ const HeaderDiv = styled.div`
     align-items:center;    
     width: 100%;
     height: 50px;
+    padding: 0px 12px 0px 12px; 
 
     background-color: #27272A;
 
     .header__item{
         display: flex;
-        padding-right:20px;
     }
 
     .login{
@@ -37,12 +37,10 @@ const HeaderDiv = styled.div`
         padding-right: 5px;
         font-size: 12px;
         font-weight: bold;
-        color: 'blue';
     }
 
     .logo__img {
         width: 100px;
-        height: 30px; 
-        padding-left: 12px;   
+        height: 30px;   
     }
 `;

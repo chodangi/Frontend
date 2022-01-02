@@ -7,6 +7,7 @@ import { dark, light } from "./styles/Theme";
 import MyPage from "./pages/MyPage/MyPage";
 import SignIn from "./pages/SignIn/SignIn";
 import PopularBoard from "./pages/Community/PopularBoard";
+import WritePost from "./pages/WritePost/WritePost";
 
 const AppRouter = () => {
   const currentTheme = localStorage.getItem("theme")
@@ -30,6 +31,10 @@ const AppRouter = () => {
           <Route
             path="/"
             element={<PopularBoard theme={theme} darkModeHandler={setThemeMode} />}
+          />
+          <Route
+            path="writePost"
+            element={<WritePost theme={theme} darkModeHandler={setThemeMode} />}
           />
         </Routes>
       </BrowserRouter>
