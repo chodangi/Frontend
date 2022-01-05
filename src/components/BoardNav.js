@@ -9,16 +9,16 @@ const Navigator = () =>{
             <ul className="nav__boards">
                 <li className="popular board">
                     <div className="highlight"/>
-                    <Link to="#" className="boardLink">인기게시판</Link>
+                    <Link to="/" className="boardLink">인기게시판</Link>
                 </li>
                 <li className="free board">
-                    <Link to="#" className="boardLink">자유게시판</Link>
+                    <Link to="/" className="boardLink">자유게시판</Link>
                 </li>
                 <li className="rich board">
-                    <Link to="#" className="boardLink">부자게시판</Link>
+                    <Link to="/" className="boardLink">부자게시판</Link>
                 </li>
                 <li className="poor board">
-                <Link to="#" className="boardLink lastItem">그지게시판</Link>
+                <Link to="/" className="boardLink lastItem">그지게시판</Link>
                 </li>
             </ul>
         </NavDiv>
@@ -29,6 +29,8 @@ const NavDiv = styled.div`
     width: 100%;
     height: 30px;
     background-color: #27272A;
+
+    font-size: 0; //공백 해결
 
     .nav__boards{
         display: grid;

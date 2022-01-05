@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import ToggleTheme from "./ToggleTheme";
-
+import ToggleTheme from "../pages/Community/components/ToggleTheme";
+import { Link } from "react-router-dom";
 
 const Header = (props) => {
 
   return (
     <HeaderDiv>
-        <img className="logo__img" src="undefined"></img>
+        <Link to="/"><img className="logo__img" src="undefined"></img></Link>
         <div className="header__item">
             <div className="login">Login</div>
             <ToggleTheme theme={props.theme} darkModeHandler={props.darkModeHandler} />

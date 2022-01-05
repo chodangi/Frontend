@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const Editor = () => {
+const Editor = ({type}) => {
 
     const[content, setContent] = useState();
 
@@ -10,14 +10,18 @@ const Editor = () => {
     }
 
     return (
-        <StyledDiv id="contentDiv" contentEditable="true" placeholder="내용" onInput={onContentHandler}></StyledDiv>
+        <StyledDiv id="contentDiv" contentEditable="true" 
+            placeholder={type === 'comment' ? '댓글을 입력해주세요.' : '내용'} 
+            style={{ minHeight: type === 'comment' ? '90px' : '150px'}}
+            onInput={onContentHandler}>
+
+        </StyledDiv>
     );
 }
 
 const StyledDiv = styled.div`
 
     width: 100%;
-    min-height: 150px;
     padding: 10px 20px 10px 20px;
     border-bottom: 2px solid #444444;
     font-size: 12px;

@@ -9,6 +9,7 @@ import SignIn from "./pages/SignIn/SignIn";
 import UserSettings from "./pages/UserSettings/UserSettings";
 import PopularBoard from "./pages/Community/PopularBoard";
 import WritePost from "./pages/WritePost/WritePost";
+import ShowPost from "./pages/ShowPost.js/ShowPost";
 
 const AppRouter = () => {
   const currentTheme = localStorage.getItem("theme")
@@ -40,6 +41,10 @@ const AppRouter = () => {
           <Route
             path="writePost"
             element={<WritePost theme={theme} darkModeHandler={setThemeMode} />}
+          />
+          <Route
+            path="showPost"
+            element={<ShowPost theme={theme} darkModeHandler={setThemeMode} />}
           />
         </Routes>
       </BrowserRouter>

@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import {AiOutlineHeart} from 'react-icons/ai';
 import {GiTalk} from 'react-icons/gi';
@@ -11,26 +12,26 @@ const Post = () => {
                 <div className="top line">
                     <div className="post__title">제목 123456789123456798912345</div>
                     <div className="part-right">
-                        <div className="post__category">자유게시판</div>
-                        <div className="post__date">16:32</div>
-                    </div>
-                </div>
-                <div className="bottom line">
-                    <div className="post__user container">
-                        <div className="post__tier">17</div>
-                        <div>슬픈거북이</div>
-                    </div>
-                    <div className="part-right">
-                        <div className="post__heart container">
-                            <AiOutlineHeart className="heart icon"/>
-                            <div>30</div>
-                        </div>
-                        <div className="post__comment container">
-                            <GiTalk className="talk icon"/>13
+                            <div className="post__category">자유게시판</div>
+                            <div className="post__date">16:32</div>
                         </div>
                     </div>
+                    <div className="bottom line">
+                        <div className="post__user container">
+                            <div className="post__tier">17</div>
+                            <div>슬픈거북이</div>
+                        </div>
+                        <div className="part-right">
+                            <div className="post__heart container">
+                                <AiOutlineHeart className="heart icon"/>
+                                <div>30</div>
+                            </div>
+                            <div className="post__comment container">
+                                <GiTalk className="talk icon"/>13
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
         </PostDiv>
     );
 }
@@ -39,7 +40,7 @@ export default Post;
 
 const PostDiv = styled.div`
     width: 100%;
-    height: 72px;
+    height: 70px;
     font-size: 12px;
     
     *{
@@ -47,8 +48,13 @@ const PostDiv = styled.div`
         justify-content:center;
     }
 
+    hr {
+        margin: 0;
+    }
+
     .post__contents{
-        padding: 10px 20px 10px 20px;
+        height: 100%;
+        padding: 10px 20px 15px 20px;
     }
 
     .line{
