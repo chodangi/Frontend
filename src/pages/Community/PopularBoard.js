@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { screen } from "@testing-library/react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import Header from "./components/Header";
-import Navigator from "./components/Navigator";
+import Header from "../../components/Header";
+import Navigator from "../../components/BoardNav";
 import Post from "./components/Post";
 import Footer from "../../components/Footer";
 import {IoIosArrowDown} from 'react-icons/io';
@@ -11,10 +13,10 @@ import {IoIosArrowDown} from 'react-icons/io';
 import { size } from "../../styles/Theme";
 import Pagination from "./components/Pagination";
 import SearchBar from "./components/SearchBar";
-import { Link } from "react-router-dom";
+
 
 //const width = screen.availHeight;
-//const height = screen.availHeight;
+const contentHeight = (window.innerHeight - 130) + "px" ;
 //const offsetHeight = document.getElementById('myPageDiv').offsetHeight;
 
 
@@ -25,9 +27,12 @@ const PopularBoard = (props) => {
 
   const [category, setCategory] = useState('인기게시판');
 
+
+  const navigate = useNavigate();
+  const post = { id: '1', title: '제목', content: '내용', board: '인기게시판', date:'2021.11.10', time:'11:35', user: {nickname: '슬픈거북이', tier :'17'} , comment: {writer: {nickname: '슬픈토끼', tier: '35'}, text: '댓글입니다', date: '11.30', time: '04:02', totalNum: 1, re: false}};
+
   return (
     <MyPageDiv id="myPageDiv">
-      <div className="content">
       <div className="community__top">
         <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
         <Navigator/>
@@ -35,15 +40,13 @@ const PopularBoard = (props) => {
           <button className="btn sortPopularPost">
             실시간 인기글
           </button>
-          <Link to={"writePost"} state={{ category: category, }}>
+          <Link to={"writePost"} state={{ category: category, }} className="link write">
             <button className="btn writePost">글쓰기</button>
           </Link>
         </div>
-        <Post/>
-        <Post/>
-        <Post/>
-        <Post/>
-        <Post/>
+      </div>
+      <div className="content" style={{ minHeight: contentHeight}}>
+        <Link to={"showPost"} state={{postObj: post}} className="link post"><Post/></Link>
         <Post/>
         <Post/>
       </div>
@@ -53,7 +56,6 @@ const PopularBoard = (props) => {
         </div>
         <SearchBar className="search"/>
         <Footer className="footer"/>
-      </div>
       </div>
     </MyPageDiv>
   );
@@ -71,18 +73,11 @@ const MyPageDiv = styled.div`
 
   max-width: 600px;
   width: 100vw;
-  height: 100%;
-
-  *{
-    margin:0;
-    padding:0;
-  }
 
   .content{
     position:realtive;
     width: 100%;
     height: auto;
-    min-height: 100%; //정하기
   }
 
   .community__top{
@@ -123,6 +118,12 @@ const MyPageDiv = styled.div`
   .btn.writePost{
     width: 50px;
     height: 20px; //안들어가서 크기 조정함
+    text-decoration: none;
+  }
+
+  .link {
+    color: ${(props) => props.theme.colors.text};
+    text-decoration: none;
   }
 
   .arrowDown__btn{

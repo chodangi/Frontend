@@ -28,8 +28,7 @@ const FooterDiv = styled.div`
   background-color: ${(props) => props.theme.colors.gray__2};
   border: none;
   color: ${(props) => props.theme.colors.gray__1};
-  height: 12rem;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 0rem 1.5rem;
   width: 100%;
 
   p {

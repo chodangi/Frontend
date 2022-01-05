@@ -6,11 +6,12 @@ import { FiImage } from "react-icons/fi";
 import { FaYoutubeSquare } from "react-icons/fa";
 import { BiHeartSquare } from "react-icons/bi";
 
-import Editor from "./components/Editor";
+import Editor from "../../components/Editor";
 import CategoryPicker from "./components/CategoryPicker";
-import Header from "../Community/components/Header";
-import Navigator from "../Community/components/Navigator";import YoutubeModal from "./components/YoutubeModal";
-;
+import Header from "../../components/Header";
+import Navigator from "../../components/BoardNav";
+import YoutubeModal from "./components/YoutubeModal";
+
 
 
 //const width = screen.availHeight;
@@ -20,7 +21,7 @@ import Navigator from "../Community/components/Navigator";import YoutubeModal fr
 
 const WritePost = (props) => {
     
-    const category = useLocation().state.category;
+    const category = useLocation().state.category || '자유게시판';
 
     const [visible, setVisible] = useState(false);
     
@@ -29,7 +30,7 @@ const WritePost = (props) => {
     }
 
     return (
-        <WritingDiv id="WritingDiv">
+        <WritingPostDiv id="WritingPostDiv">
             <div className="community__top">
                 <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
                 <Navigator/>
@@ -42,7 +43,7 @@ const WritePost = (props) => {
                     <input type="text" className="input nickname" placeholder="닉네임" spellCheck="false"></input>
                     <input type="password" className="input password" placeholder="비밀번호"></input>
             </div>
-            <Editor/>
+            <Editor type='post'/>
             <div className="submit-box">
                 <div className="btn-box">
                     <FiImage className="btn image" size="2rem" />
@@ -55,14 +56,14 @@ const WritePost = (props) => {
               <p>사진은 최대 10개까지 업로드 가능합니다.</p><p>쉬운 비밀번호를 입력하면 타인의 수정, 삭제가 쉽습니다.</p>
             </div>
             {visible && <YoutubeModal visible={visible} setVisible={setVisible}/>}
-        </WritingDiv>
+        </WritingPostDiv>
     );
     };
 
 
 export default WritePost;
 
-const WritingDiv = styled.div`
+const WritingPostDiv = styled.div`
 
   display:flex;
   flex-direction: column;
@@ -73,10 +74,6 @@ const WritingDiv = styled.div`
   height: 100%;
 
   font-size: 12px;
-
-  *{
-    margin:0;
-  }
 
   .community__top{
     width: 100%;
