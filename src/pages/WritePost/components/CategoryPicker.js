@@ -54,7 +54,7 @@ const PickerDiv = styled.div`
     width: 80px;
     min-height: 20px;
     max-height: 105px;
-    color: black;
+    color: black3;
     border-radius: 10px;
 
     .category-container {

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ToggleTheme from "../pages/Community/components/ToggleTheme";
+import ToggleTheme from "./ToggleTheme";
 import { Link } from "react-router-dom";
 
 const Header = (props) => {
