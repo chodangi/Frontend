@@ -40,7 +40,7 @@ export default Post;
 
 const PostDiv = styled.div`
     width: 100%;
-    height: 70px;
+    height: 72px;
     font-size: 12px;
     
     *{

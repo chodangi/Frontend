@@ -12,7 +12,7 @@ import {IoIosArrowDown} from 'react-icons/io';
 
 import { size } from "../../styles/Theme";
 import Pagination from "./components/Pagination";
-import SearchBar from "./components/SearchBar";
+import SearchBar from "../../components/SearchBar";
 
 
 //const width = screen.availHeight;
@@ -32,7 +32,7 @@ const PopularBoard = (props) => {
   const post = { id: '1', title: '제목', content: '내용', board: '인기게시판', date:'2021.11.10', time:'11:35', user: {nickname: '슬픈거북이', tier :'17'} , comment: {writer: {nickname: '슬픈토끼', tier: '35'}, text: '댓글입니다', date: '11.30', time: '04:02', totalNum: 1, re: false}};
 
   return (
-    <MyPageDiv id="myPageDiv">
+    <CommunityDiv>
       <div className="community__top">
         <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
         <Navigator/>
@@ -46,7 +46,7 @@ const PopularBoard = (props) => {
         </div>
       </div>
       <div className="content" style={{ minHeight: contentHeight}}>
-        <Link to={"showPost"} state={{postObj: post}} className="link post"><Post/></Link>
+        <Link to={"/showPost"} state={{postObj: post}} className="link post"><Post/></Link>
         <Post/>
         <Post/>
       </div>
@@ -57,7 +57,7 @@ const PopularBoard = (props) => {
         <SearchBar className="search"/>
         <Footer className="footer"/>
       </div>
-    </MyPageDiv>
+    </CommunityDiv>
   );
 };
 
@@ -65,7 +65,7 @@ const PopularBoard = (props) => {
 
 export default PopularBoard;
 
-const MyPageDiv = styled.div`
+const CommunityDiv = styled.div`
 
   display:flex;
   flex-direction: column;

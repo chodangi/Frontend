@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Navigator = () =>{
 
     return (
-        <NavDiv>
+        <BoardNavDiv>
             <ul className="nav__boards">
                 <li className="popular board">
                     <div className="highlight"/>
@@ -21,11 +21,11 @@ const Navigator = () =>{
                 <Link to="/" className="boardLink lastItem">그지게시판</Link>
                 </li>
             </ul>
-        </NavDiv>
+        </BoardNavDiv>
     );
 }
 
-const NavDiv = styled.div`
+const BoardNavDiv = styled.div`
     width: 100%;
     height: 30px;
     background-color: #27272A;

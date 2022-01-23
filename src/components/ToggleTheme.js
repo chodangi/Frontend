@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { dark } from "../../../styles/Theme";
+import { dark } from "../styles/Theme";
 
 const ToggleTheme = (props) => {
   const themeHandler = () => {
