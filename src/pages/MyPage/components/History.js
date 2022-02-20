@@ -124,7 +124,8 @@ const ResultIconDiv = styled.div`
     props.is_increased ? props.theme.colors.red : props.theme.colors.blue};
   height: 2rem;
   margin: 0.5rem auto;
-  font-size: ${size.font_large};
+  font-size: ${size.font_mid};
+  font-weight: bold;
   color: ${(props) => props.theme.colors.transparent};
   width: 2rem;
 `;

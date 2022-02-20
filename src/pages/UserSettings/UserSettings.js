@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { useState, useEffect, useReducer } from "react";
 
+import FooterSimple from "../../components/FooterSimple"
 import SettingNickname from "./components/SettingNickname";
 import NotificationSettings from "./components/NotificationSettings";
-import DeleteAccountModal from "./components/DeleteAccountModal";
 import { size } from "../../styles/Theme";
 
 const MyPage = (props) => {
@@ -61,16 +61,8 @@ const MyPage = (props) => {
     });
   };
 
-  const [deleteAccountModalVisibility, setDeleteAccountModalVisibility] =
-    useState(false);
-
-  const modalVisibilityHandler = (e) => {
-    setDeleteAccountModalVisibility(!deleteAccountModalVisibility);
-
-    e.preventDefault();
-  };
-
   return (
+    <UserSettingsPage>
     <UserSettingsDiv>
       <h1>설정</h1>
       <SettingNickname />
@@ -111,30 +103,52 @@ const MyPage = (props) => {
       >
         로그아웃
       </button>
+      <div className="deleteNotification">
+        <p>
+          지금 탈퇴하시면, 회원님의 모든 정보가<br></br>
+          삭제되고 복구될 수 없습니다.<br></br>
+          정말 탈퇴하시겠어요?
+        </p>  
+      </div>
       <button
         className="btn__below deleteAccount"
-        onClick={modalVisibilityHandler}
       >
         회원 탈퇴
       </button>
-      {deleteAccountModalVisibility && (
-        <DeleteAccountModal
-          visible={deleteAccountModalVisibility}
-          theme={props.theme}
-          visiblityHandler={modalVisibilityHandler}
-        />
-      )}
     </UserSettingsDiv>
+    <FooterSimple />
+    </UserSettingsPage>
   );
 };
 
 export default MyPage;
+
+const UserSettingsPage = styled.div`
+  width: 100vw;
+  height: 100vh;
+`
 
 const UserSettingsDiv = styled.div`
   max-width: 600px;
   margin: auto;
   text-align: center;
   width: 100vw;
+
+  .deleteNotification {
+    background-color: ${(props) => props.theme.colors.gray__1};
+    border: 2px solid ${(props) => props.theme.colors.gray__1};
+    border-radius: 0.5rem;
+    color: ${(props) => props.theme.colors.background};
+    font-size: ${size.font_mid};
+    margin: auto;
+    padding: 0.5rem 0;
+    width: 80%;
+  }
+
+  .btn__below.deleteAccount {
+    color: ${(props) => props.theme.colors.red};
+    margin: 0 auto;
+  }
 
   .btn__below {
     background-color: transparent;
@@ -143,10 +157,11 @@ const UserSettingsDiv = styled.div`
     color: ${(props) => props.theme.colors.text};
     cursor: pointer;
     font-size: ${size.font_mid};
-    margin: 1rem;
+    margin: 1rem auto;
     padding: 0.5rem 0;
     width: 80%;
   }
+
 
   hr.thin {
     border: none;
