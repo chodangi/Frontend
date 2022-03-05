@@ -8,16 +8,17 @@ import SearchBar from "../../components/SearchBar";
 import Banner from "./components/Banner";
 import BoardBox from "./components/BoardBox";
 import RankingBox from "./components/RankingBox";
-import TemperatureBox from "./components/TemperatureBox";
+import TemperatureBox from "../../components/TemperatureBox";
 
 const Home = (props) => {
+
 
     return (
         <HomeDiv>
             <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
             <MainNav/>
             <Banner/>
-            <TemperatureBox/>
+            <TemperatureBox type={"bit"}/>
             <BoardBox/>
             <RankingBox/>
             <SearchBar/>

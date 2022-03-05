@@ -50,7 +50,6 @@ const SearchDiv = styled.div`
     border-radius: 5px;
     background-color: #ffffff;
     z-index:100;
-    margin-bottom: 10px !important;
 
     .text__input{
         border: none;

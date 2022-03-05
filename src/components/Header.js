@@ -8,7 +8,7 @@ const Header = (props) => {
     <HeaderDiv>
         <Link to="/"><img className="logo__img" src="undefined"></img></Link>
         <div className="header__item">
-            <div className="login">Login</div>
+            <Link to="/mypage"><div className="login">Login</div></Link>
             <ToggleTheme theme={props.theme} darkModeHandler={props.darkModeHandler} />
         </div>
     </HeaderDiv>
