@@ -40,7 +40,7 @@ const PopularBoard = (props) => {
           <button className="btn sortPopularPost">
             실시간 인기글
           </button>
-          <Link to={"writePost"} state={{ category: category, }} className="link write">
+          <Link to={"/writePost"} state={{ category: category, }} className="link write">
             <button className="btn writePost">글쓰기</button>
           </Link>
         </div>
