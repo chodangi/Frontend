@@ -1,5 +1,8 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import CoinGames from "./components/CoinGames";
+import CountDown from "./components/CountDown";
 import Header from "../../components/Header"
 import MainNav from "../../components/MainNav";
 import Rank from "./components/Rank"
@@ -20,7 +23,9 @@ const Game = (props) => {
     적중 횟수에 따라 점수가 책정되며, 당신의 등급이 결정됩니다.
     </p>
     <Rank />
+    <CountDown />
     </div>
+    <CoinGames />
     </GameDiv>
   );
 };
