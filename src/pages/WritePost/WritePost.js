@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import axios from 'axios';
 import styled from "styled-components";
 import { useLocation } from 'react-router-dom';
 
@@ -29,6 +30,23 @@ const WritePost = (props) => {
       setVisible(true);
     }
 
+    const createPost = async () => {
+      /*await axios
+            .post("/", {
+              content: "댓글"
+            })
+            .then((response) => {
+              console.log(response.data);
+              console.log("글 작성 완료");
+            })
+            .catch((error) => {
+              console.error("실패했습니다");
+            })*/
+      await axios.get("/prefernece/my-like").then(response=>{
+        console.log(response.data);
+      })
+    }
+
     return (
         <WritingPostDiv id="WritingPostDiv">
             <div className="community__top">
@@ -50,7 +68,7 @@ const WritePost = (props) => {
                     <FaYoutubeSquare className="btn youtube" size="1.9rem" onClick={openModal}/>
                     <BiHeartSquare className="btn emoticon" size="2.1rem"/>
                 </div>
-                <button className="submit">완료</button>
+                <button className="submit" onClick={createPost}>완료</button>
             </div>
             <div className="guide">
               <p>사진은 최대 10개까지 업로드 가능합니다.</p><p>쉬운 비밀번호를 입력하면 타인의 수정, 삭제가 쉽습니다.</p>

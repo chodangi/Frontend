@@ -7,7 +7,7 @@ const ProgressBar = (props) => {
         width: `${props.percent}%`,
         height: '100%',
         background: '#3498DB',
-        borderRadius: '5px',
+        borderRadius: '10px',
     }
 
     return (
@@ -20,9 +20,9 @@ const ProgressBar = (props) => {
 export default ProgressBar;
 
 const BarDiv = styled.div`
-    width: 280px;
+    width: 300px;
     height: 23px;
     background-color: #E0E0E0;
-    border-radius: 5px;
+    border-radius: 10px;
 
 `

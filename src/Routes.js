@@ -12,6 +12,8 @@ import PopularBoard from "./pages/Community/PopularBoard";
 import WritePost from "./pages/WritePost/WritePost";
 import ShowPost from "./pages/ShowPost.js/ShowPost";
 import Game from "./pages/Game/Game"
+import Temperature from "./pages/Temperatrue/Temperature";
+import TemperatureComment from "./pages/Temperatrue/TemperatureComment";
 
 const AppRouter = () => {
   const currentTheme = localStorage.getItem("theme")
@@ -57,6 +59,12 @@ const AppRouter = () => {
           <Route
             path="game"
             element={<Game theme={theme} darkModeHandler={setThemeMode} />}
+            path="temperature"
+            element={<Temperature theme={theme} darkModeHandler={setThemeMode} />}
+          />
+          <Route
+            path="temperatureComment"
+            element={<TemperatureComment theme={theme} darkModeHandler={setThemeMode} />}
           />
         </Routes>
       </BrowserRouter>

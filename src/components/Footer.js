@@ -30,6 +30,7 @@ const FooterDiv = styled.div`
   color: ${(props) => props.theme.colors.gray__1};
   padding: 1.5rem 1.5rem 0rem 1.5rem;
   width: 100%;
+  margin-top: 15px;
 
   p {
     font-size: ${size.font_small};
