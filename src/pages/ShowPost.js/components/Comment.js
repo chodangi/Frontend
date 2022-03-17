@@ -2,26 +2,27 @@ import React from "react";
 import styled from "styled-components";
 import { IoArrowRedoSharp } from "react-icons/io5"
 
-const Comment = ({postObj}) => {
+const Comment = ({post}) => {
 
     return (
         <CommentDiv>
             <div className="top">
                 <div className="writer">
-                    {postObj.comment.re && <IoArrowRedoSharp className="arrow" size="1rem"/> }
-                    <div className="writer-tier">{postObj.comment.writer.tier}</div>
-                    <div className="writer-nickname">{postObj.comment.writer.nickname}</div>
+                    
+                    <div className="writer-tier">99</div>
+                    <div className="writer-nickname">닉네임</div>
                 </div>
                 <div className="box">
-                    <div className="date">{postObj.comment.date}</div>
-                    <div className="time">{postObj.comment.time}</div>
+                    <div className="date">date</div>
+                    <div className="time">time</div>
                 </div>
             </div>
-            <div className="content">{postObj.comment.text}</div>
+            <div className="content">{post.content}</div>
         </CommentDiv>
     );
 }
 
+/*{postObj.comment.re && <IoArrowRedoSharp className="arrow" size="1rem"/> } */
 const CommentDiv = styled.div`
 
     display: flex;

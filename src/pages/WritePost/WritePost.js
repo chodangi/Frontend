@@ -12,6 +12,7 @@ import CategoryPicker from "./components/CategoryPicker";
 import Header from "../../components/Header";
 import Navigator from "../../components/BoardNav";
 import YoutubeModal from "./components/YoutubeModal";
+import TextField from "./components/TextField";
 
 
 
@@ -21,59 +22,33 @@ import YoutubeModal from "./components/YoutubeModal";
 
 
 const WritePost = (props) => {
-    
-    const category = useLocation().state.category || '자유게시판';
+  
+  const category = useLocation().state.category || '자유게시판';
 
-    const [visible, setVisible] = useState(false);
     
-    const openModal = () => {
-      setVisible(true);
-    }
-
-    const createPost = async () => {
-      /*await axios
-            .post("/", {
-              content: "댓글"
-            })
+    const removePost = async () => {
+      await axios
+            .get("/api/community/post/non-user/5/")
             .then((response) => {
               console.log(response.data);
-              console.log("글 작성 완료");
+              console.log("글 삭제 완료");
             })
             .catch((error) => {
               console.error("실패했습니다");
-            })*/
-      await axios.get("/prefernece/my-like").then(response=>{
-        console.log(response.data);
-      })
+            })
     }
 
-    return (
+
+    return (                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
         <WritingPostDiv id="WritingPostDiv">
             <div className="community__top">
                 <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
                 <Navigator/>
             </div>
-            <div className="title-box">
-                <div className="title">글쓰기</div>
-                <CategoryPicker className="categoryPicker" category={category}></CategoryPicker>
-            </div>
-            <div className="userInfo">
-                    <input type="text" className="input nickname" placeholder="닉네임" spellCheck="false"></input>
-                    <input type="password" className="input password" placeholder="비밀번호"></input>
-            </div>
-            <Editor type='post'/>
-            <div className="submit-box">
-                <div className="btn-box">
-                    <FiImage className="btn image" size="2rem" />
-                    <FaYoutubeSquare className="btn youtube" size="1.9rem" onClick={openModal}/>
-                    <BiHeartSquare className="btn emoticon" size="2.1rem"/>
-                </div>
-                <button className="submit" onClick={createPost}>완료</button>
-            </div>
+            <TextField/>
             <div className="guide">
               <p>사진은 최대 10개까지 업로드 가능합니다.</p><p>쉬운 비밀번호를 입력하면 타인의 수정, 삭제가 쉽습니다.</p>
             </div>
-            {visible && <YoutubeModal visible={visible} setVisible={setVisible}/>}
         </WritingPostDiv>
     );
     };
@@ -98,97 +73,7 @@ const WritingPostDiv = styled.div`
     height: auto;
   }
 
-  .title-box {
-    display: flex;
-    justify-content: space-between;
-    z-index: 100;
-    width: 100%;
-    height: 50px;
-    padding: 15px 20px 15px 20px;
-  }
-
-  .title {
-    height: 20px;
-    font-size: 14px;
-    font-weight: bold;
-  }
-
-  .categoryPicker {
-    text-align: center;
-    width: 80px;
-    height: 20px;
-    background-color: #ffffff;
-    border-radius: 5px;
-    padding-top: 1.5px;
-    color: #000000;
-  }
-
-  .userInfo {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 30px;
-    padding: 0px 20px 0px 20px;
-    border-top: 2px solid #444444;
-    border-bottom: 2px solid #444444;
-  }
-
-  .input {
-    height: 30px;
-    background-color: transparent;
-    border: none;
-    color: ${(props) => props.theme.colors.text}; 
-    font-size: 12px;
-  }
-
-  .input.nickname{
-    width: 135px;
-    border-right: 2px solid #444444;
-    padding: 0;
-  }
-
-  .input.password{
-    width: 160px; //닉네임이랑 비밀번호 너비 조정 필요 나중에 비율로 주기
-    padding-left: 20px;
-  }
-
-  .input.content {
-    width: 100%;
-    min-height: 120px;
-    size: 10; 
-    padding: 10px 20px 0px 20px;
-    border-bottom: 2px solid #444444;
-  }
-
-  .submit-box {
-    width: 100%;
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px 20px 0px 20px;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #444444;
-  }
-
-  .btn-box {
-    display: flex;
-    align-items: center;
-  }
-
-  .btn {
-    margin-right: 10px;
-  }
-
-  .submit {
-    width: 50px;
-    height: 25px;
-    padding-bottom: 2px;
-    border-color: transparent;
-    border-radius: 5px;
-    background-color: #3498DB;
-  }
-
+  
   .guide {
     width: 90%;
   }

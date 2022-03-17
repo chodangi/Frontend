@@ -3,27 +3,27 @@ import styled from "styled-components";
 import { BsFillShareFill } from "react-icons/bs"
 import { MdReport} from "react-icons/md"
 
-const Content = ({postObj}) => {
+const Content = ({post}) => {
 
     return (
         <ContentDiv>
             <div className="board-name">
-                <div>{postObj.board}</div>
+                <div>{post.boardName}</div>
             </div>
             <div className="post-info">
                 <div className="top box">
-                    <div className="title">{postObj.title}</div>
-                    <div className="date">{postObj.date}</div>
+                    <div className="title">{post.content}</div>
+                    <div className="date">date</div>
                 </div>
                 <div className="bottom box">
                     <div className="user box">
-                        <div className="user-tier">{postObj.user.tier}</div>
-                        <div className="user-nickname"> {postObj.user.nickname}</div>
+                        <div className="user-tier">99</div>
+                        <div className="user-nickname"> 이름</div>
                     </div>
-                    <div className="time">{postObj.time}</div>
+                    <div className="time">time</div>
                 </div>
             </div>
-            <div className="post-content">{postObj.content}</div>
+            <div className="post-content">{post.content}</div>
             <div className="like">
                 <div className="up circle" >떡상</div>
                 <div className="down circle">손절</div>
@@ -65,6 +65,9 @@ const ContentDiv = styled.div`
     .title {
         font-weight: bold;
         color: ${(props) => props.theme.colors.text};
+        margin-right: 24px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .user.box {
@@ -87,6 +90,7 @@ const ContentDiv = styled.div`
         width: 100%;
         min-height: 120px;
         padding: 10px 20px 10px 20px;
+        word-wrap: break-word; //자동줄바꿈
     }  
 
     .like {

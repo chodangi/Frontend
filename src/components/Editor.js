@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const Editor = ({type}) => {
+const Editor = ({type, onChange}) => {
 
     const[content, setContent] = useState();
 
     const onContentHandler = (e) => {
+        onChange(e);
+        console.log(e.target.innerHtml);
         setContent(e.target.innerHtml);
     }
 
     return (
-        <StyledDiv id="contentDiv" contentEditable="true" 
+        <StyledDiv id="content" contentEditable={true}
             placeholder={type === 'comment' ? '댓글을 입력해주세요.' : '내용'} 
             style={{ minHeight: type === 'comment' ? '90px' : '150px'}}
-            onInput={onContentHandler}>
+             onInput={onChange} onChange={onChange}>
 
         </StyledDiv>
+        
     );
 }
 

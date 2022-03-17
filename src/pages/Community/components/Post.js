@@ -2,17 +2,18 @@ import React from "react";
 import styled from "styled-components";
 import {AiOutlineHeart} from 'react-icons/ai';
 import {GiTalk} from 'react-icons/gi';
+import { useLocation } from "react-router";
 
-const Post = () => {
+const Post = ({post}) => {
 
     return(
         <PostDiv>
             <hr width='100%' size='2' color='#444444' noshade="true" />
             <div className="post__contents">
                 <div className="top line">
-                    <div className="post__title">제목 123456789123456798912345</div>
+                    <div className="post__title">{post.content}</div>
                     <div className="part-right">
-                            <div className="post__category">자유게시판</div>
+                            <div className="post__category">{post.boardName}</div>
                             <div className="post__date">16:32</div>
                         </div>
                     </div>
@@ -76,8 +77,8 @@ const PostDiv = styled.div`
         width: 220px;
         height: 20px;
         overflow: hidden;
-        white-space: nowrap;
-        text-overflow: clip;
+        //white-space: nowrap;
+        text-overflow: ellipsis;;
         font-size: 14px;
         font-weight: bold;
     }
