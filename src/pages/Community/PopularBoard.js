@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import { screen } from "@testing-library/react";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ import {IoIosArrowDown} from 'react-icons/io';
 import { size } from "../../styles/Theme";
 import Pagination from "./components/Pagination";
 import SearchBar from "../../components/SearchBar";
+import PostList from "./components/PostList";
 
 
 //const width = screen.availHeight;
@@ -27,9 +29,12 @@ const PopularBoard = (props) => {
 
   const [category, setCategory] = useState('인기게시판');
 
+  
+
+  
 
   const navigate = useNavigate();
-  const post = { id: '1', title: '제목', content: '내용', board: '인기게시판', date:'2021.11.10', time:'11:35', user: {nickname: '슬픈거북이', tier :'17'} , comment: {writer: {nickname: '슬픈토끼', tier: '35'}, text: '댓글입니다', date: '11.30', time: '04:02', totalNum: 1, re: false}};
+
 
   return (
     <CommunityDiv>
@@ -46,9 +51,7 @@ const PopularBoard = (props) => {
         </div>
       </div>
       <div className="content" style={{ minHeight: contentHeight}}>
-        <Link to={"/showPost"} state={{postObj: post}} className="link post"><Post/></Link>
-        <Post/>
-        <Post/>
+        <PostList/>
       </div>
       <div className="community__bottom">
         <div className="arrowDown__btn">
@@ -62,7 +65,10 @@ const PopularBoard = (props) => {
 };
 
 /*<Pagination postPerPage={10} totalPosts={50} paginate={paginate} />*/
-
+/*{postList.map((p) => {
+            <Link to={"/showPost"} state={{post_id: p.id}} className="link post"><Post/></Link>
+          })
+        } */
 export default PopularBoard;
 
 const CommunityDiv = styled.div`

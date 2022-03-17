@@ -4,17 +4,14 @@ import { useLocation } from 'react-router-dom';
 
 import Header from "../../components/Header";
 import Navigator from "../../components/BoardNav";
+import Footer from "../../components/Footer";
 import Content from "./components/Content";
 import Comment from "./components/Comment";
 import WriteComment from "./components/WriteComment";
-import Post from "../Community/components/Post";
-import Footer from "../../components/Footer";
 
 const ShowPost = (props) => {
 
-    const postObj = useLocation().state.postObj;
-
-    console.log(postObj.comment.totalNum);
+    const post = useLocation().state.post;
 
     return (
         <ShowingDiv id="ShowingDiv">
@@ -22,7 +19,19 @@ const ShowPost = (props) => {
                 <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
                 <Navigator/>
             </div>
-            <Content postObj={postObj}/>
+            <Content post={post}/>
+              <div className="commentNum">댓글  (댓글개수)]</div>
+              <Comment post={post}/>
+              <Comment post={post}/>
+              <Comment post={post}/>
+              <WriteComment/>
+              <div className="partition"></div>
+            <Footer/>
+        </ShowingDiv>
+    );
+}
+
+/*<Content postObj={postObj}/>
             <div className="commentNum">댓글  [{postObj.comment.totalNum}]</div>
             <Comment postObj={postObj}/>
             <Comment postObj={postObj}/>
@@ -31,12 +40,7 @@ const ShowPost = (props) => {
             <div className="partition"></div>
             <Post/>
             <Post/>
-            <Post/>
-            <Footer/>
-        </ShowingDiv>
-    );
-}
-
+            <Post/>*/
 const ShowingDiv = styled.div`
 
   display:flex;

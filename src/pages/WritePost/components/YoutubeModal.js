@@ -20,7 +20,7 @@ const ModalDiv = styled.div`
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 50px;
+    //top: 50px;
     width: 90%;
     height: 60%;
     z-index: 100;
