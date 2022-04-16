@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import ProgressBar from "./ProgressBar";
+import { Link } from 'react-router-dom';
+import ProgressBar from "../../../components/ProgressBar";
 import { HiOutlineChevronDoubleRight } from "react-icons/hi"
 
 const TemperatureBox = (props) => {
@@ -16,14 +17,15 @@ const TemperatureBox = (props) => {
     }
 
     return (
-        <TempBoxDiv style={props.noBackground && noBackgroundStyle}>
-            <div className="temp-title">{coin.type} 체감온도</div>
-            <ProgressBar percent={coin.percent}/>
-            <div className="container">
-                <div className="temp-num item">{coin.percent} ºC</div>
-                {props.noBackground || <HiOutlineChevronDoubleRight size="1.5rem" className="arrow item"/>}
-            </div>
-        </TempBoxDiv>
+//일단링크달지않고 추후에 코인체감온도 완성시 달 예정
+            <TempBoxDiv style={props.noBackground && noBackgroundStyle} onClick={(event) => { event.stopPropagation(); alert("준비중입니다");}}>
+                <div className="temp-title">{coin.type} 체감온도</div>
+                <ProgressBar percent={coin.percent}/>
+                <div className="container">
+                    <div className="temp-num item">{coin.percent} ºC</div>
+                    {props.noBackground || <HiOutlineChevronDoubleRight size="1.5rem" className="arrow item"/>}
+                </div>
+            </TempBoxDiv>
     );
 }
 
@@ -67,6 +69,19 @@ const TempBoxDiv = styled.div`
         grid-column: 2;
         grid-row: 1/3;
         margin-top: 20px;
+    }
+
+    link {
+        display:flex;
+        flex-direction: column;
+        align-items:center;
+        color: white;
+
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        
+        text-decoration: none;
     }
 `
 

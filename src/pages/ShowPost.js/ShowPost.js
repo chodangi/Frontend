@@ -6,8 +6,8 @@ import Header from "../../components/Header";
 import Navigator from "../../components/BoardNav";
 import Footer from "../../components/Footer";
 import Content from "./components/Content";
-import Comment from "./components/Comment";
-import WriteComment from "./components/WriteComment";
+import Comment from "../../components/Comment/Comment";
+import CommentEditor from "../../components/Comment/CommentEditor";
 
 const ShowPost = (props) => {
 
@@ -24,7 +24,7 @@ const ShowPost = (props) => {
               <Comment post={post}/>
               <Comment post={post}/>
               <Comment post={post}/>
-              <WriteComment/>
+              <CommentEditor postId={post.id}/>
               <div className="partition"></div>
             <Footer/>
         </ShowingDiv>

@@ -10,7 +10,7 @@ const ToggleTheme = (props) => {
   };
 
   return (
-        <ToggleDiv className="theme__img" src={props.theme === dark ? "undefined" : "undefined"} onClick={themeHandler}></ToggleDiv>
+        <ToggleDiv className="theme__img" src={props.theme === dark ? "img/darkmode.png" : "img/lightmode.png"} onClick={themeHandler}></ToggleDiv>
   );
 };
 
@@ -18,4 +18,10 @@ export default ToggleTheme;
 
 const ToggleDiv = styled.img`
     display: block;
+    width: 25px;
+    height: 25px;
+
+    .theme__img {
+
+    }
 `;

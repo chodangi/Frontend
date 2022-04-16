@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+
 import { BsFillShareFill } from "react-icons/bs"
 import { MdReport} from "react-icons/md"
+import { Date, Time } from "../../../components/Time";
 
 const Content = ({post}) => {
+
+    //삭제
+    const [visible, setVisible] = useState(false);
+
+    const openPasswordField = () => {
+        if(visible) setVisible(false);
+        else setVisible(true);
+    }
 
     return (
         <ContentDiv>
@@ -13,14 +23,14 @@ const Content = ({post}) => {
             <div className="post-info">
                 <div className="top box">
                     <div className="title">{post.content}</div>
-                    <div className="date">date</div>
+                    <div className="date">{Date(post.createdAt)}</div>
                 </div>
                 <div className="bottom box">
                     <div className="user box">
                         <div className="user-tier">99</div>
-                        <div className="user-nickname"> 이름</div>
+                        <div className="user-nickname"> {post.userNickname}</div>
                     </div>
-                    <div className="time">time</div>
+                    <div className="time">{Time(post.createdAt)}</div>
                 </div>
             </div>
             <div className="post-content">{post.content}</div>
@@ -33,14 +43,28 @@ const Content = ({post}) => {
                 <div className="report"><MdReport className="icon" size="1.3rem" color="red"/>신고</div>
             </div>
             <div className="modify-delete">
-                <div className="modify button">수정</div>
-                <div className="delete button">삭제</div>
+                <div className="modify button" onClick={openPasswordField}>수정</div>
+                <div className="delete button" onClick={openPasswordField}>삭제</div>
             </div>
+            {visible ? 
+                <div className="password-field">
+                    <div>비밀번호를 입력하세요.</div>
+                    <input type="password"/>
+                    <div className="button">확인</div>
+                </div> 
+                : 
+                <></> 
+            }
         </ContentDiv>
     );
 }
 
 const ContentDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     width: 100%;
     font-size: 12px;
 
@@ -65,7 +89,7 @@ const ContentDiv = styled.div`
     .title {
         font-weight: bold;
         color: ${(props) => props.theme.colors.text};
-        margin-right: 24px;
+        width: 75%;
         overflow: hidden;
         text-overflow: ellipsis;
     }
@@ -157,9 +181,27 @@ const ContentDiv = styled.div`
         align-items: center;
         width: 30px;
         height: 20px;
-        margin-right: 20px;
+        //margin-right: 20px;
         background-color: #404040;
         border-radius: 5px;
+    }
+
+    .delete {
+        margin: 0px 20px;
+    }
+
+    .password-field {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        position: absolute;
+        //top: 50px;
+
+        width: 250px;
+        height: 100px;
+        background-color: blue;
     }
 
 `

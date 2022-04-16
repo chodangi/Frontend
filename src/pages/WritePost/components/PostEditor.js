@@ -3,7 +3,7 @@ import axios from 'axios';
 import styled from "styled-components";
 import { useLocation } from 'react-router-dom';
 
-import Editor from "../../../components/Editor";
+import TextField from "../../../components/TextField";
 import CategoryPicker from "./CategoryPicker";
 import YoutubeModal from "./YoutubeModal";
 
@@ -12,21 +12,20 @@ import { FaYoutubeSquare } from "react-icons/fa";
 import { BiHeartSquare } from "react-icons/bi";
 
 
-const TextField = (props) => {
+const PostEditor = ({category}) => {
 
-    
+  //유튜브모달  
   const [visible, setVisible] = useState(false);
-    
-  const category = useLocation().state.category || '자유게시판';
 
   const openModal = () => {
       setVisible(true);
   }
 
+  //글쓰기
   const [post, setPost] = useState({
     nickname: 'name',
     content: 'content',
-    boardName: '자유게시판',
+    boardName: category,
     guestName: 'guest',
     guestPwd: 'password',
   })
@@ -34,17 +33,52 @@ const TextField = (props) => {
   const onChange = (e) => {
     const { id } = e.currentTarget;
 
+    console.log(id.substring(id.length-5, id.length));
     if( id == "content") {
       setPost({
         ...post,
         [id]: e.currentTarget.innerHTML
       });
       console.log(post);
-    } else if( id == "guestName" || id == "guestPwd"){
+    } else if( id == "guestName"){
       setPost({
         ...post,
-        [id]: e.currentTarget.value
+        [id]: e.currentTarget.value,
+        nickname: e.currentTarget.value
       });
+      console.log(post);
+    } else if( id == "guestPwd" ){
+      setPost({
+        ...post,
+        [id]: e.currentTarget.value,
+      });
+    } else if( id.substring(id.length-5, id.length) == "board"){
+      
+      let selectedCategory = "";
+
+      switch (id) {
+        case "popular-board" : 
+          selectedCategory = '인기게시판';
+          break;
+        
+        case "free-board" :
+          selectedCategory = '자유게시판';
+          break;
+
+        case "rich-board" :
+          selectedCategory = '부자게시판';
+          break;
+        
+        case "poor-board" :
+          selectedCategory = '그지게시판';
+          break;
+      }
+
+      setPost({
+        ...post,
+        boardName: selectedCategory,
+      });
+
       console.log(post);
     }
     
@@ -85,7 +119,7 @@ const TextField = (props) => {
 
   
   return (                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-      <TextFieldDiv>
+      <PostEditorDiv>
         <div className="title-box">
           <div className="title">글쓰기</div>
           <CategoryPicker className="categoryPicker" category={category} onChange={onChange}></CategoryPicker>
@@ -94,7 +128,7 @@ const TextField = (props) => {
           <input type="text" className="input nickname" placeholder="닉네임" spellCheck="false" id="guestName" onChange={onChange}></input>
           <input type="password" className="input password" placeholder="비밀번호" id="guestPwd" onChange={onChange}></input>
         </div>
-        <Editor onChange={onChange}/>
+        <TextField onChange={onChange}/>
         <div className="submit-box">
           <div className="btn-box">
             <FiImage className="btn image" size="2rem" />
@@ -104,14 +138,14 @@ const TextField = (props) => {
           <button className="submit" onClick={createPost}>완료</button>
         </div>
         {visible && <YoutubeModal visible={visible} setVisible={setVisible}/>}
-      </TextFieldDiv>
+      </PostEditorDiv>
   );
 };
 
 
-export default TextField;
+export default PostEditor;
 
-const TextFieldDiv = styled.div`
+const PostEditorDiv = styled.div`
 
   display:flex;
   flex-direction: column;

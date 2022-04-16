@@ -7,12 +7,12 @@ import { FiImage } from "react-icons/fi";
 import { FaYoutubeSquare } from "react-icons/fa";
 import { BiHeartSquare } from "react-icons/bi";
 
-import Editor from "../../components/Editor";
+import TextField from "../../components/TextField";
 import CategoryPicker from "./components/CategoryPicker";
 import Header from "../../components/Header";
 import Navigator from "../../components/BoardNav";
 import YoutubeModal from "./components/YoutubeModal";
-import TextField from "./components/TextField";
+import PostEditor from "./components/PostEditor";
 
 
 
@@ -40,23 +40,23 @@ const WritePost = (props) => {
 
 
     return (                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-        <WritingPostDiv id="WritingPostDiv">
+        <WritePostDiv id="WritingPostDiv">
             <div className="community__top">
                 <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
                 <Navigator/>
             </div>
-            <TextField/>
+            <PostEditor category={category}/>
             <div className="guide">
               <p>사진은 최대 10개까지 업로드 가능합니다.</p><p>쉬운 비밀번호를 입력하면 타인의 수정, 삭제가 쉽습니다.</p>
             </div>
-        </WritingPostDiv>
+        </WritePostDiv>
     );
     };
 
 
 export default WritePost;
 
-const WritingPostDiv = styled.div`
+const WritePostDiv = styled.div`
 
   display:flex;
   flex-direction: column;

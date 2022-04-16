@@ -13,7 +13,7 @@ const MainNav = () => {
                     <Link to="/community" className="menuLink">커뮤니티</Link>
                 </li>
                 <li className={`${menu === 1? 'battle menu active': 'battle menu'}`} onClick={()=> setMenu(1)}>
-                    <Link to="/" className="menuLink">코인궁예대전</Link>
+                    <Link to="/game" className="menuLink">코인궁예대전</Link>
                 </li>
                 <li className={`${menu === 2? 'temperature menu active': 'battle menu'}`} onClick={()=> setMenu(2)}>
                 <Link to="/temperature" className="menuLink lastItem">코인체감온도</Link>

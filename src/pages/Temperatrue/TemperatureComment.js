@@ -5,7 +5,7 @@ import { useLocation } from "react-router";
 import Header from "../../components/Header";
 import MainNav from "../../components/MainNav";
 import Footer from "../../components/Footer";
-import TemperatureBox from "../../components/TemperatureBox";
+import TemperatureBox from "./components/TemperatureBox";
 import Predict from "./components/Predict";
 
 const TemperatureComment = (props) => {
@@ -13,6 +13,7 @@ const TemperatureComment = (props) => {
     const contentHeight = (window.innerHeight - 80) + "px" ;
     
     const category = useLocation().state.type;
+    //클릭해서 type받아오는 것보다 경로로 type주는게 훨씬 낫겠다.
 
     return (
         <TemperatureCommentDiv>
