@@ -13,6 +13,7 @@ const CategoryPicker = (props) => {
 
     const selectCategory = (e) => {
         const {target: {id}} = e;
+        props.onChange(e);
         switch(id){
             case "popular-board": 
                 setSelected('인기게시판');

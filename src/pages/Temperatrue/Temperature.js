@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
+
 import Header from "../../components/Header";
 import MainNav from "../../components/MainNav";
 import Footer from "../../components/Footer";
 import Description from "./components/Description";
-import TemperatureBox from "../../components/TemperatureBox";
+import TemperatureBox from "./components/TemperatureBox";
 
 const Temperature = (props) => {
 
@@ -17,15 +17,10 @@ const Temperature = (props) => {
             <MainNav/>
             <div className="content" style={{minHeight: contentHeight}}>
                 <Description/>
-                <Link to="/temperatureComment" state={{type: "bit"}} className="link">
-                    <TemperatureBox type={"bit"}/>
-                </Link>
-                <Link to="/temperatureComment" state={{type: "eth"}} className="link">
-                    <TemperatureBox type={"eth"}/>
-                </Link>
-                <Link to="/temperatureComment" state={{type: "rip"}} className="link">
-                    <TemperatureBox type={"rip"}/>
-                </Link>
+                <TemperatureBox type={"bit"}/>
+                <TemperatureBox type={"eth"}/>
+                <TemperatureBox type={"rip"}/>
+                
             </div>
             <Footer/>
         </TemperatureDiv>

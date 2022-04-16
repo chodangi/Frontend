@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const Editor = ({type, onChange}) => {
-
-    const[content, setContent] = useState();
-
-    const onContentHandler = (e) => {
-        onChange(e);
-        console.log(e.target.innerHtml);
-        setContent(e.target.innerHtml);
-    }
+const TextField = ({type, onChange}) => {
 
     return (
         <StyledDiv id="content" contentEditable={true}
@@ -38,4 +30,4 @@ const StyledDiv = styled.div`
         color: gray;
     }
 `
-export default Editor;
+export default TextField;

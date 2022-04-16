@@ -8,7 +8,7 @@ import SearchBar from "../../components/SearchBar";
 import Banner from "./components/Banner";
 import BoardBox from "./components/BoardBox";
 import RankingBox from "./components/RankingBox";
-import TemperatureBox from "../../components/TemperatureBox";
+import TemperatureBox from "../Temperatrue/components/TemperatureBox";
 
 const Home = (props) => {
 
@@ -34,6 +34,8 @@ const HomeDiv = styled.div`
 
     max-width: 600px;
     width: 100vw;
+    //padding-right : 10px;
+    //중앙 정렬이 잘 되지 않음
 `
 
 export default Home;

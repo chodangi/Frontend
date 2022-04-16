@@ -59,6 +59,8 @@ const AppRouter = () => {
           <Route
             path="game"
             element={<Game theme={theme} darkModeHandler={setThemeMode} />}
+          />
+          <Route  
             path="temperature"
             element={<Temperature theme={theme} darkModeHandler={setThemeMode} />}
           />

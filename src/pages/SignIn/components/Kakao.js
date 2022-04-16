@@ -13,64 +13,97 @@ const Kakao = () => {
 
   let navigate = useNavigate();
 
+  const url = new URL(window.location.href);
+  let authorizationCode= "";
+
   const kakaoLoginHandler = () => {
-    window.location.assign(KAKAO_AUTH_URL);
-    /*axios.get('/api/community/posts', { 
-    }).then((res) => {
+    /*window.location.assign(KAKAO_AUTH_URL).then((res)=>{
       console.log(res);
+    }
+    )*/
+    axios.get(
+      '/api/tokakao'
+      , {
+       headers: {
+          'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+      }
+  }).then((result)=>{
+      console.log(result)
+      // 토큰을 활용한 로직을 적어주면된다.
+
+  }).catch(e=> {
+      console.log(e)
+  })
+
+  };
+
+ /* useEffect(()=>{
+    authorizationCode = url.searchParams.get("code");
+
+    if( authorizationCode != null){
+      console.log(authorizationCode);
+      
+      try{
+        axios.get(
+            ''
+            , {
+             headers: {
+                'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+            }
+        }).then((result)=>{
+            console.log(result.data['access_token'])
+            // 토큰을 활용한 로직을 적어주면된다.
+
+        }).catch(e=> {
+            console.log(e)
+        })
+      }catch(e){
+          console.log(e)
+      }
+    }else{ 
+      console.log('못받음')
+      return 0;
+    }
+  },[])
+
+  /*useEffect(()=>{
+    console.log('시작')
+    axios.get('/api/login',
+    {
+      params :{"code": authorizationCode}
+    }).then((res) => {
+      console.log('성공');
+      
     }).catch((error) => {
       console.log(error.response.data);
-    })*/
-  };
+    })
+  }, authorizationCode)
 
   /*const getToken = async () => {
 
-    const url = new URL(window.location.href);
-    const authorizationCode = url.searchParams.get("code");
-
-    const payload = qs.stringify({
-      grant_type: "authorization_code",
-      client_id: REST_API_KEY,
-      redirect_uri: REDIRECT_URI,
-      code: authorizationCode,
-      client_secret: CLIENT_SECRET,
-    });
-
-    const payload = qs.stringify({
-      code: authorizationCode
-    });
-
-    const re = "";
-
     try {
       // access token 가져오기
-      axios.get('/api/login', {
-        params: {
-          code: authorizationCode,
-        }, 
+      axios.get('/api/login', null,
+      {
+        params :{code: authorizationCode}
       }).then((res) => {
-        console.log(res);
-
         const url1 = new URL(window.location.href);
-        const jwt = url1.searchParams.get("jwt");
+        const jwt = url.searchParams.get("jwt");
         console.log(jwt);
+        
       }).catch((error) => {
         console.log(error.response.data);
       })
 
-        // Kakao Javascript SDK 초기화
-        window.Kakao.init(REST_API_KEY);
-        // access token 설정
-        window.Kakao.Auth.setAccessToken(res.data.access_token);
         // 마이페이지으로 이동
         //navigate("/");
     } catch (err) {
       console.log(err);
     } 
-  };*/
+  };
   
 
-  /*useEffect(() => {
+  useEffect(() => {
     getToken();
   }, []);*/
   

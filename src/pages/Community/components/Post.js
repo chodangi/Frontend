@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+
 import {AiOutlineHeart} from 'react-icons/ai';
 import {GiTalk} from 'react-icons/gi';
-import { useLocation } from "react-router";
+
+import { Time } from "../../../components/Time";
 
 const Post = ({post}) => {
 
@@ -14,13 +16,13 @@ const Post = ({post}) => {
                     <div className="post__title">{post.content}</div>
                     <div className="part-right">
                             <div className="post__category">{post.boardName}</div>
-                            <div className="post__date">16:32</div>
+                            <div className="post__date">{Time(post.createdAt)}</div>
                         </div>
                     </div>
                     <div className="bottom line">
                         <div className="post__user container">
                             <div className="post__tier">17</div>
-                            <div>슬픈거북이</div>
+                            <div>{post.userNickname}</div>
                         </div>
                         <div className="part-right">
                             <div className="post__heart container">

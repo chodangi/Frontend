@@ -67,6 +67,10 @@ const CommentDiv = styled.div`
     .date {
         margin-right: 7px;
     }
+
+    .content {
+        word-wrap: break-word;
+    }
 `
 
 export default Comment;
