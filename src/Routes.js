@@ -14,6 +14,7 @@ import ShowPost from "./pages/ShowPost.js/ShowPost";
 import Game from "./pages/Game/Game"
 import Temperature from "./pages/Temperatrue/Temperature";
 import TemperatureComment from "./pages/Temperatrue/TemperatureComment";
+import KaKaoHandler from "./pages/SignIn/components/KaKaoHandeler";
 
 const AppRouter = () => {
   const currentTheme = localStorage.getItem("theme")
@@ -37,6 +38,10 @@ const AppRouter = () => {
           <Route
             path="signIn"
             element={<SignIn theme={theme} darkModeHandler={setThemeMode} />}
+          />
+          <Route
+            path="kakao"
+            element={<KaKaoHandler theme={theme} darkModeHandler={setThemeMode} />}
           />
           <Route
             path="settings"

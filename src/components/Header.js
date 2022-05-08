@@ -3,16 +3,17 @@ import ToggleTheme from "./ToggleTheme";
 import { Link } from "react-router-dom";
 
 const Header = (props) => {
+    const { isLogedIn } = props;
 
-  return (
-    <HeaderDiv>
-        <Link to="/"><img className="logo__img" src="img/logo.png"></img></Link>
-        <div className="header__item">
-            <Link to="/mypage"><div className="login">Login</div></Link>
-            <ToggleTheme theme={props.theme} darkModeHandler={props.darkModeHandler} />
-        </div>
-    </HeaderDiv>
-  );
+    return (
+        <HeaderDiv>
+            <Link to="/"><img className="logo__img" src="img/logo.png"></img></Link>
+            <div className="header__item">
+                <Link to={isLogedIn ? "/myPage" : "/signIn"}><div className="login">{isLogedIn ? 'MyPage' : 'SignIn'}</div></Link>
+                <ToggleTheme theme={props.theme} darkModeHandler={props.darkModeHandler} />
+            </div>
+        </HeaderDiv>
+    );
 };
 
 export default Header;

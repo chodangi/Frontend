@@ -4,8 +4,15 @@ import History from "./components/History";
 import Profile from "./components/Profile";
 import MyCommunity from "./components/MyCommunity";
 import { size } from "../../styles/Theme";
+import { useNavigate } from "react-router";
 
 const MyPage = (props) => {
+  const nav = useNavigate();
+  const signOut = () => {
+    localStorage.removeItem('user')
+    nav('/')
+  };
+
   return (
     <MyPageDiv>
       <h1 className="mypage__header">내 정보</h1>
@@ -18,6 +25,7 @@ const MyPage = (props) => {
       <SettingBtn onClick={() => (window.location.href = "/settings")}>
         설정
       </SettingBtn>
+      <div onClick={signOut}>SignOut</div>
     </MyPageDiv>
   );
 };
