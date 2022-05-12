@@ -7,7 +7,7 @@ const Kakao = () => {
   const [tokenData, setTokenData] = useState("");
 
   const REST_API_KEY = "c4407d02c453315320fe564405160e2e";
-  const REDIRECT_URI = "http://13.209.180.179:8080/login";
+  const REDIRECT_URI = "http://localhost:3000/kakao";
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
   const CLIENT_SECRET = "JG5vGorIX2Bga6hS7UlXTMtV45Z7ZG8g";
 
@@ -109,12 +109,11 @@ const Kakao = () => {
   
   return (
     <div className="login__kakao">
-      <a id="custom-login-btn" onClick={kakaoLoginHandler}>
+      <a id="custom-login-btn" href={KAKAO_AUTH_URL}>
         <img
           src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"
           width="222"
         />
-        <div >10000</div>
       </a>
     </div>
   );
