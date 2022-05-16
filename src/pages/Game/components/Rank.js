@@ -4,6 +4,38 @@ import styled from "styled-components";
 import { size } from "../../../styles/Theme";
 
 const Rank = () => {
+  const [point, setPoint] = useState(0)
+
+  const getUserData = async () => {
+    const { data } = await fetch(`http://13.209.180.179:8080/profile/my-settings`, {
+      // method:'POST',
+      headers: {
+        jwt: localStorage.getItem('user')
+      }
+    }).then(res => res.json())
+
+    return data;
+  }
+
+  useEffect(() => {
+    async function init() {
+      // {dark: true
+      // email: "sayeram@kakao.com"
+      // id: 13
+      // onAlarm: true
+      // point: 0
+      // previousWins: 0
+      // status: "A"
+      // totalPlay: 0
+      // userNickname: "sayeram"
+      // winsRate: 0}
+      const { point } = await getUserData();
+      setPoint(point)
+    }
+
+    init()
+  }, [])
+
   //   const [score, setScore] = useState(undefined);
   //   useEffect(() => {
   //     if (score == undefined) {
@@ -26,21 +58,20 @@ const Rank = () => {
   //     }
   //   });
 
-  const score = -1400
   const rank = "그지 4Lv";
-  console.log(rank.slice(0,3))
+  console.log(rank.slice(0, 3))
   return (
-      <RankDiv>
-        <span>
-          <h3>내 궁예 점수</h3>
-          <div><ScoreSpan score={score}>{score}</ScoreSpan> 점</div>
-        </span>
-        <vl />
-        <span>
-          <h3>내 등급</h3>
-          <div><RankSpan rank={rank}>{rank}</RankSpan></div>
-        </span>
-      </RankDiv>
+    <RankDiv>
+      <span>
+        <h3>내 궁예 점수</h3>
+        <div><ScoreSpan score={point}>{point}</ScoreSpan> 점</div>
+      </span>
+      <vl />
+      <span>
+        <h3>내 등급</h3>
+        <div><RankSpan rank={rank}>{rank}</RankSpan></div>
+      </span>
+    </RankDiv>
   )
 };
 
@@ -80,5 +111,5 @@ const ScoreSpan = styled.span`
 
 const RankSpan = styled.span`
   color: ${(props) =>
-    props.rank.slice(0,2)=='부자' ? props.theme.colors.red : props.theme.colors.blue};
+    props.rank.slice(0, 2) == '부자' ? props.theme.colors.red : props.theme.colors.blue};
 `
