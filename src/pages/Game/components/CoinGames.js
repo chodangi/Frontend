@@ -6,6 +6,8 @@ import { size } from "../../../styles/Theme";
 import CoinGame from "./CoinGame"
 
 const CoinGames = () => {
+
+
   const coinList = {
       비트코인: {
           user: undefined,

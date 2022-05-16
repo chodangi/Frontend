@@ -6,19 +6,54 @@ import { size } from "../../../styles/Theme";
 const CoinGame = (props) => {
   const coin = props.coin
   const value = props.value
+  const coinLabel = {
+    비트코인: 'btc',
+    이더리움: 'eth',
+    리플: 'xrp',
+  }
+
+  //기존소스
+  const getCoinCurrentValue = async () => {
+    const { data } = await fetch(`http://13.209.180.179:8080/game/coin-price/${coinLabel[coin]}`, {
+      headers: {
+        jwt: localStorage.getItem('user')
+      }
+    }).then(res => res.json())
+    return data;
+  }
+
+  // //api뺀 후 예시 - get
+  // const getCoinCurrentValue_ = async () => {
+  //   const { data } = await myGetApi(`game/coin-price/${coinLabel[coin]}`)
+  //   return data;
+  // }
+  // //api뺀 후 예시 - post
+  // const getCoinCurrentValue__ = async () => {
+  //   const { data } = await myPostApi('community/post/report', { postId: myPostId })
+  //   return data;
+  // }
+
+
+  useEffect(() => {
+    console.log(coin)
+    async function test() {
+      await getCoinCurrentValue()
+    }
+    test();
+  }, [])
 
   return (
-      <CoinGameDiv>
-          <span className="coin">
-              오후 4시에<br/>
-              <h1>{coin}</h1>
-          </span>
-          <span className="game">
-            <span className="gameIcon">떡상각<ResultIconDiv is_up={true} is_checked={value["user"]}>△</ResultIconDiv></span>
-            <span className="gameIcon">떡락각<ResultIconDiv is_up={false} is_checked={value["user"]}>▽</ResultIconDiv></span>
-            <span className="gameIcon">코털의 훈수<ResultIconDiv is_up={value["cotal"]} is_checked={true}>{value["cotal"]?"△":"▽"}</ResultIconDiv></span>
-          </span>
-      </CoinGameDiv>
+    <CoinGameDiv>
+      <span className="coin">
+        오후 4시에<br />
+        <h1>{coin}</h1>
+      </span>
+      <span className="game">
+        <span className="gameIcon">떡상각<ResultIconDiv is_up={true} is_checked={value["user"]}>△</ResultIconDiv></span>
+        <span className="gameIcon">떡락각<ResultIconDiv is_up={false} is_checked={value["user"]}>▽</ResultIconDiv></span>
+        <span className="gameIcon">코털의 훈수<ResultIconDiv is_up={value["cotal"]} is_checked={true}>{value["cotal"] ? "△" : "▽"}</ResultIconDiv></span>
+      </span>
+    </CoinGameDiv>
   )
 };
 
