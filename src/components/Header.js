@@ -1,13 +1,20 @@
 import styled from "styled-components";
 import ToggleTheme from "./ToggleTheme";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const Header = (props) => {
-    const { isLogedIn } = props;
+    // const { isLogedIn } = props;
+    const [isLogedIn, setIsLogedIn] = useState()
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+
+        setIsLogedIn(user ? true: false)
+    }, [])
 
     return (
         <HeaderDiv>
-            <Link to="/"><img className="logo__img" src="img/logo.png"></img></Link>
+            <Link to="/"><img className="logo__img" src="img/logo.png" alt=""></img></Link>
             <div className="header__item">
                 <Link to={isLogedIn ? "/myPage" : "/signIn"}><div className="login">{isLogedIn ? 'MyPage' : 'SignIn'}</div></Link>
                 <ToggleTheme theme={props.theme} darkModeHandler={props.darkModeHandler} />
