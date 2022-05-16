@@ -5,6 +5,7 @@ import { size } from "../../../styles/Theme";
 
 const Rank = () => {
   const [point, setPoint] = useState(0)
+  const [rank, setRank] = useState('123')
 
   const getUserData = async () => {
     const { data } = await fetch(`http://13.209.180.179:8080/profile/my-settings`, {
@@ -31,35 +32,23 @@ const Rank = () => {
       // winsRate: 0}
       const { point } = await getUserData();
       setPoint(point)
+      setRank(checkPoint(point))
+
+    }
+    const checkPoint = point => {
+      if (point > 1000) {
+        return `부자 lv${Math.floor((point - 999) / 100)}`
+      } else if (point > -1000) {
+        return '중산층'
+      } else {
+        return `거지 lv${Math.floor((point + 999) / 100) * -1}`
+      }
     }
 
     init()
   }, [])
 
-  //   const [score, setScore] = useState(undefined);
-  //   useEffect(() => {
-  //     if (score == undefined) {
-  //       fetch(`url`)
-  //         .then((res) => res.json())
-  //         .then((res) => {
-  //           setscore(res.score);
-  //         });
-  //     }
-  //   });
 
-  //   const [rank, setRank] = useState(undefined);
-  //   useEffect(() => {
-  //     if (rank == undefined) {
-  //       fetch(`url`)
-  //         .then((res) => res.json())
-  //         .then((res) => {
-  //           setrank(res.rank);
-  //         });
-  //     }
-  //   });
-
-  const rank = "그지 4Lv";
-  console.log(rank.slice(0, 3))
   return (
     <RankDiv>
       <span>
