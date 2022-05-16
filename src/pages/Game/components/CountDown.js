@@ -15,6 +15,7 @@ const CountDown = () => {
     const nowSec = now.getSeconds();
     console.log(nowHour, nowMin)
 
+    setNextGameTime(nowHour+1)
     setMinLeft(59 - nowMin)
     setSecLeft(59 - nowSec)
     setInterval(() => {
