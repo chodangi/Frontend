@@ -11,7 +11,7 @@ import { size } from "../../styles/Theme";
 const Game = (props) => {
   return (
     <GameDiv>
-    <Header />
+    <Header  theme={props.theme} darkModeHandler={props.darkModeHandler}/>
     <MainNav />
     <div>
     <div className="game__header__container">

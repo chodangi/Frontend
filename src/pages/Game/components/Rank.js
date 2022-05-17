@@ -4,43 +4,63 @@ import styled from "styled-components";
 import { size } from "../../../styles/Theme";
 
 const Rank = () => {
-  //   const [score, setScore] = useState(undefined);
-  //   useEffect(() => {
-  //     if (score == undefined) {
-  //       fetch(`url`)
-  //         .then((res) => res.json())
-  //         .then((res) => {
-  //           setscore(res.score);
-  //         });
-  //     }
-  //   });
+  const [point, setPoint] = useState(0)
+  const [rank, setRank] = useState('123')
 
-  //   const [rank, setRank] = useState(undefined);
-  //   useEffect(() => {
-  //     if (rank == undefined) {
-  //       fetch(`url`)
-  //         .then((res) => res.json())
-  //         .then((res) => {
-  //           setrank(res.rank);
-  //         });
-  //     }
-  //   });
+  const getUserData = async () => {
+    const { data } = await fetch(`http://13.209.180.179:8080/profile/my-settings`, {
+      // method:'POST',
+      headers: {
+        jwt: localStorage.getItem('user')
+      }
+    }).then(res => res.json())
+    console.log(data)
+    return data;
+  }
 
-  const score = -1400
-  const rank = "그지 4Lv";
-  console.log(rank.slice(0,3))
+  useEffect(() => {
+    async function init() {
+      // {dark: true
+      // email: "sayeram@kakao.com"
+      // id: 13
+      // onAlarm: true
+      // point: 0
+      // previousWins: 0
+      // status: "A"
+      // totalPlay: 0
+      // userNickname: "sayeram"
+      // winsRate: 0}
+      const { point } = await getUserData();
+      setPoint(point)
+      setRank(checkPoint(point))
+
+    }
+    const checkPoint = point => {
+      if (point > 1000) {
+        return `부자 lv${Math.floor((point - 999) / 100)}`
+      } else if (point > -1000) {
+        return '중산층'
+      } else {
+        return `거지 lv${Math.floor((point + 999) / 100) * -1}`
+      }
+    }
+
+    init()
+  }, [])
+
+
   return (
-      <RankDiv>
-        <span>
-          <h3>내 궁예 점수</h3>
-          <div><ScoreSpan score={score}>{score}</ScoreSpan> 점</div>
-        </span>
-        <vl />
-        <span>
-          <h3>내 등급</h3>
-          <div><RankSpan rank={rank}>{rank}</RankSpan></div>
-        </span>
-      </RankDiv>
+    <RankDiv>
+      <span>
+        <h3>내 궁예 점수</h3>
+        <div><ScoreSpan score={point}>{point}</ScoreSpan> 점</div>
+      </span>
+      <vl />
+      <span>
+        <h3>내 등급</h3>
+        <div><RankSpan rank={rank}>{rank}</RankSpan></div>
+      </span>
+    </RankDiv>
   )
 };
 
@@ -80,5 +100,5 @@ const ScoreSpan = styled.span`
 
 const RankSpan = styled.span`
   color: ${(props) =>
-    props.rank.slice(0,2)=='부자' ? props.theme.colors.red : props.theme.colors.blue};
+    props.rank.slice(0, 2) == '부자' ? props.theme.colors.red : props.theme.colors.blue};
 `

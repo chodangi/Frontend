@@ -1,24 +1,44 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import api from "../../../api/api";
 
 import { size } from "../../../styles/Theme";
 
 const CoinGame = (props) => {
   const coin = props.coin
   const value = props.value
+  const coinLabel = {
+    비트코인: 'btc',
+    이더리움: 'eth',
+    리플: 'xrp',
+  }
+
+  const getCoinCurrentValue = async () => {
+    const { data } = await api.get(`game/coin-price/${coinLabel[coin]}`)
+    return data;
+  }
+
+
+  useEffect(() => {
+    console.log(coin)
+    async function test() {
+      await getCoinCurrentValue()
+    }
+    test();
+  }, [])
 
   return (
-      <CoinGameDiv>
-          <span className="coin">
-              오후 4시에<br/>
-              <h1>{coin}</h1>
-          </span>
-          <span className="game">
-            <span className="gameIcon">떡상각<ResultIconDiv is_up={true} is_checked={value["user"]}>△</ResultIconDiv></span>
-            <span className="gameIcon">떡락각<ResultIconDiv is_up={false} is_checked={value["user"]}>▽</ResultIconDiv></span>
-            <span className="gameIcon">코털의 훈수<ResultIconDiv is_up={value["cotal"]} is_checked={true}>{value["cotal"]?"△":"▽"}</ResultIconDiv></span>
-          </span>
-      </CoinGameDiv>
+    <CoinGameDiv>
+      <span className="coin">
+        오후 4시에<br />
+        <h1>{coin}</h1>
+      </span>
+      <span className="game">
+        <span className="gameIcon">떡상각<ResultIconDiv is_up={true} is_checked={value["user"]}>△</ResultIconDiv></span>
+        <span className="gameIcon">떡락각<ResultIconDiv is_up={false} is_checked={value["user"]}>▽</ResultIconDiv></span>
+        <span className="gameIcon">코털의 훈수<ResultIconDiv is_up={value["cotal"]} is_checked={true}>{value["cotal"] ? "△" : "▽"}</ResultIconDiv></span>
+      </span>
+    </CoinGameDiv>
   )
 };
 
