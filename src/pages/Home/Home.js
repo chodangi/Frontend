@@ -12,16 +12,6 @@ import TemperatureBox from "../Temperatrue/components/TemperatureBox";
 import api from "../../api/api";
 
 const Home = (props) => {
-    useEffect(() => {
-        const testFun = async () => {
-            const { data } = await api.get('/profile/users')
-            
-            console.log(data)
-        }
-
-        testFun()
-    }, [])
-
     return (
         <HomeDiv>
             <Header theme={props.theme} darkModeHandler={props.darkModeHandler} />
