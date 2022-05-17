@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const Header = (props) => {
-    // const { isLogedIn } = props;
     const [isLogedIn, setIsLogedIn] = useState()
     useEffect(() => {
         const user = localStorage.getItem('user');

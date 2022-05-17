@@ -9,17 +9,22 @@ import Banner from "./components/Banner";
 import BoardBox from "./components/BoardBox";
 import RankingBox from "./components/RankingBox";
 import TemperatureBox from "../Temperatrue/components/TemperatureBox";
+import api from "../../api/api";
 
 const Home = (props) => {
-    const [isLogedIn, setInLogedIn] = useState(false)
     useEffect(() => {
-        const token = localStorage.getItem('user')
-        setInLogedIn(token === null ? false : true)
+        const testFun = async () => {
+            const { data } = await api.get('/profile/users')
+            
+            console.log(data)
+        }
+
+        testFun()
     }, [])
 
     return (
         <HomeDiv>
-            <Header theme={props.theme} darkModeHandler={props.darkModeHandler} isLogedIn={isLogedIn} />
+            <Header theme={props.theme} darkModeHandler={props.darkModeHandler} />
             <MainNav />
             <Banner />
             <TemperatureBox type={"bit"} />

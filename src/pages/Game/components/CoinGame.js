@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import api from "../../../api/api";
 
 import { size } from "../../../styles/Theme";
 
@@ -12,26 +13,10 @@ const CoinGame = (props) => {
     리플: 'xrp',
   }
 
-  //기존소스
   const getCoinCurrentValue = async () => {
-    const { data } = await fetch(`http://13.209.180.179:8080/game/coin-price/${coinLabel[coin]}`, {
-      headers: {
-        jwt: localStorage.getItem('user')
-      }
-    }).then(res => res.json())
+    const { data } = await api.get(`game/coin-price/${coinLabel[coin]}`)
     return data;
   }
-
-  // //api뺀 후 예시 - get
-  // const getCoinCurrentValue_ = async () => {
-  //   const { data } = await myGetApi(`game/coin-price/${coinLabel[coin]}`)
-  //   return data;
-  // }
-  // //api뺀 후 예시 - post
-  // const getCoinCurrentValue__ = async () => {
-  //   const { data } = await myPostApi('community/post/report', { postId: myPostId })
-  //   return data;
-  // }
 
 
   useEffect(() => {
