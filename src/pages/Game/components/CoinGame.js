@@ -4,9 +4,7 @@ import api from "../../../api/api";
 
 import { size } from "../../../styles/Theme";
 
-const CoinGame = (props) => {
-  const coin = props.coin
-  const value = props.value
+const CoinGame = ({coin,value}) => {
   const coinLabel = {
     비트코인: 'btc',
     이더리움: 'eth',
@@ -18,11 +16,10 @@ const CoinGame = (props) => {
     return data;
   }
 
-
   useEffect(() => {
-    console.log(coin)
     async function test() {
-      await getCoinCurrentValue()
+      const data = await getCoinCurrentValue()
+
     }
     test();
   }, [])

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import api from "../../../api/api";
 
 import { size } from "../../../styles/Theme";
 
@@ -8,13 +9,7 @@ const Rank = () => {
   const [rank, setRank] = useState('123')
 
   const getUserData = async () => {
-    const { data } = await fetch(`http://13.209.180.179:8080/profile/my-settings`, {
-      // method:'POST',
-      headers: {
-        jwt: localStorage.getItem('user')
-      }
-    }).then(res => res.json())
-    console.log(data)
+    const { data } = await api.get('profile/my-settings')
     return data;
   }
 

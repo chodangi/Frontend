@@ -8,6 +8,21 @@ import MainNav from "../../components/MainNav";
 import Rank from "./components/Rank"
 import { size } from "../../styles/Theme";
 
+const coinList = {
+  비트코인: {
+      user: undefined,
+      cotal: true
+  },
+  이더리움: {
+    user: undefined,
+    cotal: false
+  },
+  리플: {
+    user: undefined,
+    cotal: true
+  }
+}
+
 const Game = (props) => {
   return (
     <GameDiv>
@@ -25,7 +40,7 @@ const Game = (props) => {
     <Rank />
     <CountDown />
     </div>
-    <CoinGames />
+    <CoinGames coinList={coinList}/>
     </GameDiv>
   );
 };
