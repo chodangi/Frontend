@@ -14,7 +14,7 @@ const Rank = () => {
         jwt: localStorage.getItem('user')
       }
     }).then(res => res.json())
-
+    console.log(data)
     return data;
   }
 
