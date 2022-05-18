@@ -4,15 +4,10 @@ import api from "../../../api/api";
 
 import { size } from "../../../styles/Theme";
 
-const CoinGame = ({coin,value}) => {
-  const coinLabel = {
-    비트코인: 'btc',
-    이더리움: 'eth',
-    리플: 'xrp',
-  }
+const CoinGame = ({name,code}) => {
 
   const getCoinCurrentValue = async () => {
-    const { data } = await api.get(`game/coin-price/${coinLabel[coin]}`)
+    const { data } = await api.get(`game/coin-price/${code}`)
     return data;
   }
 
@@ -28,12 +23,12 @@ const CoinGame = ({coin,value}) => {
     <CoinGameDiv>
       <span className="coin">
         오후 4시에<br />
-        <h1>{coin}</h1>
+        <h1>{name}</h1>
       </span>
       <span className="game">
-        <span className="gameIcon">떡상각<ResultIconDiv is_up={true} is_checked={value["user"]}>△</ResultIconDiv></span>
-        <span className="gameIcon">떡락각<ResultIconDiv is_up={false} is_checked={value["user"]}>▽</ResultIconDiv></span>
-        <span className="gameIcon">코털의 훈수<ResultIconDiv is_up={value["cotal"]} is_checked={true}>{value["cotal"] ? "△" : "▽"}</ResultIconDiv></span>
+        <span className="gameIcon">떡상각<ResultIconDiv is_up={true} is_checked={false}>△</ResultIconDiv></span>
+        <span className="gameIcon">떡락각<ResultIconDiv is_up={false} is_checked={false}>▽</ResultIconDiv></span>
+        <span className="gameIcon">코털의 훈수<ResultIconDiv is_up={false} is_checked={true}>{false ? "△" : "▽"}</ResultIconDiv></span>
       </span>
     </CoinGameDiv>
   )
