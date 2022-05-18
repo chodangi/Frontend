@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 
 import { size } from "../../../styles/Theme";
@@ -8,49 +8,45 @@ const CountDown = () => {
   const [minLeft, setMinLeft] = useState(0)
   const [secLeft, setSecLeft] = useState(0)
   const [possibleJoinGame, setPossibleJoinGame] = useState(true);
+  const START_MINUTE = 30;
+  const START_SECONDS = 0;
 
   useEffect(() => {
-    const now = new Date()
-    const nowHour = now.getHours();
-    const nowMin = now.getMinutes();
-    const nowSec = now.getSeconds();
-    if (nowMin > 29) setPossibleJoinGame(false)
+    const timeInit = () => {
+      const [nowHour, nowMin, nowSec] = getTime()
+      const leftMinute = 60 - (nowMin - START_MINUTE) - 1;
+      const leftSeconds = 60 - (nowSec - START_SECONDS) - 1;
+      const nextStartTime = nowHour + 1
 
-    setNextGameTime(nowHour + 1)
-    setMinLeft(29 - nowMin)
-    setSecLeft(59 - nowSec)
-    setInterval(() => {
-      checkTime()
-    }, 1000);
+      setNextGameTime(nextStartTime)
+      setMinLeft(leftMinute)
+      setSecLeft(leftSeconds)
+    }
+
+    const getTime = (now = new Date()) => [now.getHours(), now.getMinutes(), now.getSeconds()]
+    const startCount = () => setInterval(() => setSecLeft(res => res - 1), 1000)
+
+    timeInit()
+    startCount()
   }, [])
 
-  const checkTime = () => {
-    setSecLeft(res => {
-      if (res === 0) {
-        setMinLeft(resMin => {
-          if (resMin < 1) {
-            setPossibleJoinGame(false)
-            return 59;
-          }
-          else {
-            if (resMin === 30) setPossibleJoinGame(true)
-            return resMin - 1
-          }
-        })
-        return 59;
-      } else {
-        return res - 1;
-      }
-    })
-  }
+  useEffect(() => {
+    if (secLeft < 0) {
+      setSecLeft(59)
+      setMinLeft(resMin => resMin - 1)
+    }
+  }, [secLeft])
+
+  useEffect(() => {
+    if (minLeft < 0) setMinLeft(59)
+    setPossibleJoinGame(minLeft < START_MINUTE ? true : false)
+  }, [minLeft])
 
   return (
     <CountDownDiv>
-      {possibleJoinGame ?
-        <h2>{nextGameTime}시 게임 참여 시간 <span>{minLeft}</span>:<span>{secLeft}</span> 남음</h2>
-        : <h2>게임 참여 종료</h2>
-      }
-
+      <h2>
+        {possibleJoinGame ? <>{nextGameTime}시 게임 참여 시간 <span>{minLeft}</span>:<span>{secLeft}</span> 남음</> : <>게임 참여 종료</>}
+      </h2>
     </CountDownDiv>
   )
 };
