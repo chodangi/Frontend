@@ -25,7 +25,6 @@ const WritePost = (props) => {
   
   const category = useLocation().state.category || '자유게시판';
 
-    
     const removePost = async () => {
       await axios
             .get("/api/community/post/non-user/5/")
@@ -45,7 +44,7 @@ const WritePost = (props) => {
                 <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
                 <Navigator/>
             </div>
-            <PostEditor category={category}/>
+            <PostEditor category={category} isLoggedIn={props.isLoggedIn}/>
             <div className="guide">
               <p>사진은 최대 10개까지 업로드 가능합니다.</p><p>쉬운 비밀번호를 입력하면 타인의 수정, 삭제가 쉽습니다.</p>
             </div>

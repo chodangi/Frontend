@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from 'react-router-dom';
 
 import { BsFillShareFill } from "react-icons/bs"
 import { MdReport} from "react-icons/md"
@@ -7,13 +8,37 @@ import { Date, Time } from "../../../components/Time";
 
 const Content = ({post}) => {
 
-    //삭제
+    const navigate = useNavigate();
+
+    //로그인여부
+    const jwt = localStorage.getItem('user');
+    const user = useState(jwt ? true : false)
+
+    //수정, 삭제
     const [visible, setVisible] = useState(false);
 
     const openPasswordField = () => {
         if(visible) setVisible(false);
         else setVisible(true);
     }
+
+    const deletePost = async () => {
+
+        const url = "http://13.209.180.179:8080/community/post/" + post.id
+        try {await fetch(url, {
+          method: 'DELETE',
+          headers: {
+            jwt: jwt,
+          },})
+          .then((response)=> {
+            console.log(response)
+            navigate(-1);
+          })}
+        catch (error){
+            console.error(error);
+        }
+
+      }
 
     return (
         <ContentDiv>
@@ -44,7 +69,7 @@ const Content = ({post}) => {
             </div>
             <div className="modify-delete">
                 <div className="modify button" onClick={openPasswordField}>수정</div>
-                <div className="delete button" onClick={openPasswordField}>삭제</div>
+                <div className="delete button" onClick={jwt ? deletePost : openPasswordField}>삭제</div>
             </div>
             {visible ? 
                 <div className="password-field">
