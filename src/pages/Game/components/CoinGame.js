@@ -4,7 +4,7 @@ import api from "../../../api/api";
 
 import { size } from "../../../styles/Theme";
 
-const CoinGame = ({name,code}) => {
+const CoinGame = ({ name, code, onClick }) => {
 
   const getCoinCurrentValue = async () => {
     const { data } = await api.get(`game/coin-price/${code}`)
@@ -19,6 +19,10 @@ const CoinGame = ({name,code}) => {
     test();
   }, [])
 
+  const btnClickHandler = val => {
+    onClick(val)
+  }
+
   return (
     <CoinGameDiv>
       <span className="coin">
@@ -26,9 +30,9 @@ const CoinGame = ({name,code}) => {
         <h1>{name}</h1>
       </span>
       <span className="game">
-        <span className="gameIcon">떡상각<ResultIconDiv is_up={true} is_checked={false}>△</ResultIconDiv></span>
-        <span className="gameIcon">떡락각<ResultIconDiv is_up={false} is_checked={false}>▽</ResultIconDiv></span>
-        <span className="gameIcon">코털의 훈수<ResultIconDiv is_up={false} is_checked={true}>{false ? "△" : "▽"}</ResultIconDiv></span>
+        <span onClick={() => { btnClickHandler(true) }} className="gameIcon">떡상각<ResultIconDiv is_up={true} is_checked={false}>△</ResultIconDiv></span>
+        <span onClick={() => { btnClickHandler(false) }} className="gameIcon">떡락각<ResultIconDiv is_up={false} is_checked={false}>▽</ResultIconDiv></span>
+        <span onClick={btnClickHandler} className="gameIcon">코털의 훈수<ResultIconDiv is_up={false} is_checked={true}>{false ? "△" : "▽"}</ResultIconDiv></span>
       </span>
     </CoinGameDiv>
   )
