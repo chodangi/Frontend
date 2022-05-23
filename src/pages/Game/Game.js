@@ -7,21 +7,42 @@ import MainNav from "../../components/MainNav";
 import Rank from "./components/Rank"
 import { size } from "../../styles/Theme";
 import CoinGame from "./components/CoinGame";
-
-const coinList = [
-  {
-    name: '비트코인',
-    code: 'btc',
-  }, {
-    name: '이더리움',
-    code: 'eth',
-  }, {
-    name: '리플',
-    code: 'xrp',
-  }
-]
+import api from "../../api/api";
 
 const Game = (props) => {
+  const [coinList, setCoinList] = useState([
+    {
+      name: '비트코인',
+      code: 'btc',
+    }, {
+      name: '이더리움',
+      code: 'eth',
+    }, {
+      name: '리플',
+      code: 'xrp',
+    }
+  ])
+
+  const [betData, setBetdata] = useState({});
+
+  useEffect(() => {
+    const initBetData = () => {
+      const initBetObj = coinList.reduce((res, coin) => ({ ...res, [coin.code]: null }), {});
+      setBetdata(initBetObj)
+    }
+
+    initBetData();
+  }, [coinList])
+
+  useEffect(() => {
+    console.log(betData)
+    api.post('game/game-play', { betHistoryDto: betData }).then(res => console.log('베팅완료!', res))
+  }, [betData])
+
+  const betting = ({ code }, val) => {
+    setBetdata(res => ({ ...res, [code]: val }))
+  }
+
   return (
     <GameDiv>
       <Header theme={props.theme} darkModeHandler={props.darkModeHandler} />
@@ -38,7 +59,7 @@ const Game = (props) => {
         <Rank />
         <CountDown />
       </div>
-      {coinList.map(coin => <CoinGame {...coin} ></CoinGame>)}
+      {coinList.map(coin => <CoinGame {...coin} onClick={val => { betting(coin, val) }}></CoinGame>)}
     </GameDiv>
   );
 };

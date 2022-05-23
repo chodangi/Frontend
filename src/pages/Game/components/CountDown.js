@@ -12,7 +12,7 @@ const CountDown = () => {
   const START_SECONDS = 0;
 
   useEffect(() => {
-    const timeInit = () => {
+    const initTime = () => {
       const [nowHour, nowMin, nowSec] = getTime()
       const leftMinute = 60 - (nowMin - START_MINUTE) - 1;
       const leftSeconds = 60 - (nowSec - START_SECONDS) - 1;
@@ -26,7 +26,7 @@ const CountDown = () => {
     const getTime = (now = new Date()) => [now.getHours(), now.getMinutes(), now.getSeconds()]
     const startCount = () => setInterval(() => setSecLeft(res => res - 1), 1000)
 
-    timeInit()
+    initTime()
     startCount()
   }, [])
 
