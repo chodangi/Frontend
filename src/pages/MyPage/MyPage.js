@@ -9,8 +9,8 @@ import { useNavigate } from "react-router";
 const MyPage = (props) => {
   const nav = useNavigate();
   const signOut = () => {
-    localStorage.removeItem('user')
-    nav('/')
+    localStorage.removeItem('user');
+    nav('/');
   };
 
   return (

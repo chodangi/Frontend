@@ -16,4 +16,4 @@ ReactDOM.render(
     document.getElementById("root")
 );
 
-// Provider는 리액트 앱에 스토어를 쉽게 연결하기 위한 컴포넌트
+// Provider는 리액트

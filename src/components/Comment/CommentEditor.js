@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import axios, { Axios } from "axios";
 
-import { BiHeartSquare } from "react-icons/bi";
 import TextField from "../TextField";
 
 const CommentEditor = ({postId}) => {
@@ -75,7 +74,6 @@ const CommentEditor = ({postId}) => {
             <div></div>
             <TextField className="editor" type='comment' onChange={onChange}/>
             <div className="submit">
-                <BiHeartSquare className="emoticon" size="1.6rem"/>
                 <div className="submit-btn">등록</div>
             </div>
         </CommentEditorDiv>
@@ -116,9 +114,9 @@ const CommentEditorDiv = styled.div`
 
     .submit {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         align-items: center;
-        padding: 0px 20px;
+        padding: 5px 20px 0px 0px;
     }
 
     .submit-btn {

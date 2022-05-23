@@ -1,19 +1,23 @@
 import React, { useRef, useState, useEffect } from "react";
 import axios from 'axios';
 import styled from "styled-components";
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import TextField from "../../../components/TextField";
 import CategoryPicker from "./CategoryPicker";
-import YoutubeModal from "./YoutubeModal";
 
 import { FiImage } from "react-icons/fi";
-import { FaYoutubeSquare } from "react-icons/fa";
-import { BiHeartSquare } from "react-icons/bi";
 
 
-const PostEditor = ({category}) => {
+const PostEditor = ({category, isEditing, postObj}) => {
 
+  const navigate = useNavigate();
+
+  //로그인여부
+  const jwt = localStorage.getItem('user');
+  const user = useState(jwt ? true : false)
+    
+  
   //유튜브모달  
   const [visible, setVisible] = useState(false);
 
@@ -22,24 +26,42 @@ const PostEditor = ({category}) => {
   }
 
   //글쓰기
-  const [post, setPost] = useState({
-    nickname: 'name',
-    content: 'content',
+
+  const editedPost= isEditing ? {
+    "attachedFiles": postObj.attachedFiles,
+    "boardName": postObj.boardName,
+    "content": postObj.content,
+    "guestName": postObj.guestName,
+    "guestPwd": postObj.guestPwd,
+    "nickname": postObj.userNickname,
+    "postId": postObj.id,
+    "userId": postObj.userId
+  } : {}
+  
+  const [post, setPost] = useState(isEditing ? 
+    editedPost
+    :
+    {
+    nickname: '',
+    content: '',
     boardName: category,
-    guestName: 'guest',
-    guestPwd: 'password',
+    guestName: '',
+    guestPwd: '0000',
   })
 
   const onChange = (e) => {
     const { id } = e.currentTarget;
 
-    console.log(id.substring(id.length-5, id.length));
     if( id == "content") {
-      setPost({
-        ...post,
-        [id]: e.currentTarget.innerHTML
-      });
-      console.log(post);
+      if(isEditing){
+        editedPost.content  = e.currentTarget.innerHTML
+      } else {
+        setPost({
+          ...post,
+          [id]: e.currentTarget.innerHTML
+        });
+      }
+      console.log(editedPost);
     } else if( id == "guestName"){
       setPost({
         ...post,
@@ -53,7 +75,7 @@ const PostEditor = ({category}) => {
         [id]: e.currentTarget.value,
       });
     } else if( id.substring(id.length-5, id.length) == "board"){
-      
+    
       let selectedCategory = "";
 
       switch (id) {
@@ -73,16 +95,22 @@ const PostEditor = ({category}) => {
           selectedCategory = '그지게시판';
           break;
       }
+      if(isEditing) {
+        console.log('4')
+        editedPost.boardName  = selectedCategory;
+      } else {
+        setPost({
+          ...post,
+          boardName: selectedCategory,
+        });
+      }
 
-      setPost({
-        ...post,
-        boardName: selectedCategory,
-      });
 
-      console.log(post);
+      console.log(editedPost);
     }
     
   }
+
 
   const onReset = () => {
     setPost({
@@ -95,29 +123,91 @@ const PostEditor = ({category}) => {
   }
   
   
+  // 게시글 작성
+
   const createPost = async () => {
+
+    if(post.guestName == "") {
+      console.log("빈칸을 채우세요");
+      return;
+    }
+
+    await fetch(`http://13.209.180.179:8080/profile/my-settings`, {
+      method: 'GET',
+      headers: {
+        jwt: jwt,
+      },
+    }).then((response) => {
+      console.log(response);
+    })
+
+    const makeQuery = obj => Object.keys(obj).reduce((res,key)=>{
+      return res + `&${key}=${obj[key]}`
+    },'').substring(1)
+
+
+    await fetch(`http://13.209.180.179:8080/attach/post-image?${makeQuery(post)}`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        jwt: jwt,
+      },
+    })
+      .then((response) => {
+        navigate(-1);
+      })
+
+  }
+
+  const createPostByGuest = async () => {
 
     if(post.guestPwd == "password" || post.guestName == "guest") {
       console.log("빈칸을 채우세요");
       return;
     }
+    
 
     await axios
-           .post("/api/post/non-user",null, {
-              params: post
-            }
-          )
+          .post("/api/attach/post-image",null, {
+            params: editedPost
+          })
           .then((response) => {
               console.log(response.data);
               console.log("글 작성 완료");
+              navigate(-1);
             })
           .catch((error) => {
               console.error("실패했습니다");
           })
+  }
+
+  // 게시글 수정
+
+  const updatePost = async () => {
+
+    console.log(postObj);
+    console.log(editedPost);
+
+    try {await fetch(`http://13.209.180.179:8080/community/post`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        jwt: jwt,
+      },
+      body:JSON.stringify(editedPost),
+    })
+      .then((response) => {
+        navigate(-1);
+      }) 
+      .catch((error) => {
+        console.log(error.response.data);
+    })
     }
+    catch(error) {
+      console.log(error)
+    }
+}
 
-
-  
   return (                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
       <PostEditorDiv>
         <div className="title-box">
@@ -125,17 +215,21 @@ const PostEditor = ({category}) => {
           <CategoryPicker className="categoryPicker" category={category} onChange={onChange}></CategoryPicker>
         </div>
         <div className="userInfo">
-          <input type="text" className="input nickname" placeholder="닉네임" spellCheck="false" id="guestName" onChange={onChange}></input>
-          <input type="password" className="input password" placeholder="비밀번호" id="guestPwd" onChange={onChange}></input>
+          <input type="text" className="input nickname" placeholder="닉네임" spellCheck="false" id="guestName" value={post.nickname} onChange={onChange}></input>
+          {
+            user 
+            ? 
+            <></>
+            :
+            <input type="password" className="input password" placeholder="비밀번호" id="guestPwd" value={post.guestPwd} onChange={onChange}></input>
+          }
         </div>
-        <TextField onChange={onChange}/>
+        <TextField onChange={onChange} content={isEditing && postObj.content}/>
         <div className="submit-box">
           <div className="btn-box">
             <FiImage className="btn image" size="2rem" />
-            <FaYoutubeSquare className="btn youtube" size="1.9rem" onClick={openModal}/>
-            <BiHeartSquare className="btn emoticon" size="2.1rem"/>
           </div>
-          <button className="submit" onClick={createPost}>완료</button>
+          <button className="submit" onClick={user ? (isEditing ? updatePost: createPost) : createPostByGuest}>완료</button>
         </div>
         {visible && <YoutubeModal visible={visible} setVisible={setVisible}/>}
       </PostEditorDiv>
