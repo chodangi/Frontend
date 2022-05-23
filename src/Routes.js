@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 
@@ -11,31 +11,18 @@ import UserSettings from "./pages/UserSettings/UserSettings";
 import PopularBoard from "./pages/Community/PopularBoard";
 import WritePost from "./pages/WritePost/WritePost";
 import ShowPost from "./pages/ShowPost.js/ShowPost";
-import EditPost from "./pages/EditPost/EditPost";
 import Game from "./pages/Game/Game"
 import Temperature from "./pages/Temperatrue/Temperature";
 import TemperatureComment from "./pages/Temperatrue/TemperatureComment";
 import KaKaoHandler from "./pages/SignIn/components/KaKaoHandeler";
+import TemperatureRefly from "./pages/Temperatrue/TemperatureRefly";
 
 const AppRouter = () => {
-
-  //로그인여부
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-    
-  useEffect(() => {
-        const token = localStorage.getItem('user');
-        setIsLoggedIn(token === null ? false : true)
-    }, [])
-
-
-  //다크모드
   const currentTheme = localStorage.getItem("theme")
     ? localStorage.getItem("theme")
     : "dark";
   const [themeMode, setThemeMode] = useState(currentTheme);
   const theme = themeMode === "dark" ? dark : light;
-  
-  
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
@@ -43,7 +30,7 @@ const AppRouter = () => {
         <Routes>
           <Route
             path="/"
-            element={<Home theme={theme} darkModeHandler={setThemeMode} isLoggedIn={isLoggedIn}/>}
+            element={<Home theme={theme} darkModeHandler={setThemeMode} />}
           />
           <Route
             path="myPage"
@@ -69,15 +56,11 @@ const AppRouter = () => {
           />
           <Route
             path="writePost"
-            element={<WritePost theme={theme} darkModeHandler={setThemeMode} isLoggedIn={isLoggedIn}/>}
+            element={<WritePost theme={theme} darkModeHandler={setThemeMode} />}
           />
           <Route
-            path="showPost/:postId"
+            path="showPost"
             element={<ShowPost theme={theme} darkModeHandler={setThemeMode} />}
-          />
-          <Route
-            path="editPost"
-            element={<EditPost theme={theme} darkModeHandler={setThemeMode} />}
           />
           <Route
             path="game"
@@ -88,8 +71,12 @@ const AppRouter = () => {
             element={<Temperature theme={theme} darkModeHandler={setThemeMode} />}
           />
           <Route
-            path="temperatureComment"
+            path="temperatureComment/:temperatureId"
             element={<TemperatureComment theme={theme} darkModeHandler={setThemeMode} />}
+          />
+          <Route
+            path="temperatureRefly"
+            element={<TemperatureRefly theme={theme} darkModeHandler={setThemeMode} />}
           />
         </Routes>
       </BrowserRouter>

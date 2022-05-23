@@ -10,7 +10,7 @@ const ToggleTheme = (props) => {
   };
 
   return (
-        <ToggleDiv className="theme__img" src={props.theme === dark ? "img/darkmode.png" : "img/lightmode.png"} onClick={themeHandler}></ToggleDiv>
+        <ToggleDiv className="theme__img" src={props.theme === dark ? "/img/darkmode.png" : "/img/lightmode.png"} onClick={themeHandler}></ToggleDiv>
   );
 };
 

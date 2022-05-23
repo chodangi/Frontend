@@ -14,7 +14,7 @@ const Header = (props) => {
 
     return (
         <HeaderDiv>
-            <Link to="/"><img className="logo__img" src="img/logo.png" alt=""></img></Link>
+            <Link to="/"><img className="logo__img" src="/img/logo.png" alt=""></img></Link>
             <div className="header__item">
                 <Link to={isLoggedIn ? "/myPage" : "/signIn"}><div className="login">{isLoggedIn ? 'MyPage' : 'SignIn'}</div></Link>
                 <ToggleTheme theme={props.theme} darkModeHandler={props.darkModeHandler} />

@@ -1,15 +1,14 @@
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
 import ProgressBar from "../../../components/ProgressBar";
 import { HiOutlineChevronDoubleRight } from "react-icons/hi"
 
 const TemperatureBox = (props) => {
 
-    const bit = { type: "비트코인", percent: 36.5 };
-    const eth = { type: "이더리움", percent: 12.5 };
-    const rip = { type: "리플", percent: 90 };
+    const btc = { type: "비트코인"};
+    const eth = { type: "이더리움"};
+    const xrp = { type: "리플"};
 
-    const coin = (props.type === "bit") ? bit : ( (props.type === "eth") ? eth : rip );
+    const coin = (props.type === "BTC") ? btc : ( (props.type === "ETH") ? eth : xrp );
 
     const noBackgroundStyle = {
         width: '100%',
@@ -17,12 +16,11 @@ const TemperatureBox = (props) => {
     }
 
     return (
-//일단링크달지않고 추후에 코인체감온도 완성시 달 예정
-            <TempBoxDiv style={props.noBackground && noBackgroundStyle} onClick={(event) => { event.stopPropagation(); alert("준비중입니다");}}>
-                <div className="temp-title">{coin.type} 체감온도</div>
-                <ProgressBar percent={coin.percent}/>
+            <TempBoxDiv style={props.noBackground && noBackgroundStyle} onClick={props.onPress}>
+                <div className="temp-title" >{coin.type} 체감온도</div>
+                <ProgressBar percent={props.temper}/>
                 <div className="container">
-                    <div className="temp-num item">{coin.percent} ºC</div>
+                    <div className="temp-num item">{props.temper} ºC</div>
                     {props.noBackground || <HiOutlineChevronDoubleRight size="1.5rem" className="arrow item"/>}
                 </div>
             </TempBoxDiv>
@@ -35,6 +33,7 @@ const TempBoxDiv = styled.div`
     align-items: center;
     border-radius: 5px;
     margin-top: 15px;
+    cursor:pointer;
 
     width: 95%;
     height: 120px;
@@ -55,6 +54,7 @@ const TempBoxDiv = styled.div`
         grid-template-columns: 9fr 1fr;
         align-items: center;
         width: 100%;
+        
     }
 
     .temp-num {
