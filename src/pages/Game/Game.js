@@ -37,6 +37,7 @@ const Game = (props) => {
   useEffect(() => {
     console.log(betData)
     api.post('game/game-play', { betHistoryDto: betData }).then(res => console.log('베팅완료!', res))
+    api.get('game/my-history').then(res=>console.log(res))
   }, [betData])
 
   const betting = ({ code }, val) => {
