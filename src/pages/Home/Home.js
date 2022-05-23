@@ -12,8 +12,6 @@ import TemperatureBox from "../Temperatrue/components/TemperatureBox";
 
 const Home = (props) => {
 
-    console.log(props.isLoggedIn);
-
     return (
         <HomeDiv>
             <Header theme={props.theme} darkModeHandler={props.darkModeHandler} />

@@ -11,6 +11,7 @@ import UserSettings from "./pages/UserSettings/UserSettings";
 import PopularBoard from "./pages/Community/PopularBoard";
 import WritePost from "./pages/WritePost/WritePost";
 import ShowPost from "./pages/ShowPost.js/ShowPost";
+import EditPost from "./pages/EditPost/EditPost";
 import Game from "./pages/Game/Game"
 import Temperature from "./pages/Temperatrue/Temperature";
 import TemperatureComment from "./pages/Temperatrue/TemperatureComment";
@@ -71,8 +72,12 @@ const AppRouter = () => {
             element={<WritePost theme={theme} darkModeHandler={setThemeMode} isLoggedIn={isLoggedIn}/>}
           />
           <Route
-            path="showPost"
+            path="showPost/:postId"
             element={<ShowPost theme={theme} darkModeHandler={setThemeMode} />}
+          />
+          <Route
+            path="editPost"
+            element={<EditPost theme={theme} darkModeHandler={setThemeMode} />}
           />
           <Route
             path="game"

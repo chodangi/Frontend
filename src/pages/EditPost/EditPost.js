@@ -5,8 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 import Header from "../../components/Header";
 import Navigator from "../../components/BoardNav";
-
-import PostEditor from "./components/PostEditor";
+import PostEditor from "../WritePost/components/PostEditor";
 
 
 
@@ -15,41 +14,31 @@ import PostEditor from "./components/PostEditor";
 //const offsetHeight = document.getElementById('myPageDiv').offsetHeight;
 
 
-const WritePost = (props) => {
-  
-  const category = useLocation().state.category || '자유게시판';
+const EditPost = (props) => {
 
-    const removePost = async () => {
-      await axios
-            .get("/api/community/post/non-user/5/")
-            .then((response) => {
-              console.log(response.data);
-              console.log("글 삭제 완료");
-            })
-            .catch((error) => {
-              console.error("실패했습니다");
-            })
-    }
+    const post = useLocation().state.post;
+  
+    const category = useLocation().state.category || '자유게시판';
 
 
     return (                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-        <WritePostDiv id="WritingPostDiv">
+        <EditPostDiv id="EditingPostDiv">
             <div className="community__top">
                 <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
                 <Navigator/>
             </div>
-            <PostEditor category={category} isEditing={false}/>
+            <PostEditor category={category} isEditing={true} postObj={post}/>
             <div className="guide">
               <p>사진은 최대 10개까지 업로드 가능합니다.</p><p>쉬운 비밀번호를 입력하면 타인의 수정, 삭제가 쉽습니다.</p>
             </div>
-        </WritePostDiv>
+        </EditPostDiv>
     );
     };
 
 
-export default WritePost;
+export default EditPost;
 
-const WritePostDiv = styled.div`
+const EditPostDiv = styled.div`
 
   display:flex;
   flex-direction: column;

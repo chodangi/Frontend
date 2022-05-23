@@ -29,13 +29,13 @@ const PostList = () => {
         showAllPost();
       },[])
 
-
     return(
         <>
         {postList.map((p)=> {
+          if(p.status == 'A'){
             return (
-                <Link to={"/showPost"} state={{post: p}} className="link post" key={p.id}><Post post={p}/></Link>
-            )
+                <Link to={`/showPost/${p.id}`} state={{post: p}} className="link post" key={p.id}><Post post={p}/></Link>
+            )}
         })}
         </>
     );

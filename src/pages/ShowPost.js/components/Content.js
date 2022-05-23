@@ -8,6 +8,8 @@ import { Date, Time } from "../../../components/Time";
 
 const Content = ({post}) => {
 
+    console.log(post)
+
     const navigate = useNavigate();
 
     //로그인여부
@@ -22,11 +24,22 @@ const Content = ({post}) => {
         else setVisible(true);
     }
 
+    const goEdit = async () => {
+
+        navigate('/editPost', {
+            state: {
+              post: post
+            },
+          });
+
+    }
+
+
     const deletePost = async () => {
 
-        const url = "http://13.209.180.179:8080/community/post/" + post.id
+        const url = "http://13.209.180.179:8080/community/post/status/" + post.id
         try {await fetch(url, {
-          method: 'DELETE',
+          method: 'POST',
           headers: {
             jwt: jwt,
           },})
@@ -38,7 +51,7 @@ const Content = ({post}) => {
             console.error(error);
         }
 
-      }
+    }
 
     return (
         <ContentDiv>
@@ -68,7 +81,7 @@ const Content = ({post}) => {
                 <div className="report"><MdReport className="icon" size="1.3rem" color="red"/>신고</div>
             </div>
             <div className="modify-delete">
-                <div className="modify button" onClick={openPasswordField}>수정</div>
+                <div className="modify button" onClick={jwt? goEdit : openPasswordField}>수정</div>
                 <div className="delete button" onClick={jwt ? deletePost : openPasswordField}>삭제</div>
             </div>
             {visible ? 
