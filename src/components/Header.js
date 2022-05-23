@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ToggleTheme from "./ToggleTheme";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 const Header = (props) => {
-    
+
     const [isLoggedIn, setInLoggedIn] = useState(false)
     
     useEffect(() => {
