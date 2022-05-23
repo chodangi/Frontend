@@ -5,7 +5,7 @@ const getApi = async url => {
 }
 const postApi = async (url, data, header) => {
     return await fetch(`${SERVER_URL}/${url}`, {
-        headers: { jwt: localStorage.getItem('user'),...header },
+        headers: { jwt: localStorage.getItem('user'),'Content-Type': "application/json;charset=UTF-8",...header },
         method:'post',
         body:JSON.stringify(data)
     }).then(res => res.json())
