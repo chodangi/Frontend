@@ -126,7 +126,7 @@ const TemperatureComment = (props) => {
                     <CommentBox comment={e} key={e.id} refly={false} user={User} deleteComment={deleteComment} type={temperatureId} />
                 ))}
             </div>
-            {CommentList.comments.length > 9 && CommentList.currentPage !== CommentList.totalPages - 1 ? <MoreButton onClick={onPageHandler}><MdOutlineKeyboardArrowDown className="icon" /></MoreButton> : null}
+            {CommentList.currentPage !== CommentList.totalPages - 1 ? <MoreButton onClick={onPageHandler}><MdOutlineKeyboardArrowDown className="icon" /></MoreButton> : null}
             <Footer />
         </TemperatureCommentDiv>
     );
