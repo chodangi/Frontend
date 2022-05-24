@@ -128,14 +128,16 @@ function CommentBox({ comment, refly, user, deleteComment, type }) {
       <CommentDiv refly={Refly}>
         <h3>{Comment.nickname}</h3>
         <p>{Comment.content}</p>
-        {onDateHandler()}
-        {user.id === comment.userId ?
-          <ModifyDiv>
-            <span className='modify' onClick={onModifyHandler}>수정</span>
-            <span className='delete' onClick={onDeleteHandler}>삭제</span>
-          </ModifyDiv>
-          :
-          <span className="report" onClick={onReportHandler}>신고</span>}
+        <div className='modifyBox'>
+          {user.id === comment.userId ?
+            <ModifyDiv>
+              <span className='modify' onClick={onModifyHandler}>수정</span>
+              <span className='delete' onClick={onDeleteHandler}>삭제</span>
+            </ModifyDiv>
+            :
+            <span className="report" onClick={onReportHandler}>신고</span>}
+            {onDateHandler()}
+        </div>
         <Favorite onClick={onFavoriteHandler}>
           {Favorites ? <AiFillHeart className="heart" /> :<AiOutlineHeart className="heart" />}
           <span>{Comment.upCnt}</span>
@@ -162,26 +164,19 @@ const CommentDiv = styled.div`
       margin:0px;
       margin-bottom:25px;
     }
-    .date{
+    .modifyBox{
       position:absolute;
+      display:flex;
       font-size:12px;
       top:10px;
       right:10px;
     }
-
-    .report{
-      position:absolute;
-      font-size:12px;
-      top:10px;
-      right:75px;
+    .date{
+      margin-left:8px;
     }
 `
 
 const ModifyDiv = styled.div`
-  position:absolute;
-  font-size:12px;
-  top:10px;
-  right:75px;
 
   span{
     margin-left:5px;
