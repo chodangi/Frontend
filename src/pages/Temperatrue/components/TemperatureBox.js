@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import ProgressBar from "../../../components/ProgressBar";
 import { HiOutlineChevronDoubleRight } from "react-icons/hi"
@@ -7,17 +8,25 @@ const TemperatureBox = (props) => {
     const btc = { type: "비트코인"};
     const eth = { type: "이더리움"};
     const xrp = { type: "리플"};
-
-    const coin = (props.type === "BTC") ? btc : ( (props.type === "ETH") ? eth : xrp );
+    const [Type, setType] = useState(btc)
 
     const noBackgroundStyle = {
         width: '100%',
         background: 'none',
     }
 
+    useEffect(() => {
+      switch(props.type){
+          case "BTC" : setType(btc); break;
+          case "ETH" : setType(eth); break;
+          case "XRP" : setType(xrp); break;
+      }
+    }, [])
+    
+
     return (
             <TempBoxDiv style={props.noBackground && noBackgroundStyle} onClick={props.onPress}>
-                <div className="temp-title" >{coin.type} 체감온도</div>
+                <div className="temp-title" >{Type.type} 체감온도</div>
                 <ProgressBar percent={props.temper}/>
                 <div className="container">
                     <div className="temp-num item">{props.temper} ºC</div>

@@ -69,7 +69,6 @@ function CommentBox({ comment, refly, user, deleteComment, type }) {
     if (window.confirm("정말 신고하겠습니까?")) {
       alert("신고되었습니다");
       const { data } = await api.post(`/temper/comment-report?commentId=${Comment.id}`)
-      console.log(data)
     }
   }
 
@@ -100,10 +99,6 @@ function CommentBox({ comment, refly, user, deleteComment, type }) {
       const data = await api.post(`/temper/comment-like?commentId=${Comment.id}`)
       setComment({...Comment, upCnt:data.data})
     }
-  }
-
-  const test = ()=>{
-    
   }
 
   //날짜 변경

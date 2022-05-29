@@ -16,14 +16,9 @@ import api from "../../api/api";
 const TemperatureComment = (props) => {
     const {temperatureId} = useParams();
     const jwtToken = localStorage.getItem('user')
-    const typeList = {
-        "BTC" : 0,
-        "ETH" : 1,
-        "XRP" : 2
-    }
     const [User, setUser] = useState({})
     const [CommentList, setCommentList] = useState({comments:[]})
-    const [Percent, setPercent] = useState(0)
+    const [Percent, setPercent] = useState(50)
     const [ButtonList, setButtonList] = useState("total")
     const [Search, setSearch] = useState("")
 
@@ -40,15 +35,18 @@ const TemperatureComment = (props) => {
         setCommentList({...CommentList, comments : body})
     }
 
-    //댓글 추가
+    //댓글 추가 + 인기나 검색게시판에 있을시에는 전체 게시판으로 이동
     const addComment = (e) => {
-        const List = [e, ...CommentList.comments]
-        setCommentList({...CommentList, comments : List})
+        if(ButtonList !== "total"){
+            setButtonList("total")
+            const List = [e, ...CommentList.comments]
+            setCommentList({...CommentList, comments : List})
+        }
     }
 
     //매수 매수 했을시 실시간 온도 반영
     const getPercent = (e)=>{
-        setPercent(e[typeList[temperatureId]])
+        setPercent(e[temperatureId])
     }
 
     //검색기능
@@ -62,8 +60,16 @@ const TemperatureComment = (props) => {
     const onPageHandler =  ()=>{
         const apiFun =async (url)=>{
             const data = await api.get(url)
-            const List = [...CommentList.comments, ...data.comments]
-            setCommentList({...data, comments : List})
+            //댓글 추가시 페이지네이션 중복 오류 수정
+            if(data.comments[0].id === CommentList.comments[CommentList.comments.length-1].id){
+                let body = [...data.comments];
+                body.splice(0, 1);
+                const List = [...CommentList.comments, ...body]
+                setCommentList({...data, comments : List})
+            }else{
+                const List = [...CommentList.comments, ...data.comments]
+                setCommentList({...data, comments : List})
+            } 
         }
 
         switch(ButtonList){
@@ -77,7 +83,7 @@ const TemperatureComment = (props) => {
         //초기 온도
         const getTemper = async ()=>{
             const { data } = await api.get('/temper/coin-temper')
-            setPercent(data[typeList[temperatureId]])
+            setPercent(data[temperatureId])
         }
         
         //유저 정보 

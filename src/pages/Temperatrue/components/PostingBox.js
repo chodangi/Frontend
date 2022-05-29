@@ -42,7 +42,16 @@ function PostingBox({type, refly, addComment}) {
                     content : ""
                 })
             }
-            postComment()
+            if(Input.userName.length===0){
+                alert("닉네임을 입력해주세요")
+            }else if(Input.password.length < 4){
+                alert("패스워드를 4자 이상 입력해주세요")
+            }else if(Input.content.length === 0){
+                alert("내용을 입력해주세요")
+            }else{
+                postComment()
+            }
+            
         }else{
             alert("로그인을 해주세요!")
         }

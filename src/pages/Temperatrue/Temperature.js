@@ -13,12 +13,13 @@ const Temperature = (props) => {
 
     const navigate = useNavigate(); 
     const contentHeight = (window.innerHeight - 80) + "px" ;
-    const TemperatrueList = ["BTC","ETH","XRP"]
+    const [TemperatureList, setTemperatureList] = useState([])
     const [Temperature, setTemperature] = useState([50,50,50])
     
       const showAllPost = async () => {
         const { data } = await api.get('/temper/coin-temper')
-        setTemperature(data)
+        setTemperature(Object.values(data))
+        setTemperatureList(Object.keys(data))
     }
 
       useEffect(() => {
@@ -35,7 +36,7 @@ const Temperature = (props) => {
             <MainNav/>
             <div className="content" style={{minHeight: contentHeight}}>
                 <Description/>
-                {TemperatrueList.map((item,index)=>(
+                {TemperatureList.map((item,index)=>(
                     <TemperatureBox type={item} temper={Temperature[index]} key={item} onPress={() => onClickHandler(item)}/>
                 ))}
             </div>
