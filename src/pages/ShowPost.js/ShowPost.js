@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import Header from "../../components/Header";
 import Navigator from "../../components/BoardNav";
@@ -11,37 +11,65 @@ import CommentEditor from "../../components/Comment/CommentEditor";
 
 const ShowPost = (props) => {
 
-    const post = useLocation().state.post;
+    //const post = useLocation().state.post;
 
-    return (
+
+    //게시글 조회
+    const postId = useParams().postId
+    console.log(postId)
+
+    const [post, setPost] = useState([]);
+
+    useEffect(()=>{
+      try { 
+        fetch(`http://13.209.180.179:8080/community/post/${postId}`, {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+        .then((response) => {
+          response.json().then((data) =>{ 
+            console.log(data.data);
+            setPost(data.data);
+            console.log(post)
+           
+          })
+        }) 
+      }
+      catch(error) {
+        console.log(error)
+      }
+    },[])
+
+
+  
+
+    return post && (
         <ShowingDiv id="ShowingDiv">
             <div className="community__top">
                 <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
                 <Navigator/>
             </div>
             <Content post={post}/>
-              <div className="commentNum">댓글  (댓글개수)]</div>
-              <Comment post={post}/>
-              <Comment post={post}/>
-              <Comment post={post}/>
-              <CommentEditor postId={post.id}/>
-              <div className="partition"></div>
+            <div className="commentNum">댓글  ({post.comments?.length})</div>
+            <Comment post={post}/>
+            <Comment post={post}/>
+            <Comment post={post}/>
+            <CommentEditor postId={post.id}/>
             <Footer/>
         </ShowingDiv>
     );
 }
 
-/*<Content postObj={postObj}/>
-            <div className="commentNum">댓글  [{postObj.comment.totalNum}]</div>
-            <Comment postObj={postObj}/>
-            <Comment postObj={postObj}/>
-            <Comment postObj={postObj}/>
-            <WriteComment/>
-            <div className="partition"></div>
-            <Post/>
-            <Post/>
-            <Post/>*/
-const ShowingDiv = styled.div`
+/*<Content post={post}/>
+              <div className="commentNum">댓글  (댓글개수)]</div>
+              <Comment post={post}/>
+              <Comment post={post}/>
+              <Comment post={post}/>
+              <CommentEditor postId={post.id}/>*/
+
+              const ShowingDiv = styled.div`
 
   display:flex;
   flex-direction: column;
