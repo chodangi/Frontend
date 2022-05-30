@@ -231,7 +231,7 @@ const PostEditor = ({category, isEditing, postObj}) => {
           </div>
           <button className="submit" onClick={user ? (isEditing ? updatePost: createPost) : createPostByGuest}>완료</button>
         </div>
-        {visible && <YoutubeModal visible={visible} setVisible={setVisible}/>}
+        {/* {visible && <YoutubeModal visible={visible} setVisible={setVisible}/>} */}
       </PostEditorDiv>
   );
 };

@@ -27,7 +27,7 @@ const Game = (props) => {
 
   useEffect(() => {
     const initBetData = () => {
-      const initBetObj = coinList.reduce((res, coin) => ({ ...res, [coin.code]: null }), {});
+      const initBetObj = coinList.reduce((res, coin) => ({ ...res, [coin.code]: true }), {});
       setBetdata(initBetObj)
     }
 
@@ -65,6 +65,10 @@ const Game = (props) => {
       </div>
       {coinList.map(coin => <CoinGame {...coin} onClick={val => { betting(coin, val) }}></CoinGame>)}
       <button onClick={()=>{api.post('game/game-play', { betHistoryDto: betData }).then(res => console.log('베팅완료!', res.data))}}>테스트</button>
+      <button onClick={()=>{api.post('game/random').then(res => console.log('베팅완료!', res.data))}}>랜덤</button>
+      <button onClick={()=>{api.get('game/coin-prediction').then(res => console.log(res.data))}}>coin-prediction</button>
+      <button onClick={()=>{api.get('game/ranking').then(res => console.log(res.data))}}>ranking</button>
+      <button onClick={()=>{api.get('game/my-history').then(res => console.log(res.data))}}>my-history</button>
     </GameDiv>
   );
 };
@@ -80,7 +84,7 @@ const GameDiv = styled.div`
   p {
       margin: 0.5rem 0;
       text-align: left;
-      font-fize: ${size.font_mid};
+      font-size: ${size.font_mid};
   }
 
   .game__header__container {
