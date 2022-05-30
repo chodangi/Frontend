@@ -15,21 +15,11 @@ const Rank = () => {
 
   useEffect(() => {
     async function init() {
-      // {dark: true
-      // email: "sayeram@kakao.com"
-      // id: 13
-      // onAlarm: true
-      // point: 0
-      // previousWins: 0
-      // status: "A"
-      // totalPlay: 0
-      // userNickname: "sayeram"
-      // winsRate: 0}
       const { point } = await getUserData();
       setPoint(point)
       setRank(checkPoint(point))
-
     }
+    
     const checkPoint = point => {
       if (point > 1000) {
         return `부자 lv${Math.floor((point - 999) / 100)}`

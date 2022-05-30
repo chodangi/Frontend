@@ -9,9 +9,9 @@ import Banner from "./components/Banner";
 import BoardBox from "./components/BoardBox";
 import RankingBox from "./components/RankingBox";
 import TemperatureBox from "../Temperatrue/components/TemperatureBox";
-import api from "../../api/api";
 
 const Home = (props) => {
+
     return (
         <HomeDiv>
             <Header theme={props.theme} darkModeHandler={props.darkModeHandler} />

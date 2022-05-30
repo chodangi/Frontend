@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from 'react-router-dom';
 
 import { BsFillShareFill } from "react-icons/bs"
 import { MdReport} from "react-icons/md"
@@ -7,12 +8,49 @@ import { Date, Time } from "../../../components/Time";
 
 const Content = ({post}) => {
 
-    //삭제
+    console.log(post)
+
+    const navigate = useNavigate();
+
+    //로그인여부
+    const jwt = localStorage.getItem('user');
+    const user = useState(jwt ? true : false)
+
+    //수정, 삭제
     const [visible, setVisible] = useState(false);
 
     const openPasswordField = () => {
         if(visible) setVisible(false);
         else setVisible(true);
+    }
+
+    const goEdit = async () => {
+
+        navigate('/editPost', {
+            state: {
+              post: post
+            },
+          });
+
+    }
+
+
+    const deletePost = async () => {
+
+        const url = "http://13.209.180.179:8080/community/post/status/" + post.id
+        try {await fetch(url, {
+          method: 'POST',
+          headers: {
+            jwt: jwt,
+          },})
+          .then((response)=> {
+            console.log(response)
+            navigate(-1);
+          })}
+        catch (error){
+            console.error(error);
+        }
+
     }
 
     return (
@@ -43,8 +81,8 @@ const Content = ({post}) => {
                 <div className="report"><MdReport className="icon" size="1.3rem" color="red"/>신고</div>
             </div>
             <div className="modify-delete">
-                <div className="modify button" onClick={openPasswordField}>수정</div>
-                <div className="delete button" onClick={openPasswordField}>삭제</div>
+                <div className="modify button" onClick={jwt? goEdit : openPasswordField}>수정</div>
+                <div className="delete button" onClick={jwt ? deletePost : openPasswordField}>삭제</div>
             </div>
             {visible ? 
                 <div className="password-field">

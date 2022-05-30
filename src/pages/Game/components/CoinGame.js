@@ -5,6 +5,8 @@ import api from "../../../api/api";
 import { size } from "../../../styles/Theme";
 
 const CoinGame = ({ name, code, onClick }) => {
+  const [selectedBtn, setSelectedBtn] = useState(0);
+  const [randomRecommend, setRandomRecommend] = useState(true)
 
   const getCoinCurrentValue = async () => {
     const { data } = await api.get(`game/coin-price/${code}`)
@@ -14,13 +16,19 @@ const CoinGame = ({ name, code, onClick }) => {
   useEffect(() => {
     async function test() {
       const data = await getCoinCurrentValue()
-
     }
     test();
   }, [])
 
-  const btnClickHandler = val => {
-    onClick(val)
+  const btnClickHandler =  (selectedIndex, val) => {
+    setSelectedBtn(selectedIndex)
+    if (selectedIndex === 2) {
+      const randomVal = Math.random() > 0.5;
+      setRandomRecommend(randomVal)
+      onClick(randomVal)
+    } else {
+      onClick(val)
+    }
   }
 
   return (
@@ -30,9 +38,9 @@ const CoinGame = ({ name, code, onClick }) => {
         <h1>{name}</h1>
       </span>
       <span className="game">
-        <span onClick={() => { btnClickHandler(true) }} className="gameIcon">떡상각<ResultIconDiv is_up={true} is_checked={false}>△</ResultIconDiv></span>
-        <span onClick={() => { btnClickHandler(false) }} className="gameIcon">떡락각<ResultIconDiv is_up={false} is_checked={false}>▽</ResultIconDiv></span>
-        <span onClick={btnClickHandler} className="gameIcon">코털의 훈수<ResultIconDiv is_up={false} is_checked={true}>{false ? "△" : "▽"}</ResultIconDiv></span>
+        <span onClick={() => { btnClickHandler(0, true) }} className="gameIcon">떡상각<ResultIconDiv is_up={true} selected={selectedBtn === 0}>△</ResultIconDiv></span>
+        <span onClick={() => { btnClickHandler(1, false) }} className="gameIcon">떡락각<ResultIconDiv is_up={false} selected={selectedBtn === 1}>▽</ResultIconDiv></span>
+        <span onClick={() => { btnClickHandler(2) }} className="gameIcon">코털의 훈수<ResultIconDiv is_up={randomRecommend} selected={selectedBtn === 2}>{randomRecommend ? "△" : "▽"}</ResultIconDiv></span>
       </span>
     </CoinGameDiv>
   )
@@ -77,7 +85,7 @@ const ResultIconDiv = styled.div`
   background-color: ${(props) =>
     props.is_up ? props.theme.colors.red : props.theme.colors.blue};
   opacity: ${(props) =>
-    props.is_checked ? 1 : 0.2};
+    props.selected ? 1 : 0.2};
   height: 2rem;
   margin: 0.5rem auto;
   font-size: ${size.font_mid};

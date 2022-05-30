@@ -35,10 +35,13 @@ const Game = (props) => {
   }, [coinList])
 
   useEffect(() => {
-    console.log(betData)
-    api.post('game/game-play', { betHistoryDto: betData }).then(res => console.log('베팅완료!', res))
-    api.get('game/my-history').then(res=>console.log(res))
+    // api.post('game/game-play', { betHistoryDto: betData }).then(res => console.log('베팅완료!', res.data))
+    // api.get('game/my-history').then(res=>console.log(res))
+    // api.get('game/coin-prediction').then(res=>console.log(res.data))
   }, [betData])
+
+  useEffect(()=>{
+  },[])
 
   const betting = ({ code }, val) => {
     setBetdata(res => ({ ...res, [code]: val }))
@@ -61,6 +64,7 @@ const Game = (props) => {
         <CountDown />
       </div>
       {coinList.map(coin => <CoinGame {...coin} onClick={val => { betting(coin, val) }}></CoinGame>)}
+      <button onClick={()=>{api.post('game/game-play', { betHistoryDto: betData }).then(res => console.log('베팅완료!', res.data))}}>테스트</button>
     </GameDiv>
   );
 };
