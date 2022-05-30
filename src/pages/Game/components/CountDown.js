@@ -14,10 +14,11 @@ const CountDown = () => {
   useEffect(() => {
     const initTime = () => {
       const [nowHour, nowMin, nowSec] = getTime()
-      const leftMinute = 60 - (nowMin - START_MINUTE) - 1;
-      const leftSeconds = 60 - (nowSec - START_SECONDS) - 1;
+      const leftMinute = 60 - (nowMin + START_MINUTE) - 1;
+      const leftSeconds = 60 - (nowSec + START_SECONDS) - 1;
       const nextStartTime = nowHour + 1
 
+      console.log(leftMinute)
       setNextGameTime(nextStartTime)
       setMinLeft(leftMinute)
       setSecLeft(leftSeconds)
