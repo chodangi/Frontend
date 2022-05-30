@@ -4,48 +4,88 @@ import styled from "styled-components";
 import { size } from "../../../styles/Theme";
 
 const History = () => {
-  //   const [history, setHistory] = useState([]);
-  //   useEffect(() => {
-  //     if (!history.length) {
-  //       fetch(`url`)
-  //         .then((res) => res.json())
-  //         .then((res) => {
-  //           setHistory(res.history);
-  //         });
-  //     }
-  //   });
+    const [history1, setHistory] = useState([]);
+    const user = localStorage.getItem('user');
+    console.log(user)
 
-  //   const [hitRatio, setHitRatio] = useState(undefined);
-  //   useEffect(() => {
-  //     if (hitRatio == undefined) {
-  //       fetch(`url`)
-  //         .then((res) => res.json())
-  //         .then((res) => {
-  //           setHitRatio(res.hitRatio);
-  //         });
-  //     }
-  //   });
+    useEffect(() => {
+      if (!history1.length) {
+        fetch(`http://13.209.180.179:8080/game/my-history`, {
+          headers: {
+            jwt: user
+          }
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            setHistory(res.data);
+          });
+      }
+    });
+    console.log(history1)
+    // const [hitRatio, setHitRatio] = useState(undefined);
+    // useEffect(() => {
+    //   if (hitRatio == undefined) {
+    //     fetch(`url`)
+    //       .then((res) => res.json())
+    //       .then((res) => {
+    //         setHitRatio(res.hitRatio);
+    //       });
+    //   }
+    // });
 
-  const history = {
-    dates: ["11.28", "11.27", "11.26"],
+  // fetch(`http://13.209.180.179:8080/game/my-history`, {
+  //   headers: {
+  //     jwt: user
+  //   }
+  // }).then(res => res.json()).then(res => console.log(res))
+  let history = {
+    dates: [],
     data: {
-      비트: [
-        [true, false],
-        [false, false],
-        [false, false],
-      ],
-      이더: [
-        [false, false],
-        [false, true],
-        [true, true],
-      ],
-      리플: [
-        [true, true],
-        [true, false],
-        [true, false],
-      ],
-    },
-  };
+      비트: [],
+      이더: [],
+      리플: []
+    }
+  }
+
+    // let history1 = [
+    //   {btc: false, btcPriceNow: 40141000, eth: false, ethPriceNow: 2731000, evaluated: false, id: 14, predictedAt: "2022-05-16T01:57:06.000+00:00", userId: 13, xrp: false, xrpPriceNow: 576.6},
+    //   {btc: false, btcPriceNow: 40141000, eth: false, ethPriceNow: 2731000, evaluated: false, id: 12, predictedAt: "2022-05-15T01:57:06.000+00:00", userId: 13, xrp: false, xrpPriceNow: 576.6},
+    //   {btc: false, btcPriceNow: 40141000, eth: false, ethPriceNow: 2731000, evaluated: false, id: 13, predictedAt: "2022-05-14T01:57:06.000+00:00", userId: 13, xrp: false, xrpPriceNow: 576.6}
+    // ]
+
+    // if(Array.isArray(history1) && !history1.length){
+      for(var k of history1){
+        let dateArray = k["predictedAt"].split("T")[0].split("-");
+        let dateString = `${dateArray[1]}.${dateArray[2]}`;
+        history["dates"].push(dateString);
+        history["data"]["비트"].push([k["btc"],k["btc"]]);
+        history["data"]["이더"].push([k["eth"],k["eth"]]);
+        history["data"]["리플"].push([k["xrp"],k["xrp"]]);
+      }
+    // }
+
+    
+
+  // const history = {
+  //   dates: ["11.28", "11.27", "11.26"],
+  //   data: {
+  //     비트: [
+  //       [true, false],
+  //       [false, false],
+  //       [false, false],
+  //     ],
+  //     이더: [
+  //       [false, false],
+  //       [false, true],
+  //       [true, true],
+  //     ],
+  //     리플: [
+  //       [true, true],
+  //       [true, false],
+  //       [true, false],
+  //     ],
+  //   },
+  // };
 
   const hitRatio = 63.7;
 
