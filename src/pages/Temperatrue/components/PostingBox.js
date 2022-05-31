@@ -42,6 +42,7 @@ function PostingBox({type, refly, addComment}) {
                     content : ""
                 })
             }
+            
             if(Input.userName.length===0){
                 alert("닉네임을 입력해주세요")
             }else if(Input.password.length < 4){
@@ -51,7 +52,6 @@ function PostingBox({type, refly, addComment}) {
             }else{
                 postComment()
             }
-            
         }else{
             alert("로그인을 해주세요!")
         }
@@ -71,7 +71,7 @@ function PostingBox({type, refly, addComment}) {
                         <input name="password" type="password" value={Input.password} onChange={onInputHandler} placeholder="pass" />
                     </PostingUserBox>
                 </div>
-                <textarea name="content" value={Input.content} onChange={onInputHandler} placeholder="내용을 입력해주세요" />
+                <textarea name="content" value={Input.content} onChange={onInputHandler} maxLength="195" placeholder="내용을 입력해주세요" />
             </div>
             <button onClick={onSubmitHandler}>등록</button>
         </TemperaturePostingBox>

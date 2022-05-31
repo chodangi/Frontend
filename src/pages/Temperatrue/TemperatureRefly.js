@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router";
+import { useNavigate } from 'react-router-dom';
 
 import Header from "../../components/Header";
 import MainNav from "../../components/MainNav";
@@ -10,6 +11,7 @@ import PostingBox from "./components/PostingBox";
 
 function TemperatureRefly(props) {
     const category = useLocation();
+    const navigate = useNavigate(); 
     const User = category.state.users
     const Comment = category.state.comments
     const Refly = category.state.reflyComment
@@ -20,10 +22,15 @@ function TemperatureRefly(props) {
     }
 
     const deleteComment = (Delete) => {
-        let body = [...ReflyList]
-        let pod = body.indexOf(Delete)
-        body.splice(pod, 1)
-        setReflyList(body)
+        //원댓글 삭제시 temperatureComment로 돌아가는 로직 추가
+        if (Delete.level === 0) {
+          navigate(`/temperatureComment/${Comment.coinSymbol}`);
+        } else {
+          let body = [...ReflyList];
+          let pod = body.indexOf(Delete);
+          body.splice(pod, 1);
+          setReflyList(body);
+        }
     }
 
   return (
@@ -31,7 +38,7 @@ function TemperatureRefly(props) {
           <Header theme={props.theme} darkModeHandler={props.darkModeHandler} />
           <MainNav />
           <div className="content">
-              <CommentBox comment={Comment} refly={{ Boolean: true, Comment: Refly }} user={User} />
+              <CommentBox comment={Comment} refly={{ Boolean: true, Comment: Refly }} user={User} deleteComment={deleteComment} />
               <PostingBox refly={{
                   reflyConfirm: true,
                   commentGroup: Comment.commentGroup

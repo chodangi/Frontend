@@ -93,13 +93,11 @@ function CommentBox({ comment, refly, user, deleteComment, type }) {
   }
 
   //좋아요 기능(한번만 가능)
-  const onFavoriteHandler = async() => {
-    setFavorites(true)
-    if(!Favorites){
-      const data = await api.post(`/temper/comment-like?commentId=${Comment.id}`)
-      setComment({...Comment, upCnt:data.data})
-    }
-  }
+  const onFavoriteHandler = async () => {
+    setFavorites(true);
+    const data = await api.post(`/temper/comment-like?commentId=${Comment.id}`);
+    setComment({ ...Comment, upCnt: data.data });
+  };
 
   //날짜 변경
   const onDateHandler = ()=>{

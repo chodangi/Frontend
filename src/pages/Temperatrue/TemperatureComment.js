@@ -37,12 +37,10 @@ const TemperatureComment = (props) => {
 
     //댓글 추가 + 인기나 검색게시판에 있을시에는 전체 게시판으로 이동
     const addComment = (e) => {
-        if(ButtonList !== "total"){
-            setButtonList("total")
-            const List = [e, ...CommentList.comments]
-            setCommentList({...CommentList, comments : List})
-        }
-    }
+      setButtonList("total");
+      const List = [e, ...CommentList.comments];
+      setCommentList({ ...CommentList, comments: List });
+    };
 
     //매수 매수 했을시 실시간 온도 반영
     const getPercent = (e)=>{
