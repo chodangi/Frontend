@@ -39,6 +39,7 @@ const TemperatureComment = (props) => {
     const addComment = (e) => {
       setButtonList("total");
       const List = [e, ...CommentList.comments];
+      List.splice(List.length-1, 1)
       setCommentList({ ...CommentList, comments: List });
     };
 
@@ -58,16 +59,8 @@ const TemperatureComment = (props) => {
     const onPageHandler =  ()=>{
         const apiFun =async (url)=>{
             const data = await api.get(url)
-            //댓글 추가시 페이지네이션 중복 오류 수정
-            if(data.comments[0].id === CommentList.comments[CommentList.comments.length-1].id){
-                let body = [...data.comments];
-                body.splice(0, 1);
-                const List = [...CommentList.comments, ...body]
-                setCommentList({...data, comments : List})
-            }else{
-                const List = [...CommentList.comments, ...data.comments]
-                setCommentList({...data, comments : List})
-            } 
+            const List = [...CommentList.comments, ...data.comments]
+            setCommentList({...data, comments : List})
         }
 
         switch(ButtonList){
