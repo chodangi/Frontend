@@ -14,7 +14,7 @@ const Temperature = (props) => {
     const navigate = useNavigate(); 
     const contentHeight = (window.innerHeight - 80) + "px" ;
     const [TemperatureList, setTemperatureList] = useState([])
-    const [Temperature, setTemperature] = useState([50,50,50])
+    const [Temperature, setTemperature] = useState([])
     
       const showAllPost = async () => {
         const { data } = await api.get('/temper/coin-temper')
