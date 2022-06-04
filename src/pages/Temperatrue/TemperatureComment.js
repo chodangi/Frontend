@@ -35,7 +35,9 @@ const TemperatureComment = (props) => {
         setCommentList({...CommentList, comments : body})
     }
 
-    //댓글 추가 + 인기나 검색게시판에 있을시에는 전체 게시판으로 이동
+    //댓글 추가 
+    //+ 인기나 검색게시판에 있을시에는 전체 게시판으로 이동
+    //+ 댓글 추가시 페이지네이션 오류 수정
     const addComment = (e) => {
       setButtonList("total");
       const List = [e, ...CommentList.comments];
