@@ -7,17 +7,24 @@ import { size } from "../../../styles/Theme";
 const Profile = () => {
     const [userInfo, setUserInfo] = useState({});
     useEffect(()=>{
-      api.get('profile/my-settings').then(res=>console.log(res))
-      api.get('profile/my-settings').then(({data:{userNickname:nickname,point}})=>setUserInfo({
+      api.get('profile/my-settings').then(({data:{userNickname:nickname,point,winsRate}})=>setUserInfo({
         nickname,
-        is_rich : point>0,
-        level :getLevel(point)
+        is_rich : getLevel(point).title,
+        level :getLevel(point).level,
+        winsRate
       }))
     },[])
 
     function getLevel(point){
-      return 1
+      if (point > 1000) {
+        return {title:'부자',level:Math.floor((point - 999) / 100)}
+      } else if (point > -1000) {
+        return {title:'중산층',level:0}
+      } else {
+        return {title:'거지',level:Math.floor((point + 999) / 100) * -1}
+      }
     }
+
     // useEffect(() => {
     //   if (!userInfo.length) {
     //     fetch(`url`)
@@ -33,19 +40,17 @@ const Profile = () => {
   //   is_rich: false,
   //   level: 4,
   // };
-  const hitRatio = 63.7;
-    useEffect(()=>{console.log(userInfo)},[userInfo])
 
   return (
     <ProfileDiv>
       <ProfileImgDiv rank={userInfo?.is_rich}>
-        {userInfo?.level}
+        Lv.{userInfo?.level}
         <br />
         {userInfo?.is_rich ? "부자" : "그지"}
       </ProfileImgDiv>
       <ProfileTxtDiv>
         <div className="profile__nickname">{userInfo?.nickname}</div>
-        <div className="profile__hitRatio">평균 적중률: {hitRatio}%</div>
+        <div className="profile__hitRatio">평균 적중률: {userInfo.winsRate}%</div>
       </ProfileTxtDiv>
     </ProfileDiv>
   );
