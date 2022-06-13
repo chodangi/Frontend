@@ -11,16 +11,9 @@ import api from "../../api/api";
 
 const Game = (props) => {
   const [coinList, setCoinList] = useState([
-    {
-      name: '비트코인',
-      code: 'btc',
-    }, {
-      name: '이더리움',
-      code: 'eth',
-    }, {
-      name: '리플',
-      code: 'xrp',
-    }
+    { name: '비트코인', code: 'btc', },
+    { name: '이더리움', code: 'eth', },
+    { name: '리플', code: 'xrp', }
   ])
 
   const [betData, setBetdata] = useState({});
@@ -40,8 +33,9 @@ const Game = (props) => {
     // api.get('game/coin-prediction').then(res=>console.log(res.data))
   }, [betData])
 
-  useEffect(()=>{
-  },[])
+  useEffect(() => {
+    api.get('admin/game-start')
+  }, [])
 
   const betting = ({ code }, val) => {
     setBetdata(res => ({ ...res, [code]: val }))
@@ -64,7 +58,7 @@ const Game = (props) => {
         <CountDown />
       </div>
       {coinList.map(coin => <CoinGame {...coin} onClick={val => { betting(coin, val) }}></CoinGame>)}
-      <button onClick={()=>{api.post('game/game-play', { betHistoryDto: betData }).then(res => console.log('베팅완료!', res.data))}}>테스트</button>
+      <button onClick={() => { api.post('game/game-play', { betHistoryDto: betData }).then(res => console.log('베팅완료!', res.data)) }}>테스트</button>
     </GameDiv>
   );
 };
