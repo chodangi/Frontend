@@ -1,26 +1,40 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import api from "../../../api/api";
 
 import { size } from "../../../styles/Theme";
 
 const Profile = () => {
-  //   const [userInfo, setUserInfo] = useState([]);
-  //   useEffect(() => {
-  //     if (!userInfo.length) {
-  //       fetch(`url`)
-  //         .then((res) => res.json())
-  //         .then((res) => {
-  //           setUserInfo(res.userInfo);
-  //         });
-  //     }
+    const [userInfo, setUserInfo] = useState({});
+    useEffect(()=>{
+      api.get('profile/my-settings').then(res=>console.log(res))
+      api.get('profile/my-settings').then(({data:{userNickname:nickname,point}})=>setUserInfo({
+        nickname,
+        is_rich : point>0,
+        level :getLevel(point)
+      }))
+    },[])
+
+    function getLevel(point){
+      return 1
+    }
+    // useEffect(() => {
+    //   if (!userInfo.length) {
+    //     fetch(`url`)
+    //       .then((res) => res.json())
+    //       .then((res) => {
+    //         setUserInfo(res.userInfo);
+    //       });
+    //   }
   //   });
 
-  const userInfo = {
-    nickname: "MC문어 28",
-    is_rich: false,
-    level: 4,
-  };
+  // const userInfo = {
+  //   nickname: "MC문어 28",
+  //   is_rich: false,
+  //   level: 4,
+  // };
   const hitRatio = 63.7;
+    useEffect(()=>{console.log(userInfo)},[userInfo])
 
   return (
     <ProfileDiv>

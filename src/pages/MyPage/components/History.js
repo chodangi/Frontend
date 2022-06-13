@@ -6,7 +6,6 @@ import { size } from "../../../styles/Theme";
 const History = () => {
     const [history1, setHistory] = useState([]);
     const user = localStorage.getItem('user');
-    console.log(user)
 
     useEffect(() => {
       if (!history1.length) {
@@ -20,7 +19,7 @@ const History = () => {
             setHistory(res.data);
           });
       }
-    });
+    },[]);
     console.log(history1)
     // const [hitRatio, setHitRatio] = useState(undefined);
     // useEffect(() => {
