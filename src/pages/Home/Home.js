@@ -11,15 +11,10 @@ import RankingBox from "./components/RankingBox";
 import TemperatureBox from "../Temperatrue/components/TemperatureBox";
 
 const Home = (props) => {
-    const [isLogedIn, setInLogedIn] = useState(false)
-    useEffect(() => {
-        const token = localStorage.getItem('user')
-        setInLogedIn(token === null ? false : true)
-    }, [])
 
     return (
         <HomeDiv>
-            <Header theme={props.theme} darkModeHandler={props.darkModeHandler} isLogedIn={isLogedIn} />
+            <Header theme={props.theme} darkModeHandler={props.darkModeHandler} />
             <MainNav />
             <Banner />
             <TemperatureBox type={"bit"} />
