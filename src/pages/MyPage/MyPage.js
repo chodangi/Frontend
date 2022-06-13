@@ -5,8 +5,19 @@ import Profile from "./components/Profile";
 import MyCommunity from "./components/MyCommunity";
 import { size } from "../../styles/Theme";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
+import api from "../../api/api";
 
 const MyPage = (props) => {
+  useEffect(()=>{
+    api.get('profile/my-settings').then(res=>{
+      if(res.errorCode){
+        localStorage.removeItem('user');
+        nav('/');
+      }
+    })
+  },[])
+
   const nav = useNavigate();
   const signOut = () => {
     localStorage.removeItem('user');
