@@ -1,23 +1,45 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
-import { IoArrowRedoSharp } from "react-icons/io5"
 
-const Comment = ({post}) => {
+import { Date, Time } from "../Time";
+import api from "../../api/api";
+import TierCircle from "../TierCircle";
+import {AiOutlineClose} from "react-icons/ai";
+import {BsReplyFill} from "react-icons/bs";
 
+const Comment = ({commentDto, forceUpdate, setReplyComment, moveToEditor}) => {
+
+    const reply = commentDto.level === 1;
+
+    const deleteComment = async() => {
+        await api.put(`comment/${commentDto.id}`);
+        forceUpdate();
+    }
+
+    const goEditor = () => {
+        setReplyComment({group: commentDto.commentGroup, writer: commentDto.nickname});
+        moveToEditor();
+    }
+    
     return (
-        <CommentDiv>
-            <div className="top">
-                <div className="writer">
-                    
-                    <div className="writer-tier">99</div>
-                    <div className="writer-nickname">닉네임</div>
+        <CommentDiv onClick={goEditor}>
+            {reply && <BsReplyFill className="reply" size="1rem"/>}
+            <div className="container">
+                <div className="top">
+                    <div className="writer">
+                        <TierCircle point={commentDto.userPoint} size="small"></TierCircle>
+                        <div className="writer-nickname">{commentDto.nickname}</div>
+                    </div>
+                    <div className="box">
+                        <div className="date">{Date(commentDto.createdAt)}</div>
+                        <div className="time">{Time(commentDto.createdAt)}</div>
+                    </div>
                 </div>
-                <div className="box">
-                    <div className="date">date</div>
-                    <div className="time">time</div>
+                <div className="bottom">
+                    <div className="content">{commentDto.content}</div>
+                    <AiOutlineClose className="delete" size="1rem" onClick={deleteComment}/>
                 </div>
             </div>
-            <div className="content">{post.content}</div>
         </CommentDiv>
     );
 }
@@ -26,16 +48,28 @@ const Comment = ({post}) => {
 const CommentDiv = styled.div`
 
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
     width: 100%;
     min-height: 60px;
     padding: 10px 20px 5px 20px;
     font-size: 12px;
     border-bottom: 2px solid #444444;
 
+    .reply {
+        transform: rotate(180deg);
+        margin-right: 3px;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+    }
+
     .top {
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
     }
 
@@ -47,18 +81,6 @@ const CommentDiv = styled.div`
         transform: scaleY(-1);
     }
 
-    .writer-tier {
-        display:flex;
-        justify-content: center;
-        align-items: center;
-        width: 15px;
-        height: 15px;
-        margin-right: 5px;
-        border-radius: 50%;
-        background-color: #3498DB; //나중에 티어별 적용 필요
-        //font-size 티어가 세 자리수일 때 조정 필요
-    }
-
     .box {
         display: flex;
         color : #9E9E9E;
@@ -68,8 +90,25 @@ const CommentDiv = styled.div`
         margin-right: 7px;
     }
 
+    .bottom {
+        display: grid;
+        width: 100%;
+        max-width: 100%;
+        grid-template-columns: auto 30px;
+	    //column-gap: 30px;
+        padding-top: 5px;
+    }
+
     .content {
+        display:block;
+        width: 100%;
         word-wrap: break-word;
+        word-break: break-all;
+        justify-self: start;
+    }
+
+    .delete {
+        justify-self: end;
     }
 `
 

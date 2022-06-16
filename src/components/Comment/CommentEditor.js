@@ -1,19 +1,56 @@
-import React, {useState} from "react";
+import React, {useState, useEffect, forwardRef} from "react";
 import styled from "styled-components";
-import axios, { Axios } from "axios";
 
 import TextField from "../TextField";
+import api from "../../api/api";
 
-const CommentEditor = ({postId}) => {
+const CommentEditor = forwardRef((props, ref) => {
 
-    const [comment, setComment] = useState({
-        postId: postId,
-        nickname: '',
-        password: '',
-        content: '',
-        commentGroup: 0,
-        level: 0,
-      })
+  console.log(props.replyComment);
+
+  const [comment, setComment] = useState({
+    postId: 0,
+    nickname: '',
+    password: '000000',
+    content: '',
+    commentGroup: -1,
+    level: 0,
+  });
+
+  //답댓글
+  useEffect(()=>{
+    props.reply && setComment({
+      ...comment,
+      content: "@"+props.replyComment.writer+"  ",
+      commentGroup: props.replyComment.group
+    });
+
+    console.log(comment);
+  },[props.replyComment])
+
+    //로그인여부
+    const jwt = localStorage.getItem('user');
+    const user = useState(jwt ? true : false);
+
+    //사용자정보
+
+    useEffect(()=>{
+        if(user == true) {
+            fetch(`http://13.209.180.179:8080/profile/my-settings`, {
+                method: 'GET',
+                headers: {
+                    jwt: jwt,
+                },
+            }).then((response) => {
+                response.json().then((data) =>{  
+                comment.userId = data.data?.id;
+                comment.userPoint = data.data?.point;
+                console.log(comment)
+            })
+        })} else return;
+    },[user])
+
+    
     
       const onChange = (e) => {
         const { id } = e.currentTarget;
@@ -21,7 +58,7 @@ const CommentEditor = ({postId}) => {
         if( id == "content") {
           setComment({
             ...comment,
-            [id]: e.currentTarget.innerHTML
+            [id]: e.currentTarget.value
           });
           console.log(comment);
         } else if( id == "nickname"){
@@ -40,45 +77,65 @@ const CommentEditor = ({postId}) => {
         }
         
       }
+
+      const resetComment = async() => {
+        await setComment({
+          ...comment,
+          postId: 0,
+          nickname: '',
+          password: '',
+          content: '',
+          commentGroup: -1,
+          level: 0,
+        });
+
+        console.log(comment);
+      }
       
       const createComment = async () => {
     
-        if(comment.nickname == '' || comment.password == '') {
+        comment.postId = props.postId
+        console.log(comment);
+
+        if(props.reply === true){
+          comment.commentGroup = props.replyComment.group;
+          comment.level = 1;
+        }
+
+        if(comment.nickname == '') {
           console.log("빈칸을 채우세요");
           return;
         }
-    
-        await axios.post("/api/comment", 
-                { params: comment },
-                {
-                  headers: { Authrozation: 'testToken' }
-                }
-              )
-              .then((response) => {
-                  console.log(response.data);
-                  console.log("댓글 작성 완료");
-                })
-              .catch((error) => {
-                  console.error("실패했습니다");
-              })
+        
+          await fetch('http://13.209.180.179:8080/comment', {
+            headers: { 
+              'Content-type': 'application/json',
+              jwt: jwt,
+            },
+            method:'POST',
+            body: JSON.stringify(comment)
+          }).then(()=>{
+            props.forceUpdate();
+            resetComment(); 
+            props.setReply(false);          
+          })  
         }
-    
-    
+  
 
     return (
         <CommentEditorDiv>
-            <div className="input-box">
-                <input type="text" className="input nickname" placeholder="닉네임" spellCheck="false" id="nickname" onChange={onChange}></input>
-                <input type="password" className="input password" placeholder="비밀번호" id="password" onChange={onChange}></input>
+            <div className="input-box" ref={ref}>
+                <input type="text" className="input nickname" placeholder="닉네임" spellCheck="false" id="nickname" onChange={onChange} value={comment.nickname}></input>
+                {user[0] ? <></> : <input type="password" className="input password" placeholder="비밀번호" id="password" onChange={onChange} value={comment.password}></input>}
             </div>
             <div></div>
-            <TextField className="editor" type='comment' onChange={onChange}/>
+            <TextField className="editor" type='comment' onChange={onChange} content={props.reply && comment.content} reply={props.reply}/>
             <div className="submit">
-                <div className="submit-btn">등록</div>
+                <div className="submit-btn" onClick={createComment}>등록</div>
             </div>
         </CommentEditorDiv>
     );
- }
+ })
 
 const CommentEditorDiv = styled.div`
 

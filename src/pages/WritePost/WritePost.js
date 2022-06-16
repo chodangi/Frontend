@@ -19,6 +19,7 @@ const WritePost = (props) => {
   
   const category = useLocation().state.category || '자유게시판';
 
+  console.log(useLocation().state.category)
     const removePost = async () => {
       await axios
             .get("/api/community/post/non-user/5/")

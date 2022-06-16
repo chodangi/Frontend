@@ -1,22 +1,23 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const MainNav = () => {
 
     const [menu, setMenu] = useState(0);
+    
 
     return (
         <MainNavDiv>
             <ul className="nav__main">
-                <li className='community menu' onClick={()=> setMenu(0)}>
-                    <Link to="/community" className="menuLink">커뮤니티</Link>
+                <li>
+                    <NavLink to="/popular" className="community menu" activeclassname="active"> 커뮤니티 </NavLink>
                 </li>
-                <li className={`${menu === 1? 'battle menu active': 'battle menu'}`} onClick={()=> setMenu(1)}>
-                    <Link to="/game" className="menuLink">코인궁예대전</Link>
+                <li>
+                    <NavLink to="/game" className="battle menu" activeclassname="active"> 코인궁예대전 </NavLink>
                 </li>
-                <li className={`${menu === 2? 'temperature menu active': 'battle menu'}`} onClick={()=> setMenu(2)}>
-                <Link to="/temperature" className="menuLink lastItem">코인체감온도</Link>
+                <li>
+                    <NavLink to="/temperature" className="temperature menu" activeclassname="active"> 코인체감온도 </NavLink>
                 </li>
             </ul>
         </MainNavDiv>
@@ -45,12 +46,21 @@ const MainNavDiv = styled.div`
     .active {
         background-color: #EA622F;
     }
+
     .menu{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        width: 100%;
+        height: 100%;
         list-style:none;
+        font-size:12px;
+        font-weight: bold;
+        color: ${(props) => props.theme.colors.text};
+        text-decoration: none;
+        text-align: center;
+        border-right: 1px solid #888888;
     }
 
     .menuLink{

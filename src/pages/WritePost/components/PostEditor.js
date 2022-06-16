@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import axios from 'axios';
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
@@ -16,14 +16,7 @@ const PostEditor = ({category, isEditing, postObj}) => {
   //로그인여부
   const jwt = localStorage.getItem('user');
   const user = useState(jwt ? true : false)
-    
-  
-  //유튜브모달  
-  const [visible, setVisible] = useState(false);
 
-  const openModal = () => {
-      setVisible(true);
-  }
 
   //글쓰기
 
@@ -58,10 +51,9 @@ const PostEditor = ({category, isEditing, postObj}) => {
       } else {
         setPost({
           ...post,
-          [id]: e.currentTarget.innerHTML
+          [id]: e.currentTarget.value
         });
       }
-      console.log(editedPost);
     } else if( id == "guestName"){
       setPost({
         ...post,
@@ -78,11 +70,7 @@ const PostEditor = ({category, isEditing, postObj}) => {
     
       let selectedCategory = "";
 
-      switch (id) {
-        case "popular-board" : 
-          selectedCategory = '인기게시판';
-          break;
-        
+      switch (id) {      
         case "free-board" :
           selectedCategory = '자유게시판';
           break;
@@ -111,19 +99,53 @@ const PostEditor = ({category, isEditing, postObj}) => {
     
   }
 
+  //이미지
+  const [imgBase64, setImgBase64] = useState([]); // 파일 base64
+  const [imgFile, setImgFile] = useState([]);	//파일	
 
-  const onReset = () => {
-    setPost({
-      nickname: 'name',
-      content: 'content',
-      boardName: '자유게시판',
-      guestName: 'guest',
-      guestPwd: 'password',
-    });
+  const photoInput = useRef();
+
+  const handleClick = () => {
+    photoInput.current.click();
+  };
+
+  const onChangeImage = () => {
+    console.log(photoInput.current.files)
+
+    const reader = new FileReader();
+    reader.readAsDataURL(photoInput.current.files[0]);
+
+    var img = new Image();
+    img = photoInput.current.files[0];
+    console.log(photoInput.current.files)
+    
+
+    if(isEditing){
+      editedPost.attachedFiles = photoInput.current.files;
+    } else {
+      setPost({
+        ...post,
+        attachedFiles: photoInput.current.files
+      });
+    }
+
+    reader.onloadend = () => {
+      const base64 = reader.result;
+      console.log(base64);
+      if (base64) {
+        let base64Sub = base64.toString()  
+        setImgBase64(imgBase64 => [...imgBase64, base64Sub]);
+      console.log(imgBase64)
+      }
+    };
+
   }
   
-  
   // 게시글 작성
+
+  const makeQuery = obj => Object.keys(obj).reduce((res,key)=>{
+    return res + `&${key}=${obj[key]}`
+  },'').substring(1)
 
   const createPost = async () => {
 
@@ -138,13 +160,11 @@ const PostEditor = ({category, isEditing, postObj}) => {
         jwt: jwt,
       },
     }).then((response) => {
-      console.log(response);
+      response.json().then((data) =>{  
+        post.userId = data.data.id;
+        post.userPoint = data.data.point;
+      })
     })
-
-    const makeQuery = obj => Object.keys(obj).reduce((res,key)=>{
-      return res + `&${key}=${obj[key]}`
-    },'').substring(1)
-
 
     await fetch(`http://13.209.180.179:8080/attach/post-image?${makeQuery(post)}`, {
       method: 'POST',
@@ -154,9 +174,9 @@ const PostEditor = ({category, isEditing, postObj}) => {
       },
     })
       .then((response) => {
+        console.log(post)
         navigate(-1);
       })
-
   }
 
   const createPostByGuest = async () => {
@@ -167,18 +187,17 @@ const PostEditor = ({category, isEditing, postObj}) => {
     }
     
 
-    await axios
-          .post("/api/attach/post-image",null, {
-            params: editedPost
-          })
-          .then((response) => {
-              console.log(response.data);
-              console.log("글 작성 완료");
-              navigate(-1);
-            })
-          .catch((error) => {
-              console.error("실패했습니다");
-          })
+    await fetch(`http://13.209.180.179:8080/post/non-user?${makeQuery(post)}`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        jwt: jwt,
+      },
+    })
+      .then((response) => {
+        console.log('성공')
+        navigate(-1);
+      })
   }
 
   // 게시글 수정
@@ -196,7 +215,7 @@ const PostEditor = ({category, isEditing, postObj}) => {
       },
       body:JSON.stringify(editedPost),
     })
-      .then((response) => {
+      .then(() => {
         navigate(-1);
       }) 
       .catch((error) => {
@@ -224,14 +243,28 @@ const PostEditor = ({category, isEditing, postObj}) => {
             <input type="password" className="input password" placeholder="비밀번호" id="guestPwd" value={post.guestPwd} onChange={onChange}></input>
           }
         </div>
-        <TextField onChange={onChange} content={isEditing && postObj.content}/>
+        <TextField onChange={onChange} content={isEditing && postObj.content} isEditing={isEditing}/>
+        <div>
+          {
+          isEditing ? 
+            editedPost.attachedFiles  && <img className="img" src={imgBase64[0]}/>
+            : 
+            post.attachedFiles && <img className="img" src={imgBase64[0]}/>
+          }
+        </div>
         <div className="submit-box">
           <div className="btn-box">
-            <FiImage className="btn image" size="2rem" />
+            <FiImage className="btn image" size="2rem" onClick={handleClick}/>
+            <input 
+              type="file" 
+              accept ="image/jpg, image/jpeg, image/png, image/gif" 
+              ref={photoInput}
+              onChange={onChangeImage}
+              style={{display: 'none'}}
+            />
           </div>
           <button className="submit" onClick={user ? (isEditing ? updatePost: createPost) : createPostByGuest}>완료</button>
         </div>
-        {visible && <YoutubeModal visible={visible} setVisible={setVisible}/>}
       </PostEditorDiv>
   );
 };
@@ -311,6 +344,13 @@ const PostEditorDiv = styled.div`
     size: 10; 
     padding: 10px 20px 0px 20px;
     border-bottom: 2px solid #444444;
+  }
+
+  .img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    padding: 0px 20px;
   }
 
   .submit-box {

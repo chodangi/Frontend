@@ -28,14 +28,13 @@ const FooterDiv = styled.div`
   background-color: ${(props) => props.theme.colors.gray__2};
   border: none;
   color: ${(props) => props.theme.colors.gray__1};
-  padding: 1.5rem 1.5rem 0rem 1.5rem;
+  padding: 10px 20px;
   width: 100%;
   margin-top: 15px;
 
   p {
-    font-size: ${size.font_small};
-    margin-bottom: 1rem;
-    margin-top: 0;
+    font-size: 12px;
+    margin-bottom: 7px;
   }
   .footer-btn {
     button {
@@ -45,7 +44,7 @@ const FooterDiv = styled.div`
       cursor: pointer;
       //font-size: ${size.font_small};
       font-size: 12px;
-      margin: 1rem 1rem 0 0;
+      margin: 5px 10px 0 0;
       padding: 0;
     }
   }

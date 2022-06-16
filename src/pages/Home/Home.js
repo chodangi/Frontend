@@ -11,7 +11,7 @@ import RankingBox from "./components/RankingBox";
 import TemperatureBox from "../Temperatrue/components/TemperatureBox";
 
 const Home = (props) => {
-
+    
     return (
         <HomeDiv>
             <Header theme={props.theme} darkModeHandler={props.darkModeHandler} />

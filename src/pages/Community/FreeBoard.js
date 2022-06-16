@@ -1,34 +1,31 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { screen } from "@testing-library/react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import Header from "../../components/Header";
 import Navigator from "../../components/BoardNav";
-import Post from "./components/Post";
 import Footer from "../../components/Footer";
 import {IoIosArrowDown} from 'react-icons/io';
 
-import { size } from "../../styles/Theme";
-import Pagination from "./components/Pagination";
 import SearchBar from "../../components/SearchBar";
 import PostList from "./components/PostList";
 
 
-//const width = screen.availHeight;
 const contentHeight = (window.innerHeight - 130) + "px" ;
-//const offsetHeight = document.getElementById('myPageDiv').offsetHeight;
 
-
-const PopularBoard = (props) => {
+const FreeBoard = (props) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const paginate = pageNum => setCurrentPage(pageNum);
 
+  const category = '자유게시판';
+  
+
+  
 
   const navigate = useNavigate();
+
 
   return (
     <CommunityDiv>
@@ -39,10 +36,13 @@ const PopularBoard = (props) => {
           <button className="btn sortPopularPost">
             실시간 인기글
           </button>
+          <Link to={"/writePost"} state={{ category: category, }} className="link write">
+            <button className="btn writePost">글쓰기</button>
+          </Link>
         </div>
       </div>
       <div className="content" style={{ minHeight: contentHeight}}>
-        <PostList board={"popular"}/>
+        <PostList board={"free"}/>
       </div>
       <div className="community__bottom">
         <div className="arrowDown__btn">
@@ -55,12 +55,7 @@ const PopularBoard = (props) => {
   );
 };
 
-/*<Pagination postPerPage={10} totalPosts={50} paginate={paginate} />*/
-/*{postList.map((p) => {
-            <Link to={"/showPost"} state={{post_id: p.id}} className="link post"><Post/></Link>
-          })
-        } */
-export default PopularBoard;
+export default FreeBoard;
 
 const CommunityDiv = styled.div`
 
@@ -158,5 +153,3 @@ const CommunityDiv = styled.div`
   }
 `;
 
-//210
-//아니면 한 페이지에서 보여주는 post함수를 다르게?
