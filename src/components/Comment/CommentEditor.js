@@ -2,53 +2,52 @@ import React, {useState, useEffect, forwardRef} from "react";
 import styled from "styled-components";
 
 import TextField from "../TextField";
+import { AiOutlineClose } from "react-icons/ai";
+import { ImKey } from 'react-icons/im';
+import { FaUser } from 'react-icons/fa';
 import api from "../../api/api";
 
 const CommentEditor = forwardRef((props, ref) => {
 
   console.log(props.replyComment);
-
-  const [comment, setComment] = useState({
-    postId: 0,
-    nickname: '',
-    password: '000000',
-    content: '',
-    commentGroup: -1,
-    level: 0,
-  });
-
-  //답댓글
-  useEffect(()=>{
-    props.reply && setComment({
-      ...comment,
-      content: "@"+props.replyComment.writer+"  ",
-      commentGroup: props.replyComment.group
-    });
-
-    console.log(comment);
-  },[props.replyComment])
+  
 
     //로그인여부
     const jwt = localStorage.getItem('user');
     const user = useState(jwt ? true : false);
 
+    const [text, setText] = useState();
+
+    const [comment, setComment] = useState({
+      postId: 0,
+      nickname: '',
+      password: '',
+      content: '',
+      commentGroup: -1,
+      level: 0,
+    });
+
     //사용자정보
 
     useEffect(()=>{
-        if(user == true) {
+        if(user[0] == true) {
             fetch(`http://13.209.180.179:8080/profile/my-settings`, {
                 method: 'GET',
                 headers: {
                     jwt: jwt,
                 },
             }).then((response) => {
-                response.json().then((data) =>{  
-                comment.userId = data.data?.id;
-                comment.userPoint = data.data?.point;
+                response.json().then((data) =>{
+                setComment({
+                  ...comment,
+                  userId : data.data?.id,
+                  userPoint : data.data?.point,
+                  nickname : data.data?.userNickname
+                })
                 console.log(comment)
             })
         })} else return;
-    },[user])
+    },[])
 
     
     
@@ -88,7 +87,7 @@ const CommentEditor = forwardRef((props, ref) => {
           commentGroup: -1,
           level: 0,
         });
-
+        setText('');
         console.log(comment);
       }
       
@@ -120,16 +119,42 @@ const CommentEditor = forwardRef((props, ref) => {
             props.setReply(false);          
           })  
         }
+
+        //답댓글
+
+        const cancleReply = () =>{
+          props.setReply(false);
+          setComment({
+            ...comment,
+            content: '',
+          });
+        }
   
 
     return (
         <CommentEditorDiv>
             <div className="input-box" ref={ref}>
+              <div className="input">
+                <FaUser className="label" size="15"/>
                 <input type="text" className="input nickname" placeholder="닉네임" spellCheck="false" id="nickname" onChange={onChange} value={comment.nickname}></input>
-                {user[0] ? <></> : <input type="password" className="input password" placeholder="비밀번호" id="password" onChange={onChange} value={comment.password}></input>}
+              </div>
+              { user[0] ? <></> :
+                <div className="input">
+                <ImKey className="label" size="15"/>
+                <input type="password" className="input password" placeholder="비밀번호" id="password" onChange={onChange} value={comment.password}></input>
+                </div>
+              }
             </div>
-            <div></div>
-            <TextField className="editor" type='comment' onChange={onChange} content={props.reply && comment.content} reply={props.reply}/>
+            {
+            props.reply ?
+            <div className="reply">
+              <div>ㄴ @{props.replyComment.writer}</div>
+              <AiOutlineClose className="delete" size="1rem" onClick={cancleReply}/>
+            </div>
+            :
+            <></>
+            }
+            <TextField className="editor" type='comment' onChange={onChange} content={props.reply && comment.content} reply={props.reply} text={text} setText={setText}/>
             <div className="submit">
                 <div className="submit-btn" onClick={createComment}>등록</div>
             </div>
@@ -141,27 +166,39 @@ const CommentEditorDiv = styled.div`
 
     width: 100%;
 
+    .reply {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 5px 15px;
+    }
+
     .input-box {
-        width: 100%;
-        border-bottom: 2px solid #444444;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 30px;
+      border-bottom: 2px solid #444444;
+      padding-left: 4px;
     }
 
     .input {
-        width
-        height: 30px;
-        background-color: transparent;
-        border: none;
-        color: ${(props) => props.theme.colors.text}; 
-        font-size: 12px;
-        padding-left: 20px;
+      display: flex;
+      align-items: center;
+      height: 30px;
+      background-color: transparent;
+      border: none;
+      color: ${(props) => props.theme.colors.text}; 
+      font-size: 12px;
+      padding-left: 11px;
     }
 
-    .input.nickname{
+    .nickname{
         width: 135px;
         border-right: 2px solid #444444;
     }
 
-    .input.password{
+    .password{
         width: 160px; //닉네임이랑 비밀번호 너비 조정 필요 나중에 비율로 주기
     }
 

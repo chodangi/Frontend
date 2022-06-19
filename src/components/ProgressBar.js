@@ -2,11 +2,12 @@ import styled from "styled-components";
 
 const ProgressBar = (props) => {
 
+    const barColor = (props.percent < 33) ? '#3498DB' : (props.percent < 66) ? '#EA622F' : '#E74C3C';
 
     const barStyle = {
         width: `${props.percent}%`,
         height: '100%',
-        background: '#3498DB',
+        background: barColor,
         borderRadius: '10px',
     }
 
@@ -15,6 +16,8 @@ const ProgressBar = (props) => {
             <div className="progress" style={barStyle}/>
         </BarDiv>
     );
+
+    
 }
 
 export default ProgressBar;

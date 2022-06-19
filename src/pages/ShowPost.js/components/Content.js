@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { BsFillShareFill } from "react-icons/bs";
 import { MdReport} from "react-icons/md";
-import TierCircle from "../../../components/TierCircle";
+import { TierCircle } from "../../../components/TierCircle";
 import { Date, Time } from "../../../components/Time";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import PasswordField from "../../../components/PasswordField";
 import api from "../../../api/api";
 
 const Content = ({post}) => {
@@ -34,8 +35,6 @@ const Content = ({post}) => {
             }).then((response) => {
                 response.json().then((data) =>{  
                 currentUserId = data.data?.id;
-                console.log(data.data);
-
                 api.get(`preference/${post.id}/${data.data.id}`)
                 .then((response)=> {
                     console.log(response.data.status)
@@ -46,22 +45,52 @@ const Content = ({post}) => {
     },[user])
 
     //수정, 삭제
+    const[password, setPassword] = useState();
     const [visible, setVisible] = useState(false);
+    const [editOrDelete, setEditOrDelete] = useState('');
 
-    const openPasswordField = () => {
+    const openPasswordField = (e) => {
         if(visible) setVisible(false);
         else setVisible(true);
+
+        const { id } = e.currentTarget;
+        setEditOrDelete(id);
+    }
+
+    const editOrDeletePostByGuest = () =>{
+        if(password == post.guestPwd){ 
+            if(editOrDelete == "modify") {
+                navigate('/editPost', {
+                    state: {
+                        post: post
+                    },
+                });
+            } else if (editOrDelete == "delete") {
+                fetch(`http://13.209.180.179:8080/community/${post.id}/${password}`, {
+                    method: 'GET',
+                    headers: {
+                        jwt: jwt,
+                    },})
+                    .then((response)=> {
+                        console.log(response)
+                        navigate(-1);
+                    }
+                )
+            }
+        } else {
+            alert('비밀번호가 일치하지 않습니다.');
+        }
     }
 
     const goEdit = () => {
 
-        if(user[0] && (post.userId == currentUserId)){
+        if(post.userId == currentUserId){
             navigate('/editPost', {
                 state: {
                   post: post
                 },
             });
-        } else {
+        } else if(post.userId != currentUserId) {
             alert('수정할 수 없습니다')
             return;
         }
@@ -77,8 +106,7 @@ const Content = ({post}) => {
             return;
         }
 
-        const url = "http://13.209.180.179:8080/community/post/status/" + post.id
-        try {await fetch(url, {
+        try {fetch(`http://13.209.180.179:8080/community/post/status/${post.id}`, {
           method: 'POST',
           headers: {
             jwt: jwt,
@@ -181,18 +209,12 @@ const Content = ({post}) => {
                 <div className="report"><MdReport className="icon" size="1.3rem" color="red" onClick={reportPost}/>신고</div>
             </div>
             <div className="modify-delete">
-                <div className="modify button" onClick={jwt? goEdit : openPasswordField}>수정</div>
-                <div className="delete button" onClick={jwt ? deletePost : openPasswordField}>삭제</div>
+                <div className="modify button" id="modify" onClick={jwt ? goEdit : openPasswordField}>수정</div>
+                <div className="delete button" id="delete" onClick={jwt ? deletePost : openPasswordField}>삭제</div>
             </div>
-            {visible ? 
-                <div className="password-field">
-                    <div>비밀번호를 입력하세요.</div>
-                    <input type="password"/>
-                    <div className="button">확인</div>
-                </div> 
-                : 
-                <></> 
-            }
+            <div className="pass-field">
+                {visible && <PasswordField password={password} setPassword={setPassword} setVisible={setVisible} editOrDeleteByGuest={editOrDeletePostByGuest}/>}
+            </div>
         </ContentDiv>
     );
 }
@@ -229,7 +251,8 @@ const ContentDiv = styled.div`
         color: ${(props) => props.theme.colors.text};
         width: 75%;
         overflow: hidden;
-        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-overflow: ellipsis;;
     }
 
     .user.box {
@@ -320,20 +343,10 @@ const ContentDiv = styled.div`
         margin: 0px 20px;
     }
 
-    .password-field {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
+    .pass-field {
         position: absolute;
         //top: 50px;
-
-        width: 250px;
-        height: 100px;
-        background-color: blue;
     }
-
 `
 
 export default Content;

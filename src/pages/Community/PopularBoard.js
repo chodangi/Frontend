@@ -36,18 +36,15 @@ const PopularBoard = (props) => {
         <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
         <Navigator/>
         <div className="menu">
-          <button className="btn sortPopularPost">
+          <button className="btn sortPopularPost" onClick={()=> navigate(`trend`)}>
             실시간 인기글
           </button>
         </div>
       </div>
       <div className="content" style={{ minHeight: contentHeight}}>
-        <PostList board={"popular"}/>
+        <PostList board={"popular"} trend={false}/>
       </div>
       <div className="community__bottom">
-        <div className="arrowDown__btn">
-          <IoIosArrowDown className="arrowDown__icon"/>
-        </div>
         <SearchBar className="search"/>
         <Footer className="footer"/>
       </div>
@@ -158,5 +155,3 @@ const CommunityDiv = styled.div`
   }
 `;
 
-//210
-//아니면 한 페이지에서 보여주는 post함수를 다르게?

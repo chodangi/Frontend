@@ -3,13 +3,15 @@ import axios from "axios";
 import styled from "styled-components";
 import Post from "./Post";
 
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const PostList = ({board}) => {
+const PostList = ({board, trend}) => {
 
-    console.log(board)
+    const navigate = useNavigate();
+
 
     const [postList, setPostList] = useState([]);
+    const [trendList, setTrendList] = useState([]);
 
     const showAllPost = async () => {
         await axios({
@@ -19,45 +21,67 @@ const PostList = ({board}) => {
     
         }).then((response) => {
                 console.log(response.data);
-                console.log(Object.values(response.data.data).filter((p)=>{ return p.status == 'A';}).slice(0,4));
-                console.log(Object.values(response.data.data));
                 setPostList(Object.values(response.data.data));
               })
           .catch((error) => {
                 console.log(error.response.data);
           })
       }
-    
-      useEffect(()=>{
-        showAllPost();
-      },[])
+
+    const showTrendPost = async() => {
+      await axios({
+        method: "get",
+        url: "http://13.209.180.179:8080/community/up-count",
+        headers: {'Content-Type': "application/json;charset=UTF-8"},
+  
+      }).then((response) => {
+              console.log(response.data);
+              setTrendList(Object.values(response.data.data));
+            })
+        .catch((error) => {
+              console.log(error.response.data);
+        })
+    }
+
+    useEffect(()=>{
+      showAllPost();
+      showTrendPost();
+    },[])
 
     return(
         <>
-        {postList.map((p)=> {
+        {(trend ? trendList : postList).map((p)=> {
           if(p.status == 'A'){
             if(board == "popular"){
               if(p.upCnt >= 10) {
                 return (
-                  <Link to={`/showPost/${p.id}`} className="link post" key={p.id}><Post post={p} /></Link>
+                  <div onClick={()=> navigate(`/showPost/${p.id}`)}  key={p.id}>
+                    <Post post={p}/>
+                  </div>
                 )
               }
             } else if(board == "free") {
               if(p.boardName == "자유게시판") {
                 return (
-                  <Link to={`/showPost/${p.id}`} className="link post" key={p.id}><Post post={p} /></Link>
+                  <div onClick={()=> navigate(`/showPost/${p.id}`)}  key={p.id}>
+                    <Post post={p}/>
+                  </div>
                 )
               }
             } else if(board == "rich") {
               if(p.boardName == "부자게시판") {
                 return (
-                  <Link to={`/showPost/${p.id}`} className="link post" key={p.id}><Post post={p} /></Link>
+                  <div onClick={()=> navigate(`/showPost/${p.id}`)}  key={p.id}>
+                    <Post post={p}/>
+                  </div>
                 )
               }
             } else if(board == "poor") {
               if(p.boardName == "그지게시판") {
                 return (
-                  <Link to={`/showPost/${p.id}`} className="link post" key={p.id}><Post post={p} /></Link>
+                  <div onClick={()=> navigate(`/showPost/${p.id}`)}  key={p.id}>
+                    <Post post={p}/>
+                  </div>
                 )
               }
             }

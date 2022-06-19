@@ -33,7 +33,7 @@ const FreeBoard = (props) => {
         <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
         <Navigator/>
         <div className="menu">
-          <button className="btn sortPopularPost">
+          <button className="btn sortPopularPost" onClick={()=> navigate(`trend`)}>
             실시간 인기글
           </button>
           <Link to={"/writePost"} state={{ category: category, }} className="link write">
@@ -42,12 +42,9 @@ const FreeBoard = (props) => {
         </div>
       </div>
       <div className="content" style={{ minHeight: contentHeight}}>
-        <PostList board={"free"}/>
+        <PostList board={"free"} trend={false}/>
       </div>
       <div className="community__bottom">
-        <div className="arrowDown__btn">
-          <IoIosArrowDown className="arrowDown__icon"/>
-        </div>
         <SearchBar className="search"/>
         <Footer className="footer"/>
       </div>

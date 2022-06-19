@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -8,6 +8,7 @@ import Navigator from "../../components/BoardNav";
 import Footer from "../../components/Footer";
 import {IoIosArrowDown} from 'react-icons/io';
 
+import api from "../../api/api";
 import SearchBar from "../../components/SearchBar";
 import PostList from "./components/PostList";
 
@@ -21,12 +22,39 @@ const RichBoard = (props) => {
 
   const category = '부자게시판';
 
-  
+  //로그인여부
+  const jwt = localStorage.getItem('user');
+  const user = useState(jwt ? true : false);
 
-  
+  //사용자 접근
+  const [restriction, setRestriction] = useState(true);
+
+  useEffect(()=>{
+      if(user[0] == true) {
+        fetch(`http://13.209.180.179:8080/profile/my-settings`, {
+            method: 'GET',
+            headers: {
+                jwt: jwt,
+            },
+        }).then((response) => {
+          response.json().then((data) =>{  
+            console.log(data.data?.point);
+            if(data.data?.point >= 1000)
+              setRestriction(false);
+          }) 
+        })
+      }
+  },[user])
 
   const navigate = useNavigate();
 
+  const moveToEditor = () => {
+    if(restriction == false) {
+      navigate('/writePost');
+    } else {
+      alert('등급이 부자인 회원만 작성할 수 있습니다.')
+    }
+  }
 
   return (
     <CommunityDiv>
@@ -34,21 +62,16 @@ const RichBoard = (props) => {
         <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
         <Navigator/>
         <div className="menu">
-          <button className="btn sortPopularPost">
+          <button className="btn sortPopularPost" onClick={()=> navigate(`trend`)}>
             실시간 인기글
           </button>
-          <Link to={"/writePost"} state={{ category: category, }} className="link write">
-            <button className="btn writePost">글쓰기</button>
-          </Link>
+          <button className="btn writePost" onClick={moveToEditor}>글쓰기</button>
         </div>
       </div>
       <div className="content" style={{ minHeight: contentHeight}}>
-        <PostList board={"rich"}/>
+        <PostList board={"rich"} trend={false}/>
       </div>
       <div className="community__bottom">
-        <div className="arrowDown__btn">
-          <IoIosArrowDown className="arrowDown__icon"/>
-        </div>
         <SearchBar className="search"/>
         <Footer className="footer"/>
       </div>
@@ -111,10 +134,6 @@ const CommunityDiv = styled.div`
   .btn.writePost{
     width: 50px;
     height: 20px; //안들어가서 크기 조정함
-    text-decoration: none;
-  }
-
-  .link {
     color: ${(props) => props.theme.colors.text};
     text-decoration: none;
   }

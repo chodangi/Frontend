@@ -1,19 +1,70 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 
 import { Date, Time } from "../Time";
 import api from "../../api/api";
-import TierCircle from "../TierCircle";
-import {AiOutlineClose} from "react-icons/ai";
-import {BsReplyFill} from "react-icons/bs";
+import { TierCircle } from "../TierCircle";
+import { AiOutlineClose } from "react-icons/ai";
+import { BsReplyFill } from "react-icons/bs";
+import PasswordField from "../PasswordField";
 
-const Comment = ({commentDto, forceUpdate, setReplyComment, moveToEditor}) => {
+const Comment = ({commentDto, forceUpdate, setReplyComment, moveToEditor, isDeleted}) => {
 
+    console.log(commentDto);
+
+    //로그인여부
+    const jwt = localStorage.getItem('user');
+    const user = useState(jwt ? true : false);
+
+    let currentUserId;
+
+    useEffect(()=>{
+        if(user[0] == true) {
+            fetch(`http://13.209.180.179:8080/profile/my-settings`, {
+                method: 'GET',
+                headers: {
+                    jwt: jwt,
+                },
+            }).then((response) => {
+                response.json().then((data) =>{  
+                currentUserId = data.data?.id;
+            })
+        })}
+    },[user])
+
+
+    //댓글답댓글여부
     const reply = commentDto.level === 1;
 
-    const deleteComment = async() => {
-        await api.put(`comment/${commentDto.id}`);
-        forceUpdate();
+    //댓글작성자의 회원여부
+    let commentWriter = commentDto.password === "" ? 'user' : 'non-user';
+    
+    //회원댓글삭제
+    const deleteComment = async(e) => {
+        e.stopPropagation();
+        if(commentDto.userId == currentUserId){ 
+            await api.put(`comment/${commentDto.id}`);
+            forceUpdate();
+        } else {
+            alert('삭제할 수 없습니다.');
+            return
+        }
+
+    }
+
+    //비회원댓글삭제
+    const[password, setPassword] = useState();
+    const [visible, setVisible] = useState(false);
+
+    const openPasswordField = (e) => {
+        if(visible) setVisible(false);
+        else setVisible(true);
+    }
+
+    const deleteCommentByGuest = (e) => {
+        e.stopPropagation();
+        setVisible(false);
+
     }
 
     const goEditor = () => {
@@ -36,15 +87,18 @@ const Comment = ({commentDto, forceUpdate, setReplyComment, moveToEditor}) => {
                     </div>
                 </div>
                 <div className="bottom">
-                    <div className="content">{commentDto.content}</div>
-                    <AiOutlineClose className="delete" size="1rem" onClick={deleteComment}/>
+                    <div className="content">{isDeleted ? "삭제된 댓글" : commentDto.content}</div>
+                    {!isDeleted && <AiOutlineClose className="delete" size="1rem" onClick={ commentWriter === 'user' ? deleteComment : openPasswordField}/>}
                 </div>
             </div>
+            {
+                visible && <PasswordField password={password} setPassword={setPassword} setVisible={setVisible} editOrDeleteByGuest={deleteCommentByGuest}/>
+            }
         </CommentDiv>
     );
 }
 
-/*{postObj.comment.re && <IoArrowRedoSharp className="arrow" size="1rem"/> } */
+
 const CommentDiv = styled.div`
 
     display: flex;

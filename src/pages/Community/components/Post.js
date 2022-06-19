@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {AiOutlineHeart} from 'react-icons/ai';
 import {GiTalk} from 'react-icons/gi';
 
-import TierCircle from "../../../components/TierCircle";
+import { TierCircle } from "../../../components/TierCircle";
 import { Time } from "../../../components/Time";
 
 const Post = ({post}) => {
@@ -78,10 +78,10 @@ const PostDiv = styled.div`
     }
 
     .post__title{
-        width: 220px;
+        width: 70%;
         height: 20px;
         overflow: hidden;
-        //white-space: nowrap;
+        white-space: nowrap;
         text-overflow: ellipsis;;
         font-size: 14px;
         font-weight: bold;

@@ -32,7 +32,7 @@ const CategoryPicker = (props) => {
 
     return (
         <PickerDiv>
-          <Item onClick={openPicker}>{selected}</Item>
+          <Item>{selected}</Item>
           {open ? 
             <div className="category-container"> 
                 <Item onClick={selectCategory} id="free-board">자유게시판</Item>  

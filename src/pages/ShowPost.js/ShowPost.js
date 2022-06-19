@@ -42,7 +42,8 @@ const ShowPost = (props) => {
           response.json().then((data) =>{ 
             console.log(data.data);
             setPost(data.data);
-            console.log(post)           
+            console.log(post.comments)
+            setIsLoading(false);
           })
         }) 
       }
@@ -50,7 +51,7 @@ const ShowPost = (props) => {
         console.log(error)
       }
 
-    },[state])
+    },[])
 
   //사용자 접근
   const [restriction, setRestriction] = useState(true);
@@ -65,11 +66,7 @@ const ShowPost = (props) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(()=>{
-
-    if(isLoading == true)
-      setIsLoading(false);
-    else {
-      if(user[0] == true) {
+     if(isLoading === false){ if(user[0] == true) {
         fetch(`http://13.209.180.179:8080/profile/my-settings`, {
             method: 'GET',
             headers: {
@@ -87,20 +84,20 @@ const ShowPost = (props) => {
                 setRestriction(false);
               else goHome();
             } else if (post.boardName == '자유게시판'){
-              console.log(post.boardName)
               setRestriction(false);
             }
         })
     })} else if(user[0] == false){
-      if(post.boardName === '자유게시판') {
+      if(post.boardName == "자유게시판") {
+        console.log(';')
         setRestriction(false);          
       } else {
         goHome();
-      };
+      };}
     }
-    }  
-    
-  },[post])
+
+    console.log(restriction);
+  },[isLoading])
 
   //답댓글 달기
   const [reply, setReply] = useState(false);
@@ -111,26 +108,31 @@ const ShowPost = (props) => {
     console.log(replyComment);
     setReply(true);
     editorRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }
 
+  };
   
 
-    return (!restriction && post) && (
+    return (!isLoading && !restriction) && (
         <ShowingDiv id="ShowingDiv">
             <div className="community__top">
                 <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
                 <Navigator/>
             </div>
-            <Content post={post} point={0}/>
+            <Content post={post}/>
             <div className="commentNum">댓글  ({post.comments?.length})</div>
-            {post.comments?.map((c)=> {
+            {post.comments?.sort((a, b) => { return a.commentGroup - b.commentGroup;})
+              .map((c)=> {
               if(c.status == 'A'){
                   return (
-                    <Comment commentDto={c} key={c.id} forceUpdate={forceUpdate} moveToEditor={moveToEditor} setReplyComment={setReplyComment}/>
+                    <Comment commentDto={c} key={c.id} forceUpdate={forceUpdate} moveToEditor={moveToEditor} setReplyComment={setReplyComment} isDeleted={false}/>
                   )
-                }
-              })
-            }
+              }
+              else {
+                return(
+                  <Comment commentDto={c} key={c.id} forceUpdate={forceUpdate} moveToEditor={moveToEditor} setReplyComment={setReplyComment} isDeleted={true}/>
+                ) 
+              }      
+            })}
             <CommentEditor postId={post.id} forceUpdate={forceUpdate} ref={editorRef} reply={reply} setReply={setReply} replyComment={replyComment}/>
             <Footer/>
         </ShowingDiv>

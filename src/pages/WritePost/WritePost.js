@@ -20,18 +20,6 @@ const WritePost = (props) => {
   const category = useLocation().state.category || '자유게시판';
 
   console.log(useLocation().state.category)
-    const removePost = async () => {
-      await axios
-            .get("/api/community/post/non-user/5/")
-            .then((response) => {
-              console.log(response.data);
-              console.log("글 삭제 완료");
-            })
-            .catch((error) => {
-              console.error("실패했습니다");
-            })
-    }
-
 
     return (                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
         <WritePostDiv id="WritingPostDiv">

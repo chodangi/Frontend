@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from 'axios';
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
@@ -17,8 +17,8 @@ const PostEditor = ({category, isEditing, postObj}) => {
   const jwt = localStorage.getItem('user');
   const user = useState(jwt ? true : false)
 
-
   //글쓰기
+  const [text, setText] = useState();
 
   const editedPost= isEditing ? {
     "attachedFiles": postObj.attachedFiles,
@@ -31,35 +31,67 @@ const PostEditor = ({category, isEditing, postObj}) => {
     "userId": postObj.userId
   } : {}
   
-  const [post, setPost] = useState(isEditing ? 
-    editedPost
-    :
+  const [post, setPost] = useState( !isEditing ?
     {
     nickname: '',
     content: '',
     boardName: category,
     guestName: '',
-    guestPwd: '0000',
-  })
+    guestPwd: '',
+    } 
+    :
+    {
+      attachedFiles: postObj.attachedFiles,
+      boardName: postObj.boardName,
+      content: postObj.content,
+      guestName: postObj.guestName,
+      guestPwd: postObj.guestPwd,
+      nickname: postObj.userNickname,
+      postId: postObj.id,
+      userId: postObj.userId
+    }
+  )
+
+  //이름불러오기
+  useEffect(()=>{
+    if(user[0] === true){
+      fetch(`http://13.209.180.179:8080/profile/my-settings`, {
+            method: 'GET',
+            headers: {
+                jwt: jwt,
+            },
+        }).then((response) => {
+            response.json().then((data) =>{  
+            console.log(data.data);
+            setPost({
+              ...post,
+              nickname: data.data?.userNickname
+            })
+        })
+      })}
+  },[])
+
 
   const onChange = (e) => {
     const { id } = e.currentTarget;
 
     if( id == "content") {
-      if(isEditing){
-        editedPost.content  = e.currentTarget.innerHTML
-      } else {
         setPost({
           ...post,
           [id]: e.currentTarget.value
         });
-      }
-    } else if( id == "guestName"){
-      setPost({
-        ...post,
-        [id]: e.currentTarget.value,
-        nickname: e.currentTarget.value
-      });
+    } else if( id == "nickname"){
+        if(user[0] == true) {
+          setPost({
+            ...post,
+            nickname: e.currentTarget.value
+          });
+        } else {
+          setPost({
+            ...post,
+            guestName: e.currentTarget.value
+          });
+        }
       console.log(post);
     } else if( id == "guestPwd" ){
       setPost({
@@ -83,18 +115,13 @@ const PostEditor = ({category, isEditing, postObj}) => {
           selectedCategory = '그지게시판';
           break;
       }
-      if(isEditing) {
-        console.log('4')
-        editedPost.boardName  = selectedCategory;
-      } else {
-        setPost({
+
+      setPost({
           ...post,
           boardName: selectedCategory,
         });
-      }
 
-
-      console.log(editedPost);
+      console.log(post);
     }
     
   }
@@ -149,8 +176,8 @@ const PostEditor = ({category, isEditing, postObj}) => {
 
   const createPost = async () => {
 
-    if(post.guestName == "") {
-      console.log("빈칸을 채우세요");
+    if(post.nickname == "") {
+      alert("빈칸을 채우세요");
       return;
     }
 
@@ -160,10 +187,12 @@ const PostEditor = ({category, isEditing, postObj}) => {
         jwt: jwt,
       },
     }).then((response) => {
-      response.json().then((data) =>{  
-        post.userId = data.data.id;
-        post.userPoint = data.data.point;
-      })
+      if(user[0] == true) {
+        response.json().then((data) =>{  
+          post.userId = data.data.id;
+          post.userPoint = data.data.point;
+        })
+      }
     })
 
     await fetch(`http://13.209.180.179:8080/attach/post-image?${makeQuery(post)}`, {
@@ -181,12 +210,11 @@ const PostEditor = ({category, isEditing, postObj}) => {
 
   const createPostByGuest = async () => {
 
-    if(post.guestPwd == "password" || post.guestName == "guest") {
-      console.log("빈칸을 채우세요");
+    if(post.guestPwd == "" || post.guestName == "") {
+      alert("빈칸을 채우세요");
       return;
     }
     
-
     await fetch(`http://13.209.180.179:8080/post/non-user?${makeQuery(post)}`, {
       method: 'POST',
       headers: {
@@ -205,26 +233,39 @@ const PostEditor = ({category, isEditing, postObj}) => {
   const updatePost = async () => {
 
     console.log(postObj);
-    console.log(editedPost);
 
-    try {await fetch(`http://13.209.180.179:8080/community/post`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-        jwt: jwt,
-      },
-      body:JSON.stringify(editedPost),
-    })
-      .then(() => {
-        navigate(-1);
-      }) 
-      .catch((error) => {
-        console.log(error.response.data);
-    })
+    if(user[0]){
+      await fetch(`http://13.209.180.179:8080/community/post`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          jwt: jwt,
+        },
+        body:JSON.stringify(post),
+      })
+        .then(() => {
+          navigate(-1);
+        }) 
+        .catch((error) => {
+          console.log(error.response.data);
+      })
+    } else {
+      await fetch(`http://13.209.180.179:8080/community/post/non-user/${post.postId}/${post.guestPwd}`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          jwt: jwt,
+        },
+        body:JSON.stringify(post),
+      })
+        .then(() => {
+          navigate(-1);
+        }) 
+        .catch((error) => {
+          console.log(error.response.data);
+      })
     }
-    catch(error) {
-      console.log(error)
-    }
+   
 }
 
   return (                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
@@ -234,16 +275,16 @@ const PostEditor = ({category, isEditing, postObj}) => {
           <CategoryPicker className="categoryPicker" category={category} onChange={onChange}></CategoryPicker>
         </div>
         <div className="userInfo">
-          <input type="text" className="input nickname" placeholder="닉네임" spellCheck="false" id="guestName" value={post.nickname} onChange={onChange}></input>
+          <input type="text" className="input nickname" placeholder="닉네임" spellCheck="false" id="nickname" value={user[0] ? post.nickname : post.guestName} onChange={onChange} disabled={isEditing ? true : false}></input>
           {
-            user 
+            user[0] 
             ? 
             <></>
             :
-            <input type="password" className="input password" placeholder="비밀번호" id="guestPwd" value={post.guestPwd} onChange={onChange}></input>
+            <input type="password" className="input password" placeholder="비밀번호" id="guestPwd" value={post.guestPwd} onChange={onChange} disabled={isEditing ? true : false}></input>
           }
         </div>
-        <TextField onChange={onChange} content={isEditing && postObj.content} isEditing={isEditing}/>
+        <TextField onChange={onChange} content={isEditing && postObj.content} isEditing={isEditing} text={text} setText={setText}/>
         <div>
           {
           isEditing ? 
@@ -253,6 +294,14 @@ const PostEditor = ({category, isEditing, postObj}) => {
           }
         </div>
         <div className="submit-box">
+          <button className="submit" onClick={isEditing ? updatePost : (user[0] ? createPost : createPostByGuest)}>완료</button>
+        </div>
+      </PostEditorDiv>
+  );
+};
+
+/*
+<div className="submit-box">
           <div className="btn-box">
             <FiImage className="btn image" size="2rem" onClick={handleClick}/>
             <input 
@@ -263,11 +312,9 @@ const PostEditor = ({category, isEditing, postObj}) => {
               style={{display: 'none'}}
             />
           </div>
-          <button className="submit" onClick={user ? (isEditing ? updatePost: createPost) : createPostByGuest}>완료</button>
+          <button className="submit" onClick={isEditing ? updatePost : (user[0] ? createPost : createPostByGuest)}>완료</button>
         </div>
-      </PostEditorDiv>
-  );
-};
+*/
 
 
 export default PostEditor;

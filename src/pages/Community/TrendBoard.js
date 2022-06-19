@@ -1,75 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Header from "../../components/Header";
 import Navigator from "../../components/BoardNav";
+import Post from "./components/Post";
 import Footer from "../../components/Footer";
 import {IoIosArrowDown} from 'react-icons/io';
 
+import { size } from "../../styles/Theme";
+import Pagination from "./components/Pagination";
 import SearchBar from "../../components/SearchBar";
 import PostList from "./components/PostList";
 
 
 const contentHeight = (window.innerHeight - 130) + "px" ;
 
-const PoorBoard = (props) => {
+
+const TrendBoard = (props) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const paginate = pageNum => setCurrentPage(pageNum);
 
-  const category = '그지게시판';
-
-  //로그인여부
-  const jwt = localStorage.getItem('user');
-  const user = useState(jwt ? true : false);
-
-  //사용자 접근
-  const [restriction, setRestriction] = useState(true);
-
-  useEffect(()=>{
-      if(user[0] == true) {
-        fetch(`http://13.209.180.179:8080/profile/my-settings`, {
-            method: 'GET',
-            headers: {
-                jwt: jwt,
-            },
-        }).then((response) => {
-          response.json().then((data) =>{  
-            console.log(data.data?.point);
-            if(data.data?.point <= -1000)
-              setRestriction(false);
-          }) 
-        })
-      }
-  },[user])
 
   const navigate = useNavigate();
 
-  const moveToEditor = () => {
-    if(restriction == false) {
-      navigate('/writePost');
-    } else {
-      alert('등급이 그지인 회원만 작성할 수 있습니다.')
-    }
-  }
-
+  
+  const board = useParams().boardName
 
   return (
     <CommunityDiv>
       <div className="community__top">
         <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
         <Navigator/>
-        <div className="menu">
-          <button className="btn sortPopularPost" onClick={()=> navigate(`trend`)}>
-            실시간 인기글
-          </button>
-          <button className="btn writePost" onClick={moveToEditor}>글쓰기</button>
-        </div>
       </div>
       <div className="content" style={{ minHeight: contentHeight}}>
-        <PostList board={"poor"} trend={false}/>
+        <PostList board={board} trend={true}/>
       </div>
       <div className="community__bottom">
         <SearchBar className="search"/>
@@ -79,7 +45,12 @@ const PoorBoard = (props) => {
   );
 };
 
-export default PoorBoard;
+/*<Pagination postPerPage={10} totalPosts={50} paginate={paginate} />*/
+/*{postList.map((p) => {
+            <Link to={"/showPost"} state={{post_id: p.id}} className="link post"><Post/></Link>
+          })
+        } */
+export default TrendBoard;
 
 const CommunityDiv = styled.div`
 
@@ -134,10 +105,13 @@ const CommunityDiv = styled.div`
   .btn.writePost{
     width: 50px;
     height: 20px; //안들어가서 크기 조정함
-    color: ${(props) => props.theme.colors.text};
     text-decoration: none;
   }
 
+  .link {
+    color: ${(props) => props.theme.colors.text};
+    text-decoration: none;
+  }
 
   .arrowDown__btn{
     width:100%
