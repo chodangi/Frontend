@@ -32,16 +32,30 @@ const MyPage = (props) => {
         <hr />
         <History />
       </ProfileMainDiv>
-      <MyCommunity theme={props.theme} />
+      {/* <MyCommunity theme={props.theme} /> */}
       <SettingBtn onClick={() => (window.location.href = "/settings")}>
         설정
       </SettingBtn>
-      <div onClick={signOut}>SignOut</div>
+      <SignOutBtn onClick={signOut}>
+      SignOut
+      </SignOutBtn>
     </MyPageDiv>
   );
 };
 
 export default MyPage;
+
+const SignOutBtn = styled.div`
+  background-color: ${(props) => props.theme.colors.gray__2};
+  border: none;
+  border-radius: 0.5rem;
+  color: ${(props) => props.theme.colors.text};
+  cursor: pointer;
+  font-size: ${size.font_mid};
+  margin: 0 auto;
+  padding: 0.5rem;
+  width: 90%;
+`
 
 const MyPageDiv = styled.div`
   max-width: 600px;
@@ -75,7 +89,7 @@ const SettingBtn = styled.button`
   color: ${(props) => props.theme.colors.text};
   cursor: pointer;
   font-size: ${size.font_mid};
-  margin: 2rem auto;
+  margin: 2rem auto 1rem auto;
   padding: 0.5rem;
   width: 90%;
 `;
