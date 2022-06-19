@@ -11,7 +11,7 @@ const TemperatureBox = (props) => {
     const ada = { type: "에이다"};
     const sol = { type: "솔라나"};
     const dog = { type: "도지코인"};
-    const dot = { type: "도지코인"};
+    const dot = { type: "폴카닷"};
     const trx = { type: "트론"};
     const dai = { type: "다이"};
     const avx = { type: "아발란체"};
