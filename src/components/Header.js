@@ -16,19 +16,20 @@ const Header = (props) => {
         <HeaderDiv>
             <Link to="/"><img className="logo__img" src={process.env.PUBLIC_URL+"/img/logo.png"} alt=""></img></Link>
             <div className="header__item">
-                <Link to={isLoggedIn ? "/myPage" : "/signIn"}><div className="login">{isLoggedIn ? 'MyPage' : 'SignIn'}</div></Link>
-                <ToggleTheme theme={props.theme} darkModeHandler={props.darkModeHandler} />
+                <Link to={isLoggedIn ? "/myPage" : "/signIn"}><div className="login">{isLoggedIn ? 'MyPage' : 'LOGIN'}</div></Link>
+                
             </div>
         </HeaderDiv>
     );
 };
 
+/*<ToggleTheme theme={props.theme} darkModeHandler={props.darkModeHandler} />*/
 export default Header;
 
 const HeaderDiv = styled.div`
     display: flex;
     justify-content:space-between;
-    align-items:center;    
+    align-items: center;    
     width: 100%;
     height: 50px;
     padding: 0px 12px 0px 12px; 
@@ -40,12 +41,13 @@ const HeaderDiv = styled.div`
     }
 
     .login {
-        width: 50px;
-        height: 20px;
-        padding: 3px 5px 0px 0px;
+        width: 60px;
+        height: 25px;
+        padding: 3px 0px 5px 0px;
         color: lightgray;
-        font-size: 13px;
+        font-size: 15px;
         font-weight: bold;
+        text-align: center;
     }
 
     a:link {

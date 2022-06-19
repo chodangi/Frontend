@@ -108,11 +108,11 @@ const Kakao = () => {
   }, []);*/
   
   return (
-    <div className="login__kakao">
+    <div className="login__kakao" style={{ width:"70%", marginTop: "100px"}}>
       <a id="custom-login-btn" href={KAKAO_AUTH_URL}>
         <img
           src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"
-          width="222"
+          width="100%"
         />
       </a>
     </div>

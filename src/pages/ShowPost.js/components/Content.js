@@ -60,19 +60,21 @@ const Content = ({post}) => {
     const editOrDeletePostByGuest = () =>{
         if(password == post.guestPwd){ 
             if(editOrDelete == "modify") {
+                setPassword('');
                 navigate('/editPost', {
                     state: {
                         post: post
                     },
                 });
             } else if (editOrDelete == "delete") {
-                fetch(`http://13.209.180.179:8080/community/${post.id}/${password}`, {
+                fetch(`http://13.209.180.179:8080/community/post/non-user/${post.id}/${password}`, {
                     method: 'GET',
                     headers: {
                         jwt: jwt,
                     },})
                     .then((response)=> {
                         console.log(response)
+                        setPassword('');
                         navigate(-1);
                     }
                 )
@@ -203,7 +205,7 @@ const Content = ({post}) => {
                 <div className={preference === 'dislike' ? 'down circle active' : 'down circle'} onClick={dislikePost}>손절</div>
             </div>
             <div className="line">
-                <CopyToClipboard text={window.location.href} onCopy={() => alert("링크가 클립보드에 복사되었어요!")}>
+                <CopyToClipboard text={window.location.href} onCopy={() => alert("링크가 클립보드에 복사되었습니다!")}>
                     <div className="url"><BsFillShareFill className="icon" size="1.1rem" color="#ffffff"/>URL 복사</div>
                 </CopyToClipboard>
                 <div className="report"><MdReport className="icon" size="1.3rem" color="red" onClick={reportPost}/>신고</div>

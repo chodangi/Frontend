@@ -9,16 +9,16 @@ const Navigator = () =>{
         <BoardNavDiv>
             <ul className="nav__boards">
                 <li className="popular board" >
-                    <NavLink to="/popular" className="boardLink" activeclassname="active"> 인기게시판 </NavLink>
+                    <NavLink to="/board/popular" className="boardLink" activeclassname="active"> 인기게시판 </NavLink>
                 </li>
                 <li className="free board">
-                    <NavLink to="/free" className="boardLink" activeclassname="active"> 자유게시판 </NavLink>
+                    <NavLink to="/board/free" className="boardLink" activeclassname="active"> 자유게시판 </NavLink>
                 </li>
                 <li className="rich board">
-                    <NavLink to="/rich" className="boardLink" activeclassname="active"> 부자게시판 </NavLink>
+                    <NavLink to="/board/rich" className="boardLink" activeclassname="active"> 부자게시판 </NavLink>
                 </li>
                 <li className="poor board">
-                    <NavLink to="/poor" className="boardLink" activeclassname="active"> 그지게시판 </NavLink>
+                    <NavLink to="/board/poor" className="boardLink" activeclassname="active"> 그지게시판 </NavLink>
                 </li>
             </ul>
         </BoardNavDiv>
