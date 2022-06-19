@@ -35,10 +35,8 @@ const Banner = () => {
             pagination={{ clickable: true }}
             style={swiperStyle}
         >
-            <SwiperSlide style={slideStyle}>Slide 1</SwiperSlide>
-            <SwiperSlide style={slideStyle}>Slide 2</SwiperSlide>
-            <SwiperSlide style={slideStyle}>Slide 3</SwiperSlide>
-            <SwiperSlide style={slideStyle}>Slide 4</SwiperSlide>
+            <SwiperSlide style={slideStyle}><img src={process.env.PUBLIC_URL+"/img/banner1.jpg"} style={{width: '100%', objectFit: 'cover'}}/></SwiperSlide>
+            <SwiperSlide style={slideStyle}><img src={process.env.PUBLIC_URL+"/img/banner2.jpg"} style={{width: '100%', objectFit: 'cover'}}/></SwiperSlide>
         </Swiper>
     );
 }

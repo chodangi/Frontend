@@ -1,24 +1,24 @@
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Navigator = () =>{
 
     return (
         <BoardNavDiv>
             <ul className="nav__boards">
-                <li className="popular board">
-                    <div className="highlight"/>
-                    <Link to="/" className="boardLink">인기게시판</Link>
+                <li className="popular board" >
+                    <NavLink to="/popular" className="boardLink" activeclassname="active"> 인기게시판 </NavLink>
                 </li>
                 <li className="free board">
-                    <Link to="/" className="boardLink">자유게시판</Link>
+                    <NavLink to="/free" className="boardLink" activeclassname="active"> 자유게시판 </NavLink>
                 </li>
                 <li className="rich board">
-                    <Link to="/" className="boardLink">부자게시판</Link>
+                    <NavLink to="/rich" className="boardLink" activeclassname="active"> 부자게시판 </NavLink>
                 </li>
                 <li className="poor board">
-                <Link to="/" className="boardLink lastItem">그지게시판</Link>
+                    <NavLink to="/poor" className="boardLink" activeclassname="active"> 그지게시판 </NavLink>
                 </li>
             </ul>
         </BoardNavDiv>
@@ -43,17 +43,7 @@ const BoardNavDiv = styled.div`
         margin:0;
         padding:0;
     }
-
-    .highlight{
-        width: 100%;
-        height: 3px;
-        background-color: #EA622F;
-    }
-
-    .popular .boardLink{
-        color: #EA622F;
-    }
-
+    
     .board{
         display: flex;
         flex-direction: column;
@@ -71,6 +61,10 @@ const BoardNavDiv = styled.div`
         border-right: 1px solid #888888;
         text-align: center;
         padding-top: 3px;
+    }
+
+    .boardLink.active {
+        color: #EA622F;
     }
     
     .boardLink.lastItem{

@@ -1,4 +1,5 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
+import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 
 import Header from "../../components/Header";
@@ -6,21 +7,38 @@ import MainNav from "../../components/MainNav";
 import Footer from "../../components/Footer";
 import Description from "./components/Description";
 import TemperatureBox from "./components/TemperatureBox";
+import api from "../../api/api";
 
 const Temperature = (props) => {
 
+    const navigate = useNavigate(); 
     const contentHeight = (window.innerHeight - 80) + "px" ;
+    const [TemperatureList, setTemperatureList] = useState([])
+    const [Temperature, setTemperature] = useState([])
     
+      const showAllPost = async () => {
+        const { data } = await api.get('/temper/coin-temper')
+        setTemperature(Object.values(data))
+        setTemperatureList(Object.keys(data))
+    }
+
+      useEffect(() => {
+        showAllPost()
+      }, [])
+
+    const onClickHandler = (e)=>{
+        navigate(`/temperatureComment/${e}`)
+    }
+      
     return (
         <TemperatureDiv>
             <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
             <MainNav/>
             <div className="content" style={{minHeight: contentHeight}}>
                 <Description/>
-                <TemperatureBox type={"bit"}/>
-                <TemperatureBox type={"eth"}/>
-                <TemperatureBox type={"rip"}/>
-                
+                {TemperatureList.map((item,index)=>(
+                    <TemperatureBox type={item} temper={Temperature[index]} key={item} onPress={() => onClickHandler(item)}/>
+                ))}
             </div>
             <Footer/>
         </TemperatureDiv>
@@ -33,6 +51,7 @@ const TemperatureDiv = styled.div`
     align-items:center;
 
     width: 100vw;
+    max-width: 600px;
 
     .content {
         display:flex;
@@ -47,7 +66,6 @@ const TemperatureDiv = styled.div`
         flex-direction: column;
         align-items:center;
         color: white;
-
         width: 100%;
         height: 100%;
         margin: 0;

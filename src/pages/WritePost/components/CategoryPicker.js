@@ -15,10 +15,6 @@ const CategoryPicker = (props) => {
         const {target: {id}} = e;
         props.onChange(e);
         switch(id){
-            case "popular-board": 
-                setSelected('인기게시판');
-                setOpen(false);
-                break;
             case "free-board": 
                 setSelected('자유게시판');
                 setOpen(false);
@@ -36,10 +32,9 @@ const CategoryPicker = (props) => {
 
     return (
         <PickerDiv>
-          <Item onClick={openPicker}>{selected}</Item>
+          <Item>{selected}</Item>
           {open ? 
-            <div className="category-container">
-                <Item onClick={selectCategory} id="popular-board">인기게시판</Item>  
+            <div className="category-container"> 
                 <Item onClick={selectCategory} id="free-board">자유게시판</Item>  
                 <Item onClick={selectCategory} id="rich-board">부자게시판</Item>  
                 <Item onClick={selectCategory} id="poor-board">그지게시판</Item> 
