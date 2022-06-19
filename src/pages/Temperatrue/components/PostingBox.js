@@ -1,24 +1,14 @@
 import React, { useState } from 'react'
-import { ImKey } from 'react-icons/im';
-import { FaUser } from 'react-icons/fa';
 import styled from 'styled-components'
 import api from '../../../api/api';
 
 function PostingBox({type, refly, addComment}) {
-    const [Input, setInput] = useState({
-        userName : "",
-        password : "",
-        content : ""
-    })
+    const [Input, setInput] = useState("")
 
     const jwtToken = localStorage.getItem('user')
 
     const onInputHandler = (event)=>{
-        const {name, value} = event.target
-        setInput({
-            ...Input,
-            [name] : value
-        })
+        setInput(event.target.value)
     }
 
     const onSubmitHandler = (e) => {
@@ -26,28 +16,18 @@ function PostingBox({type, refly, addComment}) {
 
         const commentDto = {
             "commentGroup": refly.commentGroup,
-            "content": Input.content,
+            "content": Input,
             "level": refly.reflyConfirm ? 1 : 0,
-            "nickname": Input.userName,
-            "password": Input.password
         }
 
         if(jwtToken){
             const postComment = async () => {
                 const { data } = await api.post(`/temper/comment/${type}`,commentDto)
                 addComment(data)
-                setInput({
-                    userName : "",
-                    password : "",
-                    content : ""
-                })
+                setInput("")
             }
             
-            if(Input.userName.length===0){
-                alert("닉네임을 입력해주세요")
-            }else if(Input.password.length < 4){
-                alert("패스워드를 4자 이상 입력해주세요")
-            }else if(Input.content.length === 0){
+            if(Input.length === 0){
                 alert("내용을 입력해주세요")
             }else{
                 postComment()
@@ -61,17 +41,7 @@ function PostingBox({type, refly, addComment}) {
     return (
         <TemperaturePostingBox reflyConfirm={refly.reflyConfirm}>
             <div className='PostingInputBox'>
-                <div className='PostingUserBox'>
-                    <PostingUserBox>
-                        <label><FaUser /></label>
-                        <input name="userName" type="text" value={Input.userName} onChange={onInputHandler} placeholder="UserName" />
-                    </PostingUserBox>
-                    <PostingUserBox>
-                        <label><ImKey /></label>
-                        <input name="password" type="password" value={Input.password} onChange={onInputHandler} placeholder="pass" />
-                    </PostingUserBox>
-                </div>
-                <textarea name="content" value={Input.content} onChange={onInputHandler} maxLength="195" placeholder="내용을 입력해주세요" />
+                <textarea name="content" value={Input} onChange={onInputHandler} maxLength="195" placeholder="내용을 입력해주세요" />
             </div>
             <button onClick={onSubmitHandler}>등록</button>
         </TemperaturePostingBox>
@@ -81,7 +51,7 @@ function PostingBox({type, refly, addComment}) {
 export const TemperaturePostingBox = styled.form`
     width:100%;
     max-width: 600px;
-    height:100px;
+    height:90px;
     margin-top:25px;
     background-color:white;
     display:flex;
@@ -114,8 +84,8 @@ export const TemperaturePostingBox = styled.form`
 
     textarea{
         width:100%;
-        padding:5px;
-        height:75px;
+        padding:10px;
+        height:100%;
         border:0px;
         outline:none;
     }

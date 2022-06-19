@@ -8,6 +8,17 @@ const TemperatureBox = (props) => {
     const btc = { type: "비트코인"};
     const eth = { type: "이더리움"};
     const xrp = { type: "리플"};
+    const ada = { type: "에이다"};
+    const sol = { type: "솔라나"};
+    const dog = { type: "도지코인"};
+    const dot = { type: "도지코인"};
+    const trx = { type: "트론"};
+    const dai = { type: "다이"};
+    const avx = { type: "아발란체"};
+    const wmx = { type: "위믹스"};
+    const rep = { type: "어거"};
+    const etc = { type: "이더리움 클래식"};
+    const btg = { type: "비트코인 골드"};
     const [Type, setType] = useState(btc)
 
     const noBackgroundStyle = {
@@ -20,6 +31,17 @@ const TemperatureBox = (props) => {
           case "BTC" : setType(btc); break;
           case "ETH" : setType(eth); break;
           case "XRP" : setType(xrp); break;
+          case "ADA" : setType(ada); break;
+          case "SOL" : setType(sol); break;
+          case "DOG" : setType(dog); break;
+          case "DOT" : setType(dot); break;
+          case "TRX" : setType(trx); break;
+          case "DAI" : setType(dai); break;
+          case "AVX" : setType(avx); break;
+          case "WMX" : setType(wmx); break;
+          case "REP" : setType(rep); break;
+          case "ETC" : setType(etc); break;
+          case "BTG" : setType(btg); break;
       }
     }, [])
     

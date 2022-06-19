@@ -6,12 +6,11 @@ import api from '../../../api/api';
 import { AiOutlineHeart,AiFillHeart } from "react-icons/ai";
 import ModifyCommentBox from './ModifyCommentBox';
 
-function CommentBox({ comment, refly, user, deleteComment, type }) {
+function CommentBox({ comment, refly, user, deleteComment, type, upDateComment }) {
   const navigate = useNavigate();
   const date = comment.createdAt.substring(0, 10).replace(/[-]/g, ".")
   const time = comment.createdAt.substring(11, 16)
   const jwtToken = localStorage.getItem('user')
-
   const [Comment, setComment] = useState({})
   const [Reflycomments, setReflycomments] = useState([])
   const [Refly, setRefly] = useState(false)
@@ -43,6 +42,9 @@ function CommentBox({ comment, refly, user, deleteComment, type }) {
   //댓글 수정
   const modifyComment = (data)=>{
     setComment(data)
+    if(!refly && comment.level !== 1){
+      upDateComment(Comment, data)
+    }
   }
 
   //댓글 수정 취소
@@ -66,10 +68,19 @@ function CommentBox({ comment, refly, user, deleteComment, type }) {
 
   //댓글 신고
   const onReportHandler = async() => {
-    if (window.confirm("정말 신고하겠습니까?")) {
-      alert("신고되었습니다");
-      const { data } = await api.post(`/temper/comment-report?commentId=${Comment.id}`)
+    if(jwtToken){
+      if (window.confirm("정말 신고하겠습니까?")) {
+        const { data } = await api.post(`/temper/comment-report?commentId=${Comment.id}`)
+        if(data){
+          alert("신고되었습니다");
+        }else{
+          alert("이미 신고한 댓글입니다")
+        }
+      }
+    }else{
+      alert("로그인을 해주세요")
     }
+    
   }
 
   //댓글 삭제

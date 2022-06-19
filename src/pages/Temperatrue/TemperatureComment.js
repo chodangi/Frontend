@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useParams} from "react-router";
+import { useParams,useLocation} from "react-router";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 import Header from "../../components/Header";
@@ -14,6 +14,7 @@ import CommentBox from "./components/CommentBox";
 import api from "../../api/api";
 
 const TemperatureComment = (props) => {
+    const category = useLocation();
     const {temperatureId} = useParams();
     const jwtToken = localStorage.getItem('user')
     const [User, setUser] = useState({})
@@ -41,7 +42,9 @@ const TemperatureComment = (props) => {
     const addComment = (e) => {
       setButtonList("total");
       const List = [e, ...CommentList.comments];
-      List.splice(List.length-1, 1)
+      if(CommentList.totalPages>1){
+        List.splice(List.length-1, 1)
+      }
       setCommentList({ ...CommentList, comments: List });
     };
 
@@ -72,6 +75,28 @@ const TemperatureComment = (props) => {
         }
     }
 
+    //댓글 수정시 CommentList 업데이트
+    const upDateComment = (prev, upDate)=>{
+        let body = [...CommentList.comments]
+        let pod = body.indexOf(prev)
+        body.splice(pod, 1, upDate)
+        setCommentList({...CommentList, comments : body})
+    }
+
+    //버튼 눌렀을시 각 버튼에 해당하는 댓글 불러오기
+    useEffect(() => {
+        const getComment = async (url) => {
+            const data = await api.get(url)
+            setCommentList(data)
+        }
+
+        switch(ButtonList){
+            case "total": getComment(`/temper/maincomments/${temperatureId}?size=10&page=0`); break;
+            case "popularity" : getComment(`/temper/comments/hot/${temperatureId}?size=10&page=0`); break;
+            case "search" : ; break;
+        }
+    }, [ButtonList])
+
     useEffect(() => {
         //초기 온도
         const getTemper = async ()=>{
@@ -87,21 +112,9 @@ const TemperatureComment = (props) => {
 
         if (jwtToken) getUser()
         getTemper()
+
     }, [])
-
-    //버튼 눌렀을시 각 버튼에 해당하는 댓글 불러오기
-    useEffect(() => {
-        const getComment = async (url) => {
-            const data = await api.get(url)
-            setCommentList(data)
-        }
-
-        switch(ButtonList){
-            case "total": getComment(`/temper/maincomments/${temperatureId}?size=10&page=0`); break;
-            case "popularity" : getComment(`/temper/comments/hot/${temperatureId}?size=10&page=0`); break;
-            case "search" : ; break;
-        }
-    }, [ButtonList])
+    
 
     return (
         <TemperatureCommentDiv>
@@ -122,10 +135,10 @@ const TemperatureComment = (props) => {
                     <TemperatureSearch type={temperatureId} getSearchComment={getSearchComment} />
                 </div>
                 {CommentList.comments.map((e) => (
-                    <CommentBox comment={e} key={e.id} refly={false} user={User} deleteComment={deleteComment} type={temperatureId} />
+                    <CommentBox comment={e} key={e.id} refly={false} user={User} deleteComment={deleteComment} type={temperatureId} upDateComment={upDateComment}/>
                 ))}
             </div>
-            {CommentList.currentPage !== CommentList.totalPages - 1 ? <MoreButton onClick={onPageHandler}><MdOutlineKeyboardArrowDown className="icon" /></MoreButton> : null}
+            {CommentList.totalPages>0 && CommentList.currentPage !== CommentList.totalPages - 1 ? <MoreButton onClick={onPageHandler}><MdOutlineKeyboardArrowDown className="icon" /></MoreButton> : null}
             <Footer />
         </TemperatureCommentDiv>
     );
