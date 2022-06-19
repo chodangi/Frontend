@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import styled from "styled-components";
-import { screen } from "@testing-library/react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Header from "../../components/Header";
 import Navigator from "../../components/BoardNav";
@@ -17,12 +14,10 @@ import SearchBar from "../../components/SearchBar";
 import PostList from "./components/PostList";
 
 
-//const width = screen.availHeight;
 const contentHeight = (window.innerHeight - 130) + "px" ;
-//const offsetHeight = document.getElementById('myPageDiv').offsetHeight;
 
 
-const PopularBoard = (props) => {
+const TrendBoard = (props) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const paginate = pageNum => setCurrentPage(pageNum);
@@ -30,19 +25,17 @@ const PopularBoard = (props) => {
 
   const navigate = useNavigate();
 
+  
+  const board = useParams().boardName
+
   return (
     <CommunityDiv>
       <div className="community__top">
         <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
         <Navigator/>
-        <div className="menu">
-          <button className="btn sortPopularPost" onClick={()=> navigate(`trend`)}>
-            실시간 인기글
-          </button>
-        </div>
       </div>
       <div className="content" style={{ minHeight: contentHeight}}>
-        <PostList board={"popular"} trend={false}/>
+        <PostList board={board} trend={true}/>
       </div>
       <div className="community__bottom">
         <SearchBar className="search"/>
@@ -57,7 +50,7 @@ const PopularBoard = (props) => {
             <Link to={"/showPost"} state={{post_id: p.id}} className="link post"><Post/></Link>
           })
         } */
-export default PopularBoard;
+export default TrendBoard;
 
 const CommunityDiv = styled.div`
 

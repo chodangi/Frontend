@@ -1,9 +1,10 @@
-import React from "react";
+import React,{useEffect} from "react";
 import styled from "styled-components";
 
 import {AiOutlineHeart} from 'react-icons/ai';
 import {GiTalk} from 'react-icons/gi';
 
+import { TierCircle } from "../../../components/TierCircle";
 import { Time } from "../../../components/Time";
 
 const Post = ({post}) => {
@@ -21,16 +22,17 @@ const Post = ({post}) => {
                     </div>
                     <div className="bottom line">
                         <div className="post__user container">
-                            <div className="post__tier">17</div>
+                            <TierCircle point={post.userPoint} size="small"></TierCircle>
                             <div>{post.userNickname}</div>
                         </div>
                         <div className="part-right">
                             <div className="post__heart container">
                                 <AiOutlineHeart className="heart icon"/>
-                                <div>30</div>
+                                <div>{post.upCnt}</div>
                             </div>
                             <div className="post__comment container">
-                                <GiTalk className="talk icon"/>13
+                                <GiTalk className="talk icon"/>
+                                <div>{post.comments?.length}</div>
                             </div>
                         </div>
                     </div>
@@ -76,10 +78,10 @@ const PostDiv = styled.div`
     }
 
     .post__title{
-        width: 220px;
+        width: 70%;
         height: 20px;
         overflow: hidden;
-        //white-space: nowrap;
+        white-space: nowrap;
         text-overflow: ellipsis;;
         font-size: 14px;
         font-weight: bold;

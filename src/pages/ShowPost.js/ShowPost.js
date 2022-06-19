@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, {useState, useEffect, useRef} from "react";
 import styled from "styled-components";
-import { useLocation, useParams } from 'react-router-dom';
+import {useParams, useNavigate } from 'react-router-dom';
 
 import Header from "../../components/Header";
 import Navigator from "../../components/BoardNav";
@@ -11,18 +11,28 @@ import CommentEditor from "../../components/Comment/CommentEditor";
 
 const ShowPost = (props) => {
 
-    //const post = useLocation().state.post;
+  //로그인여부
+  const jwt = localStorage.getItem('user');
+  
+  const user = useState(jwt ? true : false)
+
+  // 댓글 리렌더링
+  const [state, updateState] = useState();
+  
+  const forceUpdate =()=>{
+    updateState({});
+    console.log('rerender')
+  } 
 
 
-    //게시글 조회
+    //게시글 조회, 작성자 포인트 조회
     const postId = useParams().postId
-    console.log(postId)
 
     const [post, setPost] = useState([]);
 
-    useEffect(()=>{
+    useEffect( async()=>{
       try { 
-        fetch(`http://13.209.180.179:8080/community/post/${postId}`, {
+        await fetch(`http://13.209.180.179:8080/community/post/${postId}`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
@@ -32,20 +42,77 @@ const ShowPost = (props) => {
           response.json().then((data) =>{ 
             console.log(data.data);
             setPost(data.data);
-            console.log(post)
-           
+            console.log(post.comments)
+            setIsLoading(false);
           })
         }) 
       }
       catch(error) {
         console.log(error)
       }
+
     },[])
 
+  //사용자 접근
+  const [restriction, setRestriction] = useState(true);
 
+  const navigate = useNavigate();
+
+  const goHome = () => {
+    alert('접근할 수 없는 게시판입니다.');
+    navigate('/');
+  }
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(()=>{
+     if(isLoading === false){ if(user[0] == true) {
+        fetch(`http://13.209.180.179:8080/profile/my-settings`, {
+            method: 'GET',
+            headers: {
+                jwt: jwt,
+            },
+        }).then((response) => {
+            response.json().then((data) =>{  
+            console.log(data.data?.point);
+            if(post.boardName == '부자게시판') {
+              if(data.data?.point >= 1000)
+                setRestriction(false);
+              else goHome();
+            } else if (post.boardName == '그지게시판'){
+              if(data.data?.point <= -1000)
+                setRestriction(false);
+              else goHome();
+            } else if (post.boardName == '자유게시판'){
+              setRestriction(false);
+            }
+        })
+    })} else if(user[0] == false){
+      if(post.boardName == "자유게시판") {
+        console.log(';')
+        setRestriction(false);          
+      } else {
+        goHome();
+      };}
+    }
+
+    console.log(restriction);
+  },[isLoading])
+
+  //답댓글 달기
+  const [reply, setReply] = useState(false);
+  const [replyComment, setReplyComment] = useState('');
+  const editorRef = useRef(null);
+
+  const moveToEditor = (e) =>{
+    console.log(replyComment);
+    setReply(true);
+    editorRef.current?.scrollIntoView({ behavior: 'smooth' });
+
+  };
   
 
-    return post && (
+    return (!isLoading && !restriction) && (
         <ShowingDiv id="ShowingDiv">
             <div className="community__top">
                 <Header theme={props.theme} darkModeHandler={props.darkModeHandler}/>
@@ -53,24 +120,28 @@ const ShowPost = (props) => {
             </div>
             <Content post={post}/>
             <div className="commentNum">댓글  ({post.comments?.length})</div>
-            <Comment post={post}/>
-            <Comment post={post}/>
-            <Comment post={post}/>
-            <CommentEditor postId={post.id}/>
+            {post.comments?.sort((a, b) => { return a.commentGroup - b.commentGroup;})
+              .map((c)=> {
+              if(c.status == 'A'){
+                  return (
+                    <Comment commentDto={c} key={c.id} forceUpdate={forceUpdate} moveToEditor={moveToEditor} setReplyComment={setReplyComment} isDeleted={false}/>
+                  )
+              }
+              else {
+                return(
+                  <Comment commentDto={c} key={c.id} forceUpdate={forceUpdate} moveToEditor={moveToEditor} setReplyComment={setReplyComment} isDeleted={true}/>
+                ) 
+              }      
+            })}
+            <CommentEditor postId={post.id} forceUpdate={forceUpdate} ref={editorRef} reply={reply} setReply={setReply} replyComment={replyComment}/>
             <Footer/>
         </ShowingDiv>
     );
 }
 
-/*<Content post={post}/>
-              <div className="commentNum">댓글  (댓글개수)]</div>
-              <Comment post={post}/>
-              <Comment post={post}/>
-              <Comment post={post}/>
-              <CommentEditor postId={post.id}/>*/
 
-              const ShowingDiv = styled.div`
 
+const ShowingDiv = styled.div`
   display:flex;
   flex-direction: column;
   align-items:center;
