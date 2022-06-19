@@ -1,37 +1,56 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import api from "../../../api/api";
 
 import { size } from "../../../styles/Theme";
 
 const Profile = () => {
-  //   const [userInfo, setUserInfo] = useState([]);
-  //   useEffect(() => {
-  //     if (!userInfo.length) {
-  //       fetch(`url`)
-  //         .then((res) => res.json())
-  //         .then((res) => {
-  //           setUserInfo(res.userInfo);
-  //         });
-  //     }
+    const [userInfo, setUserInfo] = useState({});
+    useEffect(()=>{
+      api.get('profile/my-settings').then(({data:{userNickname:nickname,point,winsRate}})=>setUserInfo({
+        nickname,
+        is_rich : getLevel(point).title,
+        level :getLevel(point).level,
+        winsRate
+      }))
+    },[])
+
+    function getLevel(point){
+      if (point > 1000) {
+        return {title:'부자',level:Math.floor((point - 999) / 100)}
+      } else if (point > -1000) {
+        return {title:'중산층',level:0}
+      } else {
+        return {title:'거지',level:Math.floor((point + 999) / 100) * -1}
+      }
+    }
+
+    // useEffect(() => {
+    //   if (!userInfo.length) {
+    //     fetch(`url`)
+    //       .then((res) => res.json())
+    //       .then((res) => {
+    //         setUserInfo(res.userInfo);
+    //       });
+    //   }
   //   });
 
-  const userInfo = {
-    nickname: "MC문어 28",
-    is_rich: false,
-    level: 4,
-  };
-  const hitRatio = 63.7;
+  // const userInfo = {
+  //   nickname: "MC문어 28",
+  //   is_rich: false,
+  //   level: 4,
+  // };
 
   return (
     <ProfileDiv>
       <ProfileImgDiv rank={userInfo?.is_rich}>
-        {userInfo?.level}
+        Lv.{userInfo?.level}
         <br />
         {userInfo?.is_rich ? "부자" : "그지"}
       </ProfileImgDiv>
       <ProfileTxtDiv>
         <div className="profile__nickname">{userInfo?.nickname}</div>
-        <div className="profile__hitRatio">평균 적중률: {hitRatio}%</div>
+        <div className="profile__hitRatio">평균 적중률: {userInfo.winsRate}%</div>
       </ProfileTxtDiv>
     </ProfileDiv>
   );
