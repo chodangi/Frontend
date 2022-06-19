@@ -4,39 +4,48 @@ import api from "../../../api/api";
 
 import { size } from "../../../styles/Theme";
 
-const CoinGame = (props) => {
-  const coin = props.coin
-  const value = props.value
-  const coinLabel = {
-    비트코인: 'btc',
-    이더리움: 'eth',
-    리플: 'xrp',
-  }
+const CoinGame = ({ name, code, onClick }) => {
+  const [selectedBtn, setSelectedBtn] = useState(0);
+  const [randomRecommend, setRandomRecommend] = useState(true)
+  const [hours,setHours] = useState(0)
 
   const getCoinCurrentValue = async () => {
-    const { data } = await api.get(`game/coin-price/${coinLabel[coin]}`)
+    const { data } = await api.get(`game/coin-price/${code}`)
     return data;
   }
 
-
   useEffect(() => {
-    console.log(coin)
     async function test() {
-      await getCoinCurrentValue()
+      const data = await getCoinCurrentValue()
+
+      const timeNow = new Date();
+      timeNow.setHours(timeNow.getHours()+1)
+      setHours(timeNow.getHours())
     }
     test();
   }, [])
 
+  const btnClickHandler =  (selectedIndex, val) => {
+    setSelectedBtn(selectedIndex)
+    if (selectedIndex === 2) {
+      const randomVal = Math.random() > 0.5;
+      setRandomRecommend(randomVal)
+      onClick(randomVal)
+    } else {
+      onClick(val)
+    }
+  }
+
   return (
     <CoinGameDiv>
       <span className="coin">
-        오후 4시에<br />
-        <h1>{coin}</h1>
+        {hours}시에<br />
+        <h1>{name}</h1>
       </span>
       <span className="game">
-        <span className="gameIcon">떡상각<ResultIconDiv is_up={true} is_checked={value["user"]}>△</ResultIconDiv></span>
-        <span className="gameIcon">떡락각<ResultIconDiv is_up={false} is_checked={value["user"]}>▽</ResultIconDiv></span>
-        <span className="gameIcon">코털의 훈수<ResultIconDiv is_up={value["cotal"]} is_checked={true}>{value["cotal"] ? "△" : "▽"}</ResultIconDiv></span>
+        <span onClick={() => { btnClickHandler(0, true) }} className="gameIcon">떡상각<ResultIconDiv is_up={true} selected={selectedBtn === 0}>△</ResultIconDiv></span>
+        <span onClick={() => { btnClickHandler(1, false) }} className="gameIcon">떡락각<ResultIconDiv is_up={false} selected={selectedBtn === 1}>▽</ResultIconDiv></span>
+        <span onClick={() => { btnClickHandler(2) }} className="gameIcon">코털의 훈수<ResultIconDiv is_up={randomRecommend} selected={selectedBtn === 2}>{randomRecommend ? "△" : "▽"}</ResultIconDiv></span>
       </span>
     </CoinGameDiv>
   )
@@ -81,7 +90,7 @@ const ResultIconDiv = styled.div`
   background-color: ${(props) =>
     props.is_up ? props.theme.colors.red : props.theme.colors.blue};
   opacity: ${(props) =>
-    props.is_checked ? 1 : 0.2};
+    props.selected ? 1 : 0.2};
   height: 2rem;
   margin: 0.5rem auto;
   font-size: ${size.font_mid};
