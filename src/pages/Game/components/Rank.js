@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import api from "../../../api/api";
 
 import { size } from "../../../styles/Theme";
 
@@ -8,33 +9,17 @@ const Rank = () => {
   const [rank, setRank] = useState('123')
 
   const getUserData = async () => {
-    const { data } = await fetch(`http://13.209.180.179:8080/profile/my-settings`, {
-      // method:'POST',
-      headers: {
-        jwt: localStorage.getItem('user')
-      }
-    }).then(res => res.json())
-    console.log(data)
+    const { data } = await api.get('profile/my-settings')
     return data;
   }
 
   useEffect(() => {
     async function init() {
-      // {dark: true
-      // email: "sayeram@kakao.com"
-      // id: 13
-      // onAlarm: true
-      // point: 0
-      // previousWins: 0
-      // status: "A"
-      // totalPlay: 0
-      // userNickname: "sayeram"
-      // winsRate: 0}
       const { point } = await getUserData();
       setPoint(point)
       setRank(checkPoint(point))
-
     }
+    
     const checkPoint = point => {
       if (point > 1000) {
         return `부자 lv${Math.floor((point - 999) / 100)}`
