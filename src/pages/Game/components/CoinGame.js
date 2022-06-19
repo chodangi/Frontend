@@ -7,6 +7,7 @@ import { size } from "../../../styles/Theme";
 const CoinGame = ({ name, code, onClick }) => {
   const [selectedBtn, setSelectedBtn] = useState(0);
   const [randomRecommend, setRandomRecommend] = useState(true)
+  const [hours,setHours] = useState(0)
 
   const getCoinCurrentValue = async () => {
     const { data } = await api.get(`game/coin-price/${code}`)
@@ -16,6 +17,10 @@ const CoinGame = ({ name, code, onClick }) => {
   useEffect(() => {
     async function test() {
       const data = await getCoinCurrentValue()
+
+      const timeNow = new Date();
+      timeNow.setHours(timeNow.getHours()+1)
+      setHours(timeNow.getHours())
     }
     test();
   }, [])
@@ -34,7 +39,7 @@ const CoinGame = ({ name, code, onClick }) => {
   return (
     <CoinGameDiv>
       <span className="coin">
-        오후 4시에<br />
+        {hours}시에<br />
         <h1>{name}</h1>
       </span>
       <span className="game">

@@ -41,6 +41,13 @@ const Game = (props) => {
     setBetdata(res => ({ ...res, [code]: val }))
   }
 
+  const onGamePlay = () =>{
+    const time = new Date();
+    time.getMinutes() < 30 ?
+    api.post('game/game-play', { betHistoryDto: betData }).then(res => alert('게임 플레이 완료!')) :
+    alert('현재 게임 플레이 가능 시간이 아닙니다')
+  }
+
   return (
     <GameDiv>
       <Header theme={props.theme} darkModeHandler={props.darkModeHandler} />
@@ -58,16 +65,32 @@ const Game = (props) => {
         <CountDown />
       </div>
       {coinList.map(coin => <CoinGame {...coin} onClick={val => { betting(coin, val) }}></CoinGame>)}
-      <button onClick={()=>{api.post('game/game-play', { betHistoryDto: betData }).then(res => console.log('베팅완료!', res.data))}}>테스트</button>
+
+      <GameBtn  onClick={onGamePlay}>
+        게임 하기
+      </GameBtn>
+      {/* <button onClick={()=>{api.post('game/game-play', { betHistoryDto: betData }).then(res => console.log('베팅완료!', res.data))}}>테스트</button>
       <button onClick={()=>{api.post('game/random').then(res => console.log('베팅완료!', res.data))}}>랜덤</button>
       <button onClick={()=>{api.get('game/coin-prediction').then(res => console.log(res.data))}}>coin-prediction</button>
       <button onClick={()=>{api.get('game/ranking').then(res => console.log(res.data))}}>ranking</button>
-      <button onClick={()=>{api.get('game/my-history').then(res => console.log(res.data))}}>my-history</button>
+      <button onClick={()=>{api.get('game/my-history').then(res => console.log(res.data))}}>my-history</button> */}
     </GameDiv>
   );
 };
 
 export default Game;
+
+const GameBtn = styled.button`
+  background-color: ${(props) => props.theme.colors.gray__2};
+  border: none;
+  border-radius: 0.5rem;
+  color: ${(props) => props.theme.colors.text};
+  cursor: pointer;
+  font-size: ${size.font_mid};
+  margin: 2rem auto;
+  padding: 0.5rem;
+  width: 90%;
+`;
 
 const GameDiv = styled.div`
   max-width: 600px;
