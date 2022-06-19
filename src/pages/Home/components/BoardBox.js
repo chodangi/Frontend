@@ -1,10 +1,65 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
+
 import {AiOutlineHeart} from 'react-icons/ai';
+import { Date, Time } from "../../../components/Time";
 
 const BoardBox = () => {
 
     const [menu, setMenu] = useState(0);
+    const [postList, setPostList] = useState([]);
+
+    useEffect(()=>{
+
+        axios({
+            method: "get",
+            url: "http://13.209.180.179:8080/community/posts",
+            headers: {'Content-Type': "application/json;charset=UTF-8"},
+      
+          }).then((response) => {
+                console.log(response.data);
+                if(menu == 0){
+                    setPostList(()=>
+                        Object.values(response.data.data).filter((p)=>{ return (p.status == 'A' && (p.boardName == '자유게시판' || p.boardName == '부자게시판' || p.boardName == '그지게시판') && p.upCnt >= 10 )}).slice(0,4)
+                    )
+                } else if(menu == 1){
+                    setPostList(()=>
+                        Object.values(response.data.data).filter((p)=>{ return (p.status == 'A' && p.boardName == '자유게시판' )}).slice(0,4)
+                    )
+                } else if(menu == 2){
+                    setPostList(()=>
+                        Object.values(response.data.data).filter((p)=>{ return (p.status == 'A' && p.boardName == '부자게시판' )}).slice(0,4)
+                    )
+                } else if(menu == 3){
+                    setPostList(()=>
+                        Object.values(response.data.data).filter((p)=>{ return (p.status == 'A' && p.boardName == '그지게시판' )}).slice(0,4)
+                    )
+                }              
+                //setPostList(Object.values(response.data.data).filter((p)=>{ return (p.status == 'A' && (p.boardName == '자유게시판' || p.boardName == '부자게시판' || p.boardName == '그지게시판'))}).slice(0,4))
+                console.log(postList.filter((p)=>{return p.boardName == "자유게시판"}));
+            })
+            .catch((error) => {
+                  console.log(error);
+        })
+    },[menu])
+
+    const navigate = useNavigate();
+    
+    const goCommunity = () => {
+        if(menu == 0){
+            navigate('/popular')
+        } else if(menu == 1){
+            navigate('/free')
+        } else if(menu == 2){
+            navigate('/rich')
+        } else if(menu == 3){
+            navigate('/poor')
+        }
+    }
+
 
     return(
         <BoardBoxDiv>
@@ -17,29 +72,30 @@ const BoardBox = () => {
             <div className="post-container">
                 <div className="top">
                     <div className="button">실시간 인기글</div>
-                    <div className="button more">more</div>
+                    <div className="button more" onClick={goCommunity}>more</div>
                 </div>
                 <div className="bottom">
-                    <Post/>
-                    <Post/>
-                    <Post/>
-                    <Post/>
+                    {postList.map((p)=> {
+                        return (
+                            <Link to={`/showPost/${p.id}`} key={p.id} className="link"><Post post={p} /></Link>
+                        )
+                    })}   
                 </div>
             </div>
         </BoardBoxDiv>
     );
 }
 
-const Post = () => {
+const Post = ({post}) => {
     return (
         <PostDiv>
-            <div className="board">자유</div>
-            <div className="title">많이 올라왔네 (32)</div>
+            <div className="board">{post.boardName?.substring(0,2)}</div>
+            <div className="title">{post.content} ({post.comments.length})</div>
             <div className="heart">
                 <AiOutlineHeart size="0.8rem" color="red"/>
-                <div className="heart-num">30</div>
+                <div className="heart-num">{post.upCnt}</div>
             </div>
-            <div className="time">11/25 16:32</div>
+            <div className="time">{post.createdAt.substring(5,7)}/{post.createdAt.substring(8,10)} {Time(post.createdAt)}</div>
         </PostDiv>
     )
 }
@@ -109,6 +165,11 @@ const BoardBoxDiv = styled.div`
 
     }
 
+    .link {
+        color: ${(props) => props.theme.colors.text};
+        text-decoration: none;
+    }
+
 `
 
 const PostDiv = styled.div`
@@ -136,7 +197,7 @@ const PostDiv = styled.div`
     }
 
     .title {
-
+        text-overflow: ellipsis;;
     }
 
     .heart {

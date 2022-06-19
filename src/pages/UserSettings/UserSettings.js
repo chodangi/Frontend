@@ -5,6 +5,7 @@ import FooterSimple from "../../components/FooterSimple"
 import SettingNickname from "./components/SettingNickname";
 import NotificationSettings from "./components/NotificationSettings";
 import { size } from "../../styles/Theme";
+import api from "../../api/api";
 
 const MyPage = (props) => {
   // const [notifications, setNotifications] = useReducer(
@@ -64,6 +65,10 @@ const MyPage = (props) => {
   return (
     <UserSettingsPage>
     <UserSettingsDiv>
+    <div onClick={e=>{
+      api.get('/profile/my-settings').then(res=>console.log(res))
+    }}>test</div>
+
       <h1>설정</h1>
       <SettingNickname />
       <hr className="thick" />

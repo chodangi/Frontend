@@ -60,7 +60,7 @@ const KaKaoHandler = () => {
     }, []);
 
 
-    return <>jwt : {jwt}</>
+    return <></>
 }
 
 export default KaKaoHandler;

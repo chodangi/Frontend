@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from 'axios';
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
@@ -16,16 +16,9 @@ const PostEditor = ({category, isEditing, postObj}) => {
   //로그인여부
   const jwt = localStorage.getItem('user');
   const user = useState(jwt ? true : false)
-    
-  
-  //유튜브모달  
-  const [visible, setVisible] = useState(false);
-
-  const openModal = () => {
-      setVisible(true);
-  }
 
   //글쓰기
+  const [text, setText] = useState();
 
   const editedPost= isEditing ? {
     "attachedFiles": postObj.attachedFiles,
@@ -38,36 +31,67 @@ const PostEditor = ({category, isEditing, postObj}) => {
     "userId": postObj.userId
   } : {}
   
-  const [post, setPost] = useState(isEditing ? 
-    editedPost
-    :
+  const [post, setPost] = useState( !isEditing ?
     {
     nickname: '',
     content: '',
     boardName: category,
     guestName: '',
-    guestPwd: '0000',
-  })
+    guestPwd: '',
+    } 
+    :
+    {
+      attachedFiles: postObj.attachedFiles,
+      boardName: postObj.boardName,
+      content: postObj.content,
+      guestName: postObj.guestName,
+      guestPwd: postObj.guestPwd,
+      nickname: postObj.userNickname,
+      postId: postObj.id,
+      userId: postObj.userId
+    }
+  )
+
+  //이름불러오기
+  useEffect(()=>{
+    if(user[0] === true){
+      fetch(`http://13.209.180.179:8080/profile/my-settings`, {
+            method: 'GET',
+            headers: {
+                jwt: jwt,
+            },
+        }).then((response) => {
+            response.json().then((data) =>{  
+            console.log(data.data);
+            setPost({
+              ...post,
+              nickname: data.data?.userNickname
+            })
+        })
+      })}
+  },[])
+
 
   const onChange = (e) => {
     const { id } = e.currentTarget;
 
     if( id == "content") {
-      if(isEditing){
-        editedPost.content  = e.currentTarget.innerHTML
-      } else {
         setPost({
           ...post,
-          [id]: e.currentTarget.innerHTML
+          [id]: e.currentTarget.value
         });
-      }
-      console.log(editedPost);
-    } else if( id == "guestName"){
-      setPost({
-        ...post,
-        [id]: e.currentTarget.value,
-        nickname: e.currentTarget.value
-      });
+    } else if( id == "nickname"){
+        if(user[0] == true) {
+          setPost({
+            ...post,
+            nickname: e.currentTarget.value
+          });
+        } else {
+          setPost({
+            ...post,
+            guestName: e.currentTarget.value
+          });
+        }
       console.log(post);
     } else if( id == "guestPwd" ){
       setPost({
@@ -78,11 +102,7 @@ const PostEditor = ({category, isEditing, postObj}) => {
     
       let selectedCategory = "";
 
-      switch (id) {
-        case "popular-board" : 
-          selectedCategory = '인기게시판';
-          break;
-        
+      switch (id) {      
         case "free-board" :
           selectedCategory = '자유게시판';
           break;
@@ -95,40 +115,69 @@ const PostEditor = ({category, isEditing, postObj}) => {
           selectedCategory = '그지게시판';
           break;
       }
-      if(isEditing) {
-        console.log('4')
-        editedPost.boardName  = selectedCategory;
-      } else {
-        setPost({
+
+      setPost({
           ...post,
           boardName: selectedCategory,
         });
-      }
 
-
-      console.log(editedPost);
+      console.log(post);
     }
     
   }
 
+  //이미지
+  const [imgBase64, setImgBase64] = useState([]); // 파일 base64
+  const [imgFile, setImgFile] = useState([]);	//파일	
 
-  const onReset = () => {
-    setPost({
-      nickname: 'name',
-      content: 'content',
-      boardName: '자유게시판',
-      guestName: 'guest',
-      guestPwd: 'password',
-    });
+  const photoInput = useRef();
+
+  const handleClick = () => {
+    photoInput.current.click();
+  };
+
+  const onChangeImage = () => {
+    console.log(photoInput.current.files)
+
+    const reader = new FileReader();
+    reader.readAsDataURL(photoInput.current.files[0]);
+
+    var img = new Image();
+    img = photoInput.current.files[0];
+    console.log(photoInput.current.files)
+    
+
+    if(isEditing){
+      editedPost.attachedFiles = photoInput.current.files;
+    } else {
+      setPost({
+        ...post,
+        attachedFiles: photoInput.current.files
+      });
+    }
+
+    reader.onloadend = () => {
+      const base64 = reader.result;
+      console.log(base64);
+      if (base64) {
+        let base64Sub = base64.toString()  
+        setImgBase64(imgBase64 => [...imgBase64, base64Sub]);
+      console.log(imgBase64)
+      }
+    };
+
   }
-  
   
   // 게시글 작성
 
+  const makeQuery = obj => Object.keys(obj).reduce((res,key)=>{
+    return res + `&${key}=${obj[key]}`
+  },'').substring(1)
+
   const createPost = async () => {
 
-    if(post.guestName == "") {
-      console.log("빈칸을 채우세요");
+    if(post.nickname == "") {
+      alert("빈칸을 채우세요");
       return;
     }
 
@@ -138,13 +187,13 @@ const PostEditor = ({category, isEditing, postObj}) => {
         jwt: jwt,
       },
     }).then((response) => {
-      console.log(response);
+      if(user[0] == true) {
+        response.json().then((data) =>{  
+          post.userId = data.data.id;
+          post.userPoint = data.data.point;
+        })
+      }
     })
-
-    const makeQuery = obj => Object.keys(obj).reduce((res,key)=>{
-      return res + `&${key}=${obj[key]}`
-    },'').substring(1)
-
 
     await fetch(`http://13.209.180.179:8080/attach/post-image?${makeQuery(post)}`, {
       method: 'POST',
@@ -154,31 +203,29 @@ const PostEditor = ({category, isEditing, postObj}) => {
       },
     })
       .then((response) => {
+        console.log(post)
         navigate(-1);
       })
-
   }
 
   const createPostByGuest = async () => {
 
-    if(post.guestPwd == "password" || post.guestName == "guest") {
-      console.log("빈칸을 채우세요");
+    if(post.guestPwd == "" || post.guestName == "") {
+      alert("빈칸을 채우세요");
       return;
     }
     
-
-    await axios
-          .post("/api/attach/post-image",null, {
-            params: editedPost
-          })
-          .then((response) => {
-              console.log(response.data);
-              console.log("글 작성 완료");
-              navigate(-1);
-            })
-          .catch((error) => {
-              console.error("실패했습니다");
-          })
+    await fetch(`http://13.209.180.179:8080/post/non-user?${makeQuery(post)}`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        jwt: jwt,
+      },
+    })
+      .then((response) => {
+        console.log('성공')
+        navigate(-1);
+      })
   }
 
   // 게시글 수정
@@ -186,26 +233,39 @@ const PostEditor = ({category, isEditing, postObj}) => {
   const updatePost = async () => {
 
     console.log(postObj);
-    console.log(editedPost);
 
-    try {await fetch(`http://13.209.180.179:8080/community/post`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-        jwt: jwt,
-      },
-      body:JSON.stringify(editedPost),
-    })
-      .then((response) => {
-        navigate(-1);
-      }) 
-      .catch((error) => {
-        console.log(error.response.data);
-    })
+    if(user[0]){
+      await fetch(`http://13.209.180.179:8080/community/post`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          jwt: jwt,
+        },
+        body:JSON.stringify(post),
+      })
+        .then(() => {
+          navigate(-1);
+        }) 
+        .catch((error) => {
+          console.log(error.response.data);
+      })
+    } else {
+      await fetch(`http://13.209.180.179:8080/community/post/non-user/${post.postId}/${post.guestPwd}`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          jwt: jwt,
+        },
+        body:JSON.stringify(post),
+      })
+        .then(() => {
+          navigate(-1);
+        }) 
+        .catch((error) => {
+          console.log(error.response.data);
+      })
     }
-    catch(error) {
-      console.log(error)
-    }
+   
 }
 
   return (                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
@@ -215,26 +275,46 @@ const PostEditor = ({category, isEditing, postObj}) => {
           <CategoryPicker className="categoryPicker" category={category} onChange={onChange}></CategoryPicker>
         </div>
         <div className="userInfo">
-          <input type="text" className="input nickname" placeholder="닉네임" spellCheck="false" id="guestName" value={post.nickname} onChange={onChange}></input>
+          <input type="text" className="input nickname" placeholder="닉네임" spellCheck="false" id="nickname" value={user[0] ? post.nickname : post.guestName} onChange={onChange} disabled={isEditing ? true : false}></input>
           {
-            user 
+            user[0] 
             ? 
             <></>
             :
-            <input type="password" className="input password" placeholder="비밀번호" id="guestPwd" value={post.guestPwd} onChange={onChange}></input>
+            <input type="password" className="input password" placeholder="비밀번호" id="guestPwd" value={post.guestPwd} onChange={onChange} disabled={isEditing ? true : false}></input>
           }
         </div>
-        <TextField onChange={onChange} content={isEditing && postObj.content}/>
-        <div className="submit-box">
-          <div className="btn-box">
-            <FiImage className="btn image" size="2rem" />
-          </div>
-          <button className="submit" onClick={user ? (isEditing ? updatePost: createPost) : createPostByGuest}>완료</button>
+        <TextField onChange={onChange} content={isEditing && postObj.content} isEditing={isEditing} text={text} setText={setText}/>
+        <div>
+          {
+          isEditing ? 
+            editedPost.attachedFiles  && <img className="img" src={imgBase64[0]}/>
+            : 
+            post.attachedFiles && <img className="img" src={imgBase64[0]}/>
+          }
         </div>
-        {/* {visible && <YoutubeModal visible={visible} setVisible={setVisible}/>} */}
+        <div className="submit-box">
+          <button className="submit" onClick={isEditing ? updatePost : (user[0] ? createPost : createPostByGuest)}>완료</button>
+        </div>
       </PostEditorDiv>
   );
 };
+
+/*
+<div className="submit-box">
+          <div className="btn-box">
+            <FiImage className="btn image" size="2rem" onClick={handleClick}/>
+            <input 
+              type="file" 
+              accept ="image/jpg, image/jpeg, image/png, image/gif" 
+              ref={photoInput}
+              onChange={onChangeImage}
+              style={{display: 'none'}}
+            />
+          </div>
+          <button className="submit" onClick={isEditing ? updatePost : (user[0] ? createPost : createPostByGuest)}>완료</button>
+        </div>
+*/
 
 
 export default PostEditor;
@@ -311,6 +391,13 @@ const PostEditorDiv = styled.div`
     size: 10; 
     padding: 10px 20px 0px 20px;
     border-bottom: 2px solid #444444;
+  }
+
+  .img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    padding: 0px 20px;
   }
 
   .submit-box {
