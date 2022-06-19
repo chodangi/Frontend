@@ -3,9 +3,10 @@ import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
 
 const PasswordField = ({password, setPassword, setVisible, editOrDeleteByGuest}) => {
-        
+
     const onChangePassword = (e) => {
         setPassword(e.target.value);
+        console.log(password)
     }
 
     return (

@@ -8,10 +8,7 @@ import Home from "./pages/Home/Home";
 import MyPage from "./pages/MyPage/MyPage";
 import SignIn from "./pages/SignIn/SignIn";
 import UserSettings from "./pages/UserSettings/UserSettings";
-import PopularBoard from "./pages/Community/PopularBoard";
-import FreeBoard from "./pages/Community/FreeBoard";
-import RichBoard from "./pages/Community/RichBoard";
-import PoorBoard from "./pages/Community/PoorBoard";
+import Board from "./pages/Community/Board";
 import TrendBoard from "./pages/Community/TrendBoard";
 import WritePost from "./pages/WritePost/WritePost";
 import ShowPost from "./pages/ShowPost.js/ShowPost";
@@ -69,23 +66,11 @@ const AppRouter = () => {
             }
           />
           <Route
-            path="popular"
-            element={<PopularBoard theme={theme} darkModeHandler={setThemeMode} />}
+            path="board/:boardName"
+            element={<Board theme={theme} darkModeHandler={setThemeMode} />}
           />
           <Route
-            path="free"
-            element={<FreeBoard theme={theme} darkModeHandler={setThemeMode} />}
-          />
-          <Route
-            path="rich"
-            element={<RichBoard theme={theme} darkModeHandler={setThemeMode} />}
-          />
-          <Route
-            path="poor"
-            element={<PoorBoard theme={theme} darkModeHandler={setThemeMode} />}
-          />
-          <Route
-            path=":boardName/trend"
+            path="board/:boardName/trend"
             element={<TrendBoard theme={theme} darkModeHandler={setThemeMode} />}
           />
           <Route

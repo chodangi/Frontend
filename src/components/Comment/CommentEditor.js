@@ -102,23 +102,41 @@ const CommentEditor = forwardRef((props, ref) => {
         }
 
         if(comment.nickname == '') {
-          console.log("빈칸을 채우세요");
+          alert("닉네임을 입력하세요");
+          return;
+        }
+
+        if(!user[0] && comment.password == "") {
+          alert("비밀번호를 입력하세요");
           return;
         }
         
-          await fetch('http://13.209.180.179:8080/comment', {
-            headers: { 
-              'Content-type': 'application/json',
-              jwt: jwt,
-            },
-            method:'POST',
-            body: JSON.stringify(comment)
-          }).then(()=>{
-            props.forceUpdate();
-            resetComment(); 
-            props.setReply(false);          
-          })  
-        }
+          if(user[0]){
+            await fetch('http://13.209.180.179:8080/comment', {
+              headers: { 
+                'Content-type': 'application/json',
+                jwt: jwt,
+              },
+              method:'POST',
+              body: JSON.stringify(comment)
+            }).then(()=>{
+              props.forceUpdate();
+              resetComment(); 
+              props.setReply(false);          
+            })} else {
+              await fetch('http://13.209.180.179:8080/comment', {
+                headers: { 
+                  'Content-type': 'application/json',
+                },
+                method:'POST',
+                body: JSON.stringify(comment)
+              }).then(()=>{
+                props.forceUpdate();
+                resetComment(); 
+                props.setReply(false);          
+              })  
+          }
+      }
 
         //답댓글
 

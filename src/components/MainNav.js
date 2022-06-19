@@ -11,13 +11,13 @@ const MainNav = () => {
         <MainNavDiv>
             <ul className="nav__main">
                 <li>
-                    <NavLink to="/popular" className="community menu" activeclassname="active"> 커뮤니티 </NavLink>
+                    <NavLink to="/board/popular" className="community menu" activeclassname="active"> 커뮤니티 </NavLink>
                 </li>
                 <li>
                     <NavLink to="/game" className="battle menu" activeclassname="active"> 코인궁예대전 </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/temperature" className="temperature menu" activeclassname="active"> 코인체감온도 </NavLink>
+                    <NavLink to="/temperature" className="temperature menu last" activeclassname="active"> 코인체감온도 </NavLink>
                 </li>
             </ul>
         </MainNavDiv>
@@ -63,18 +63,9 @@ const MainNavDiv = styled.div`
         border-right: 1px solid #888888;
     }
 
-    .menuLink{
-        width: 100%;
-        text-decoration: none;
-        color: ${(props) => props.theme.colors.text};
-        font-size:12px;
-        font-weight: bold;
-        border-right: 1px solid #888888;
-        text-align: center;
-        padding-top: 3px;
-    }
     
-    .menuLink.lastItem{
+    
+    .menu.last{
         border-right: 0px solid;
     }
 `;

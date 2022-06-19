@@ -63,8 +63,17 @@ const Comment = ({commentDto, forceUpdate, setReplyComment, moveToEditor, isDele
 
     const deleteCommentByGuest = (e) => {
         e.stopPropagation();
-        setVisible(false);
-
+        if(password == commentDto.password){
+            fetch(`http://13.209.180.179:8080/comment/${commentDto.id}`, {
+                method: 'PUT',
+            }).then(() => {
+                forceUpdate();
+                setPassword('');
+                setVisible(false);
+            })
+        } else {
+            alert('비밀번호가 일치하지 않습니다.');
+        }
     }
 
     const goEditor = () => {
@@ -92,7 +101,10 @@ const Comment = ({commentDto, forceUpdate, setReplyComment, moveToEditor, isDele
                 </div>
             </div>
             {
-                visible && <PasswordField password={password} setPassword={setPassword} setVisible={setVisible} editOrDeleteByGuest={deleteCommentByGuest}/>
+                visible && 
+                <div className="modal">
+                    <PasswordField password={password} setPassword={setPassword} setVisible={setVisible} editOrDeleteByGuest={deleteCommentByGuest}/>
+                </div>
             }
         </CommentDiv>
     );
@@ -163,6 +175,11 @@ const CommentDiv = styled.div`
 
     .delete {
         justify-self: end;
+    }
+
+    .modal {
+        position:absolute;
+        right: 50px;
     }
 `
 

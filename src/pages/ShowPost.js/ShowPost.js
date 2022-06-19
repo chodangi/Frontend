@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useRef, useCallback} from "react";
 import styled from "styled-components";
 import {useParams, useNavigate } from 'react-router-dom';
 
@@ -19,16 +19,14 @@ const ShowPost = (props) => {
   // 댓글 리렌더링
   const [state, updateState] = useState();
   
-  const forceUpdate =()=>{
-    updateState({});
-    console.log('rerender')
-  } 
+  const forceUpdate = useCallback(()=> updateState({}), []);
 
 
     //게시글 조회, 작성자 포인트 조회
     const postId = useParams().postId
 
     const [post, setPost] = useState([]);
+    const [comment, setComment] = useState([]);
 
     useEffect( async()=>{
       try { 
@@ -51,7 +49,7 @@ const ShowPost = (props) => {
         console.log(error)
       }
 
-    },[])
+    },[state])
 
   //사용자 접근
   const [restriction, setRestriction] = useState(true);
