@@ -33,9 +33,9 @@ const MyPage = (props) => {
         <History />
       </ProfileMainDiv>
       {/* <MyCommunity theme={props.theme} /> */}
-      <SettingBtn onClick={() => (window.location.href = "/settings")}>
+      {/* <SettingBtn onClick={() => (window.location.href = "/settings")}>
         설정
-      </SettingBtn>
+      </SettingBtn> */}
       <SignOutBtn onClick={signOut}>
       SignOut
       </SignOutBtn>
@@ -45,14 +45,14 @@ const MyPage = (props) => {
 
 export default MyPage;
 
-const SignOutBtn = styled.div`
+const SignOutBtn = styled.button`
   background-color: ${(props) => props.theme.colors.gray__2};
   border: none;
   border-radius: 0.5rem;
   color: ${(props) => props.theme.colors.text};
   cursor: pointer;
   font-size: ${size.font_mid};
-  margin: 0 auto;
+  margin: 1rem auto;
   padding: 0.5rem;
   width: 90%;
 `
