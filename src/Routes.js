@@ -110,11 +110,11 @@ const AppRouter = () => {
           />
           <Route
             path="temperatureComment/:temperatureId"
-            element={<TemperatureComment theme={theme} darkModeHandler={setThemeMode} />}
+            element={<TemperatureComment theme={theme} darkModeHandler={setThemeMode} isLoggedIn={isLoggedIn}/>}
           />
           <Route
             path="temperatureRefly"
-            element={<TemperatureRefly theme={theme} darkModeHandler={setThemeMode} />}
+            element={<TemperatureRefly theme={theme} darkModeHandler={setThemeMode} isLoggedIn={isLoggedIn}/>}
           />
         </Routes>
       </BrowserRouter>

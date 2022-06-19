@@ -24,7 +24,7 @@ function TemperatureRefly(props) {
     const deleteComment = (Delete) => {
         //원댓글 삭제시 temperatureComment로 돌아가는 로직 추가
         if (Delete.level === 0) {
-          navigate(`/temperatureComment/${Comment.coinSymbol}`);
+          navigate(`/temperatureComment/${Comment.coinSymbol}`,{state:{comments:Delete}});
         } else {
           let body = [...ReflyList];
           let pod = body.indexOf(Delete);
