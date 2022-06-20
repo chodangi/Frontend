@@ -7,7 +7,7 @@ const Kakao = () => {
   const [tokenData, setTokenData] = useState("");
 
   const REST_API_KEY = "c4407d02c453315320fe564405160e2e";
-  const REDIRECT_URI = "http://localhost:3000/kakao";
+  const REDIRECT_URI = "https://www.coinfortal.com/kakao";
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
   const CLIENT_SECRET = "JG5vGorIX2Bga6hS7UlXTMtV45Z7ZG8g";
 

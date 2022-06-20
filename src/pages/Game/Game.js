@@ -43,8 +43,12 @@ const Game = (props) => {
 
   const onGamePlay = () =>{
     const time = new Date();
+    api.post('game/game-play', { betHistoryDto: betData }).then(res => console.log(res))
     time.getMinutes() < 30 ?
-    api.post('game/game-play', { betHistoryDto: betData }).then(res => alert('게임 플레이 완료!')) :
+    api.post('game/game-play', { betHistoryDto: betData }).then(res => {
+      res.errorCode === "404" ? 
+      alert(res.errorMessage) :
+      alert('게임 플레이 완료!')}) :
     alert('현재 게임 플레이 가능 시간이 아닙니다')
   }
 
