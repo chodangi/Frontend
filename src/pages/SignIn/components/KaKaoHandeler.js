@@ -48,7 +48,7 @@ const KaKaoHandler = () => {
                 }
             }).then(res => {
                 const { data: { access_token } } = res;
-                fetch(`http://13.209.180.179:8080/oauth/login?token=${access_token}`).then(res => res.json()).then(res => {
+                fetch(`http://www.coinfortal.com:8080/oauth/login?token=${access_token}`).then(res => res.json()).then(res => {
                     const { data: { jwt } } = res
                     setJWT(jwt)
                     console.log(jwt)

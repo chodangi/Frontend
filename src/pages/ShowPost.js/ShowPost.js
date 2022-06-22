@@ -30,7 +30,7 @@ const ShowPost = (props) => {
 
     useEffect( async()=>{
       try { 
-        await fetch(`http://13.209.180.179:8080/community/post/${postId}`, {
+        await fetch(`http://www.coinfortal.com:8080/community/post/${postId}`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
@@ -65,7 +65,7 @@ const ShowPost = (props) => {
 
   useEffect(()=>{
      if(isLoading === false){ if(user[0] == true) {
-        fetch(`http://13.209.180.179:8080/profile/my-settings`, {
+        fetch(`http://www.coinfortal.com:8080/profile/my-settings`, {
             method: 'GET',
             headers: {
                 jwt: jwt,

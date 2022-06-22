@@ -9,7 +9,7 @@ const History = () => {
 
     useEffect(() => {
       if (!history1.length) {
-        fetch(`http://13.209.180.179:8080/game/my-history`, {
+        fetch(`http://www.coinfortal.com:8080/game/my-history`, {
           headers: {
             jwt: user
           }
@@ -32,7 +32,7 @@ const History = () => {
     //   }
     // });
 
-  // fetch(`http://13.209.180.179:8080/game/my-history`, {
+  // fetch(`http://www.coinfortal.com:8080/game/my-history`, {
   //   headers: {
   //     jwt: user
   //   }

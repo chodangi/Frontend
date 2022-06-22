@@ -20,7 +20,7 @@ const Comment = ({commentDto, forceUpdate, setReplyComment, moveToEditor, isDele
 
     useEffect(()=>{
         if(user[0] == true) {
-            fetch(`http://13.209.180.179:8080/profile/my-settings`, {
+            fetch(`http://www.coinfortal.com:8080/profile/my-settings`, {
                 method: 'GET',
                 headers: {
                     jwt: jwt,
@@ -64,7 +64,7 @@ const Comment = ({commentDto, forceUpdate, setReplyComment, moveToEditor, isDele
     const deleteCommentByGuest = (e) => {
         e.stopPropagation();
         if(password == commentDto.password){
-            fetch(`http://13.209.180.179:8080/comment/${commentDto.id}`, {
+            fetch(`http://www.coinfortal.com:8080/comment/${commentDto.id}`, {
                 method: 'PUT',
             }).then(() => {
                 forceUpdate();

@@ -27,7 +27,7 @@ const Content = ({post}) => {
 
     useEffect(()=>{
         if(user[0] == true) {
-            fetch(`http://13.209.180.179:8080/profile/my-settings`, {
+            fetch(`http://www.coinfortal.com:8080/profile/my-settings`, {
                 method: 'GET',
                 headers: {
                     jwt: jwt,
@@ -67,7 +67,7 @@ const Content = ({post}) => {
                     },
                 });
             } else if (editOrDelete == "delete") {
-                fetch(`http://13.209.180.179:8080/community/post/non-user/${post.id}/${password}`, {
+                fetch(`http://www.coinfortal.com:8080/community/post/non-user/${post.id}/${password}`, {
                     method: 'GET',
                     headers: {
                         jwt: jwt,
@@ -108,7 +108,7 @@ const Content = ({post}) => {
             return;
         }
 
-        try {fetch(`http://13.209.180.179:8080/community/post/status/${post.id}`, {
+        try {fetch(`http://www.coinfortal.com:8080/community/post/status/${post.id}`, {
           method: 'POST',
           headers: {
             jwt: jwt,
