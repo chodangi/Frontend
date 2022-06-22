@@ -1,4 +1,4 @@
-const SERVER_URL = 'http://13.209.180.179:8080'
+const SERVER_URL = 'http://www.coinfortal.com:8080'
 
 const getApi = async url => {
     return await fetch(`${SERVER_URL}/${url}`, { headers: { jwt: localStorage.getItem('user') } }).then(res => res.json())

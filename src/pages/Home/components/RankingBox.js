@@ -20,7 +20,7 @@ const RankingBox = () => {
     const [ranking, setRanking] = useState([]);
 
     useEffect(()=>{
-        fetch(`http://13.209.180.179:8080/game/ranking`, {
+        fetch(`http://www.coinfortal.com:8080/game/ranking`, {
                 method: 'GET',
             }).then((response) => {
                 response.json().then((data) =>{  

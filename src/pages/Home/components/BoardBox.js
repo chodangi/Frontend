@@ -16,7 +16,7 @@ const BoardBox = () => {
 
         axios({
             method: "get",
-            url: "http://13.209.180.179:8080/community/posts",
+            url: "http://www.coinfortal.com:8080/community/posts",
             headers: {'Content-Type': "application/json;charset=UTF-8"},
       
           }).then((response) => {

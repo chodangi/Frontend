@@ -16,7 +16,7 @@ const PostList = ({board, trend}) => {
     const showAllPost = async () => {
         await axios({
           method: "get",
-          url: "http://13.209.180.179:8080/community/posts",
+          url: "http://www.coinfortal.com:8080/community/posts",
           headers: {'Content-Type': "application/json;charset=UTF-8"},
     
         }).then((response) => {
@@ -24,14 +24,14 @@ const PostList = ({board, trend}) => {
                 setPostList(Object.values(response.data.data));
               })
           .catch((error) => {
-                console.log(error.response.data);
+                console.log(error.response?.data);
           })
       }
 
     const showTrendPost = async() => {
       await axios({
         method: "get",
-        url: "http://13.209.180.179:8080/community/up-count",
+        url: "http://www.coinfortal.com:8080/community/up-count",
         headers: {'Content-Type': "application/json;charset=UTF-8"},
   
       }).then((response) => {
@@ -39,7 +39,7 @@ const PostList = ({board, trend}) => {
               setTrendList(Object.values(response.data.data));
             })
         .catch((error) => {
-              console.log(error.response.data);
+              console.log(error.response?.data);
         })
     }
 
