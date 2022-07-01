@@ -16,7 +16,7 @@ const BoardBox = () => {
 
         axios({
             method: "get",
-            url: "http://www.coinfortal.com:8080/community/posts",
+            url: "https://www.coinfortal.com:8080/community/posts",
             headers: {'Content-Type': "application/json;charset=UTF-8"},
       
           }).then((response) => {
@@ -50,13 +50,13 @@ const BoardBox = () => {
     
     const goCommunity = () => {
         if(menu == 0){
-            navigate('/popular')
+            navigate('/board/popular')
         } else if(menu == 1){
-            navigate('/free')
+            navigate('/board/free')
         } else if(menu == 2){
-            navigate('/rich')
+            navigate('/board/rich')
         } else if(menu == 3){
-            navigate('/poor')
+            navigate('/board/poor')
         }
     }
 

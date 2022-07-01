@@ -1,12 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router";
 
-import {AiOutlineHeart, AiOutlineSearch} from 'react-icons/ai';
+import {AiOutlineSearch} from 'react-icons/ai';
 
 const SearchBar = () =>{
 
     const [open, setOpen] = useState(false);
     const [label, setLabel] = useState("제목+내용");
+
     const openMenu = () =>{
         if(open) setOpen(false);
         else setOpen(true);
@@ -21,6 +23,23 @@ const SearchBar = () =>{
         setOpen(false);
     }
 
+    const [text, setText] = useState('');
+
+    const onChangeText = (e) => {
+        setText(e.target.value);
+        console.log(text)
+    }
+
+    const navigate = useNavigate();
+
+    const searchPost = () => {
+        if(label === '글쓴이') {
+            navigate(`/search/posts-by-nickname/${text}`);
+        } else {
+            navigate(`/search/posts-by-keyword/${text}`);
+        }
+    }
+
     return (
         <SearchDiv>
             <DropdownDiv>
@@ -33,8 +52,8 @@ const SearchBar = () =>{
                     : <></>
                 }
             </DropdownDiv>
-            <input type="text" className="text__input" placeholder="검색어를 입력하세요."></input>
-            <AiOutlineSearch className="search__icon"/>
+            <input type="text" className="text__input" placeholder="검색어를 입력하세요." value={text} onChange={onChangeText}></input>
+            <AiOutlineSearch className="search__icon" onClick={searchPost}/>
         </SearchDiv>
     );
 }

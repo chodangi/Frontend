@@ -10,6 +10,7 @@ import SignIn from "./pages/SignIn/SignIn";
 import UserSettings from "./pages/UserSettings/UserSettings";
 import Board from "./pages/Community/Board";
 import TrendBoard from "./pages/Community/TrendBoard";
+import Search from "./pages/Community/Search";
 import WritePost from "./pages/WritePost/WritePost";
 import ShowPost from "./pages/ShowPost.js/ShowPost";
 import EditPost from "./pages/EditPost/EditPost";
@@ -72,6 +73,10 @@ const AppRouter = () => {
           <Route
             path="board/:boardName/trend"
             element={<TrendBoard theme={theme} darkModeHandler={setThemeMode} />}
+          />
+          <Route
+            path="search/*"
+            element={<Search theme={theme} darkModeHandler={setThemeMode} />}
           />
           <Route
             path="writePost"

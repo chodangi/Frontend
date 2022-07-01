@@ -31,7 +31,7 @@ const CommentEditor = forwardRef((props, ref) => {
 
     useEffect(()=>{
         if(user[0] == true) {
-            fetch(`http://www.coinfortal.com:8080/profile/my-settings`, {
+            fetch(`https://www.coinfortal.com:8080/profile/my-settings`, {
                 method: 'GET',
                 headers: {
                     jwt: jwt,
@@ -112,7 +112,7 @@ const CommentEditor = forwardRef((props, ref) => {
         }
         
           if(user[0]){
-            await fetch('http://www.coinfortal.com:8080/comment', {
+            await fetch('https://www.coinfortal.com:8080/comment', {
               headers: { 
                 'Content-type': 'application/json',
                 jwt: jwt,
@@ -124,7 +124,7 @@ const CommentEditor = forwardRef((props, ref) => {
               resetComment(); 
               props.setReply(false);          
             })} else {
-              await fetch('http://www.coinfortal.com:8080/comment', {
+              await fetch('https://www.coinfortal.com:8080/comment', {
                 headers: { 
                   'Content-type': 'application/json',
                 },

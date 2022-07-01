@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ToggleTheme from "./ToggleTheme";
 import { Link } from "react-router-dom";
+import logo from "../img/logo.png";
 
 const Header = (props) => {
 
@@ -14,7 +15,7 @@ const Header = (props) => {
 
     return (
         <HeaderDiv>
-            <Link to="/"><img className="logo__img" src={process.env.PUBLIC_URL+"/img/logo.png"} alt=""></img></Link>
+            <Link to="/"><img className="logo__img" src={process.env.PUBLIC_URL + '/img/logo.png'}></img></Link>
             <div className="header__item">
                 <Link to={isLoggedIn ? "/myPage" : "/signIn"}><div className="login">{isLoggedIn ? 'MyPage' : 'LOGIN'}</div></Link>
                 

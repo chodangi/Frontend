@@ -20,7 +20,7 @@ const RankingBox = () => {
     const [ranking, setRanking] = useState([]);
 
     useEffect(()=>{
-        fetch(`http://www.coinfortal.com:8080/game/ranking`, {
+        fetch(`https://www.coinfortal.com:8080/game/ranking`, {
                 method: 'GET',
             }).then((response) => {
                 response.json().then((data) =>{  
@@ -38,7 +38,7 @@ const RankingBox = () => {
 
         if(ranking != 'undefined' && ranking != null) {
             for (let i = 0; i < 5; i++){
-                arr.push(<Rank ranking={i+1} nickname={(ordering == 'rich') ? ranking[i]?.nickname : reverseRanking[i].nickname} point={(ordering == 'rich') ? ranking[i]?.point : reverseRanking[i]?.point} />)
+                arr.push(<Rank key={i+1} ranking={i+1} nickname={(ordering == 'rich') ? ranking[i]?.nickname : reverseRanking[i].nickname} point={(ordering == 'rich') ? ranking[i]?.point : reverseRanking[i]?.point} />)
             }
          }
         

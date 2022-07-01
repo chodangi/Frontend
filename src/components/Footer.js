@@ -6,7 +6,7 @@ const Footer = (props) => {
   return (
     <FooterDiv theme={props.theme}>
       <p>
-        코털(coter.com)은 사이트 내 모든 암호화폐 가격 및 투자 관련 정보에
+        코털(coinfortal.com)은 사이트 내 모든 암호화폐 가격 및 투자 관련 정보에
         대하여 어떠한 책임도 부담하지 않습니다.
       </p>
       <p>
@@ -17,7 +17,7 @@ const Footer = (props) => {
         <button>서비스 이용약관</button>
         <button>소개</button>
       </div>
-      <p>피드백 또는 문의 : help@coter.com</p>
+      <p>피드백 또는 문의 : coinfotal@gmail.com</p>
     </FooterDiv>
   );
 };

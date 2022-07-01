@@ -55,7 +55,7 @@ const PostEditor = ({category, isEditing, postObj}) => {
   //이름불러오기
   useEffect(()=>{
     if(user[0] === true){
-      fetch(`http://www.coinfortal.com:8080/profile/my-settings`, {
+      fetch(`https://www.coinfortal.com:8080/profile/my-settings`, {
             method: 'GET',
             headers: {
                 jwt: jwt,
@@ -181,7 +181,7 @@ const PostEditor = ({category, isEditing, postObj}) => {
       return;
     }
 
-    await fetch(`http://www.coinfortal.com:8080/profile/my-settings`, {
+    await fetch(`https://www.coinfortal.com:8080/profile/my-settings`, {
       method: 'GET',
       headers: {
         jwt: jwt,
@@ -195,7 +195,7 @@ const PostEditor = ({category, isEditing, postObj}) => {
       }
     })
 
-    await fetch(`http://www.coinfortal.com:8080/attach/post-image?${makeQuery(post)}`, {
+    await fetch(`https://www.coinfortal.com:8080/attach/post-image?${makeQuery(post)}`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -215,7 +215,7 @@ const PostEditor = ({category, isEditing, postObj}) => {
       return;
     }
     
-    await fetch(`http://www.coinfortal.com:8080/post/non-user?${makeQuery(post)}`, {
+    await fetch(`https://www.coinfortal.com:8080/post/non-user?${makeQuery(post)}`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -235,7 +235,7 @@ const PostEditor = ({category, isEditing, postObj}) => {
     console.log(postObj);
 
     if(user[0]){
-      await fetch(`http://www.coinfortal.com:8080/community/post`, {
+      await fetch(`https://www.coinfortal.com:8080/community/post`, {
         method: 'PUT',
         headers: {
           'Content-type': 'application/json',
@@ -250,7 +250,7 @@ const PostEditor = ({category, isEditing, postObj}) => {
           console.log(error.response.data);
       })
     } else {
-      await fetch(`http://www.coinfortal.com:8080/community/post/non-user/${post.postId}/${post.guestPwd}`, {
+      await fetch(`https://www.coinfortal.com:8080/community/post/non-user/${post.postId}/${post.guestPwd}`, {
         method: 'PUT',
         headers: {
           'Content-type': 'application/json',
