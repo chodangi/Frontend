@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 const KaKaoHandler = () => {
     const REST_API_KEY = "bbac0c1542268d22cd795e3d398071f5";
     const CLIENT_SECRET = "JG5vGorIX2Bga6hS7UlXTMtV45Z7ZG8g";
-    const REDIRECT_URI = "http://localhost:3000/kakao";
+    const REDIRECT_URI = "https://www.coinfortal.com/kakao";
     const nav = useNavigate()
 
     const [jwt, setJWT] = useState('')
