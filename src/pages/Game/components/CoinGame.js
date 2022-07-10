@@ -68,6 +68,7 @@ const CoinGameDiv = styled.div`
 
     h1 {
         margin: 0;
+        font-size: 1.3em;
     }
 
     .coin {
